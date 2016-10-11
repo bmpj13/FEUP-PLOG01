@@ -34,34 +34,34 @@ translate(0, 'mid', '   ').
 translate(0, 'bottom', '   ').
 
 % Orange's first pawn
-translate(o1, 'top', '/ \\').
+translate(o1, 'top', '___').
 translate(o1, 'mid', '|1|').
-translate(o1, 'bottom', '\\ /').
+translate(o1, 'bottom', '\'\'\'').
 
 % Orange's second pawn
-translate(o2, 'top', '/ \\').
+translate(o2, 'top', 'vvv').
 translate(o2, 'mid', '|1|').
-translate(o2, 'bottom', '\\ /').
+translate(o2, 'bottom', '^^^').
 
 % Orange's base
-translate(ob, 'top', '   ').
+translate(ob, 'top', '...').
 translate(ob, 'mid', ' O ').
-translate(ob, 'bottom', '   ').
+translate(ob, 'bottom', '...').
 
 % Yellow's first pawn
-translate(y1, 'top', '/ \\').
+translate(y1, 'top', '___').
 translate(y1, 'mid', '|2|').
-translate(y1, 'bottom', '\\ /').
+translate(y1, 'bottom', '\'\'\'').
 
 % Yellow's second pawn
-translate(y2, 'top', '/ \\').
+translate(y2, 'top', 'vvv').
 translate(y2, 'mid', '|2|').
-translate(y2, 'bottom', '\\ /').
+translate(y2, 'bottom', '^^^').
 
 % Yellow's base
-translate(yb, 'top', '   ').
+translate(yb, 'top', '...').
 translate(yb, 'mid', ' Y ').
-translate(yb, 'bottom', '   ').
+translate(yb, 'bottom', '...').
 
 % Vertical wall slot
 translate(v, 'top', '   ').
@@ -128,7 +128,7 @@ displayLine([E1 | Es], Type, Number) :-
 	displayLine(Es, Type, Number).
 
 displayLine([], Type, Number) :-
-	write('||'),
+	write('|| '),
 	write(Number),
 	nl.
 
