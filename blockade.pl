@@ -1,116 +1,116 @@
-board([ [0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-	  		[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, ob, v, 0, v, 0, v, 0, v, ob, v, o2, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, o1, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, y2, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, y1, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, yb, v, 0, v, 0, v, 0, v, yb, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0],
-				[h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h, h],
-				[0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0, v, 0] ]).
+board([[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+	  		[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square],
+				[[horizontal, placed], [horizontal, placed], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, empty], [horizontal, placed]],
+				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square] ]).
 
 
 % 3x3 Components:
 % Square
-translate(0, 'top', '   ').
-translate(0, 'mid', '   ').
-translate(0, 'bottom', '   ').
+translate(square, 'top', '   ').
+translate(square, 'mid', '   ').
+translate(square, 'bottom', '   ').
 
 % Orange's first pawn
-translate(o1, 'top', '___').
-translate(o1, 'mid', '|1|').
-translate(o1, 'bottom', '\'\'\'').
+translate([orange, 1], 'top', '___').
+translate([orange, 1], 'mid', '|1|').
+translate([orange, 1], 'bottom', '\'\'\'').
 
 % Orange's second pawn
-translate(o2, 'top', 'vvv').
-translate(o2, 'mid', '|1|').
-translate(o2, 'bottom', '^^^').
+translate([orange, 2], 'top', '___').
+translate([orange, 2], 'mid', '|1|').
+translate([orange, 2], 'bottom', '^^^').
 
 % Orange's base
-translate(ob, 'top', '...').
-translate(ob, 'mid', ' O ').
-translate(ob, 'bottom', '...').
+translate([orange, base], 'top', '...').
+translate([orange, base], 'mid', ' O ').
+translate([orange, base], 'bottom', '...').
 
 % Yellow's first pawn
-translate(y1, 'top', '___').
-translate(y1, 'mid', '|2|').
-translate(y1, 'bottom', '\'\'\'').
+translate([yellow, 1], 'top', '___').
+translate([yellow, 1], 'mid', '|2|').
+translate([yellow, 1], 'bottom', '\'\'\'').
 
 % Yellow's second pawn
-translate(y2, 'top', 'vvv').
-translate(y2, 'mid', '|2|').
-translate(y2, 'bottom', '^^^').
+translate([yellow, 2], 'top', '___').
+translate([yellow, 2], 'mid', '|2|').
+translate([yellow, 2], 'bottom', '^^^').
 
 % Yellow's base
-translate(yb, 'top', '...').
-translate(yb, 'mid', ' Y ').
-translate(yb, 'bottom', '...').
+translate([yellow, base], 'top', '...').
+translate([yellow, base], 'mid', ' Y ').
+translate([yellow, base], 'bottom', '...').
 
 % Vertical wall slot
-translate(v, 'top', '   ').
-translate(v, 'mid', '   ').
-translate(v, 'bottom', '   ').
+translate([vertical, empty], 'top', ' | ').
+translate([vertical, empty], 'mid', ' | ').
+translate([vertical, empty], 'bottom', ' | ').
 
 % Vertical wall (placed)
-translate(wv, 'top', ' | ').
-translate(wv, 'mid', ' | ').
-translate(wv, 'bottom', ' | ').
+translate([vertical, placed], 'top', '| |').
+translate([vertical, placed], 'mid', '| |').
+translate([vertical, placed], 'bottom', '| |').
 
 
 % 3x1 Components:
 % Horizontal wall slot
-translate(h, 'single', '   ').
+translate([horizontal, empty], 'single', '------').
 
 % Horizontal wall (placed)
-translate(wh, 'single', '---').
+translate([horizontal, placed], 'single', '======').
 
 
 
 displayBoard(Ls) :-
-	write('   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21'), nl,
-	write('  ---------------------------------------------------------------'), nl,
+	write('    1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21'), nl,
+	write('  ------------------------------------------------------------------'), nl,
 	displayBoardAux(Ls, 1).
 
 
 
-displayBoardAux([L1 | Ls], Number) :-
-	(display3x3(L1, Number) ; display3x1(L1, Number)),
-	N is Number+1,
+displayBoardAux([L1 | Ls], Line) :-
+	(display3x3(L1, Line) ; display3x1(L1, Line)),
+	N is Line+1,
 	displayBoardAux(Ls, N).
 
-displayBoardAux([], Number) :-
-	write(' -----------------------------------------------------------------'), nl.
+displayBoardAux([], Line) :-
+	write('  ------------------------------------------------------------------'), nl.
 
 
 
-display3x3(L1, Number) :-
-	Number mod 2 =\= 0,
-	write('||'), displayLine(L1, 'top'),
-	write('||'), displayLine(L1, 'mid', Number),
-	write('||'), displayLine(L1, 'bottom').
+display3x3(L1, Line) :-
+	Line mod 2 =\= 0,
+	write('|| '), displayLine(L1, 'top'),
+	write('|| '), displayLine(L1, 'mid', Line),
+	write('|| '), displayLine(L1, 'bottom').
 
 
 
-display3x1(L1, Number) :-
-	Number mod 2 =:= 0,
-	write('||'), displayLine(L1, 'single', Number).
+display3x1(L1, Line) :-
+	Line mod 2 =:= 0,
+	write('||'), displayLine(L1, 'single', Line).
 
 
 
@@ -119,17 +119,24 @@ displayLine([E1 | Es], Type) :-
 	displayLine(Es, Type).
 
 displayLine([], Type) :-
-	write('||'),
+	write('  ||'),
 	nl.
 
 
-displayLine([E1 | Es], Type, Number) :-
+displayLine([E1 | Es], Type, Line) :-
 	displayElement(E1, Type),
-	displayLine(Es, Type, Number).
+	displayLine(Es, Type, Line).
 
-displayLine([], Type, Number) :-
+displayLine([], Type, Line) :-
+	Line mod 2 =:= 0,
 	write('|| '),
-	write(Number),
+	write(Line),
+	nl.
+
+displayLine([], Type, Line) :-
+	Line mod 2 =\= 0,
+	write('  ||'),
+	write(Line),
 	nl.
 
 
