@@ -55,9 +55,9 @@ boardEnd([[square, [vertical, empty], square, [vertical, empty], square, [vertic
 				[square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square, [vertical, empty], square] ]).
 
 
-				
-				
-				
+
+
+
 % 3x3 Components:
 % Square
 translate(square, 'top', '   ').
@@ -66,33 +66,33 @@ translate(square, 'bottom', '   ').
 
 % Orange's first pawn
 translate([orange, 1], 'top', '___').
-translate([orange, 1], 'mid', '|O1').
+translate([orange, 1], 'mid', '|O|').
 translate([orange, 1], 'bottom', '\'\'\'').
 
 % Orange's second pawn
 translate([orange, 2], 'top', '___').
-translate([orange, 2], 'mid', '|O2').
+translate([orange, 2], 'mid', '|O|').
 translate([orange, 2], 'bottom', '^^^').
 
 % Orange's base
-translate([orange, base], 'top', '   ').
-translate([orange, base], 'mid', 'OB ').
-translate([orange, base], 'bottom', '   ').
+translate([orange, base], 'top', '...').
+translate([orange, base], 'mid', ' O ').
+translate([orange, base], 'bottom', '...').
 
 % Yellow's first pawn
 translate([yellow, 1], 'top', '___').
-translate([yellow, 1], 'mid', '|Y1').
+translate([yellow, 1], 'mid', '|Y|').
 translate([yellow, 1], 'bottom', '\'\'\'').
 
 % Yellow's second pawn
 translate([yellow, 2], 'top', '___').
-translate([yellow, 2], 'mid', '|Y2').
+translate([yellow, 2], 'mid', '|Y|').
 translate([yellow, 2], 'bottom', '^^^').
 
 % Yellow's base
-translate([yellow, base], 'top', '   ').
-translate([yellow, base], 'mid', 'YB ').
-translate([yellow, base], 'bottom', '   ').
+translate([yellow, base], 'top', '...').
+translate([yellow, base], 'mid', ' Y ').
+translate([yellow, base], 'bottom', '...').
 
 % Vertical wall slot
 translate([vertical, empty], 'top', ' | ').
@@ -105,7 +105,7 @@ translate([vertical, placed], 'mid', ' X ').
 translate([vertical, placed], 'bottom', ' X ').
 
 
-% 3x1 Components:
+% 6x1 Components:
 % Horizontal wall slot
 translate([horizontal, empty], 'single', '----- ').
 
@@ -115,6 +115,7 @@ translate([horizontal, placed], 'single', 'XXXXX ').
 
 
 displayBoard(Ls) :-
+	nl,
 	write('******************************BLOCKADE*****************************'), nl,
 	write('   1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21'), nl,
 	write(' ------------------------------------------------------------------'), nl,
@@ -123,12 +124,12 @@ displayBoard(Ls) :-
 
 
 displayBoardAux([L1 | Ls], Line) :-
-	(display3x3(L1, Line) ; display3x1(L1, Line)),
+	(display3x3(L1, Line) ; display6x1(L1, Line)),
 	N is Line+1,
 	displayBoardAux(Ls, N).
 
 displayBoardAux([], Line) :-
-	write(' ------------------------------------------------------------------'), nl.
+	write(' ------------------------------------------------------------------'), nl, nl.
 
 
 
@@ -140,9 +141,9 @@ display3x3(L1, Line) :-
 
 
 
-display3x1(L1, Line) :-
+display6x1(L1, Line) :-
 	Line mod 2 =:= 0,
-	write('|'), displayLine(L1, 'single', Line).
+	write(' '), displayLine(L1, 'single', Line).
 
 
 
