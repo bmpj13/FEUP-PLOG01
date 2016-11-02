@@ -162,17 +162,47 @@ displayElement(Element, Type) :-
 
 game :-	repeat,
 				retract(board(X)),
-				play(X,NBoard),
-				displayBoard(NBoard), %não se devia ter que por ONCE ????
-				assert(board(NBoard)),
+				once(play(orange,X,NBoard)),
+				once(displayBoard(NBoard)), %não se devia ter que por ONCE ????
+				once(play(yellow,NBoard,N1Board)),
+				once(displayBoard(N1Board)),
+				assert(board(N1Board)),
 				fail.
 
 
 
-play(Board,NBoard) :- getCoords(X,Y),
-					move(X,Y,[orange,1],Board,NBoard).
+play(Player,Board,NBoard) :-
+					write(Player),nl,
+					getPawnCoords(X,Y),
+					move(X,Y,[Player,1],Board,AuxBoard),
+					getWallCoords(X1,Y1,O),
+					write('ola'),
+					place_Wall(X1,Y1,O,AuxBoard,NBoard).
 
-getCoords(X,Y) :-
+
+place_Wall(X,Y,'h',Board,NBoard) :-
+					set_board_cell(X,Y,[horizontal,placed],Board,AuxBoard),
+					Nx is X + 1,
+					set_board_cell(Nx,Y,[horizontal,placed],AuxBoard,NBoard).
+
+place_Wall(X,Y,'v',Board,NBoard) :-
+						set_board_cell(X,Y,[vertical,placed],Board,AuxBoard),
+						Ny is Y + 2,
+						set_board_cell(X,Ny,[vertical,placed],AuxBoard,NBoard).
+
+
+getWallCoords(X,Y,O) :-
+						write('Wall coords'),nl,
+						write('Enter X coord: '),
+						read(X),
+						write('Enter Y coord: '),
+						read(Y),
+						write('Enter Orientation (h/v)'),
+						read(O).
+
+
+getPawnCoords(X,Y) :-
+				write('Pawn coords'),nl,
 				write('Enter X coord: '),
 				read(X),
 				write('Enter Y coord: '),
