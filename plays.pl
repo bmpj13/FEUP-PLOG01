@@ -8,7 +8,7 @@ play(Player, Board, NewBoard) :-
 		getPawnMov(X, Y), %mover o peao
 		move(X, Y, [Player, N], Board, AuxBoard),
 		getWallCoords(X1, Y1, O), %posicionar a parede
-		placeWall(Player,X1, Y1, O, AuxBoard, NewBoard).
+		placeWall(Player,X1, Y1, O, AuxBoard, NewBoard). %ver se o numero de paredes for 0 não perguntar as coordenadas
 
 
 move(X, Y, Pawn, Board, NewBoard) :-
@@ -16,8 +16,13 @@ move(X, Y, Pawn, Board, NewBoard) :-
 		Nx is Px + X*2,
 		Ny is Py + Y*2,
   	assert(position(Pawn, Nx, Ny)),
-    setBoardCell(Px, Py, square, Board, AuxBoard),
+    emptyPosition(Px,Py,Board,AuxBoard),
     setBoardCell(Nx, Ny, Pawn, AuxBoard, NewBoard).
+
+emptyPosition(Px,Py,Board,NBoard) :-
+	(((Px =:= 6 ; Px =:= 14) , Py =:= 6) , setBoardCell(Px, Py, [orange, base], Board, NBoard));
+	(((Px =:= 6 ; Px =:= 14) , Py =:= 20) , setBoardCell(Px, Py, [yellow, base], Board, NBoard));
+	(setBoardCell(Px, Py, square, Board, NBoard)).
 
 placeWall(Player,X, Y,'h',Board, NewBoard) :-
 		retract(wallNumber(Player, H, V)),

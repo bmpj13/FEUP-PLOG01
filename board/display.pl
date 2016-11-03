@@ -73,7 +73,7 @@ displayBoardAux([], Line) :-
 	wallNumber(orange,Ohor,Over),
 	format('-Orange has ~w horizontal walls and ~w vertical walls ~n',[Ohor,Over]),
 	wallNumber(yellow,Yhor,Yver),
-	format('-Yellow has ~w horizontal walls and ~w vertical walls ~n',[Yhor,Yver]).
+	format('-Yellow has ~w horizontal walls and ~w vertical walls ~n',[Yhor,Yver]),nl.
 
 
 

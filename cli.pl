@@ -1,3 +1,4 @@
+%placing wall
 getWallCoords(X, Y, O) :-
 		write('Wall coords'),nl,
 		write('Enter X coord: '),
@@ -34,6 +35,8 @@ getPawnNumber(N) :-
 		read(N).
 
 
+
+%cli utils
 getNumber(N) :-
         get_code(C), %numero em ascii
         get_char(_), %para ler o enter tambem
