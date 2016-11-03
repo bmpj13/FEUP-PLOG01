@@ -4,17 +4,20 @@
 
 play(Player, Board, NewBoard) :-
 		write(Player),nl,
-		getPawnCoords(X, Y),
-		move(X, Y, [Player, 1], Board, AuxBoard),
-		getWallCoords(X1, Y1, O),
+		getPawnNumber(N),
+		getPawnMov(X, Y), %mover o peao
+		move(X, Y, [Player, N], Board, AuxBoard),
+		getWallCoords(X1, Y1, O), %posicionar a parede
 		placeWall(X1, Y1, O, AuxBoard, NewBoard).
 
 
 move(X, Y, Pawn, Board, NewBoard) :-
 		retract(position(Pawn, Px, Py)),
-  	assert(position(Pawn, X, Y)),
+		Nx is Px + X*2,
+		Ny is Py + Y*2,
+  	assert(position(Pawn, Nx, Ny)),
     setBoardCell(Px, Py, square, Board, AuxBoard),
-    setBoardCell(X, Y, Pawn, AuxBoard, NewBoard).
+    setBoardCell(Nx, Ny, Pawn, AuxBoard, NewBoard).
 
 placeWall(X, Y,'h',Board, NewBoard) :-
 		Nx is round(X/2),
