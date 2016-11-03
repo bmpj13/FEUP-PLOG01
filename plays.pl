@@ -3,7 +3,7 @@
 
 
 play(Player, Board, NewBoard) :-
-		write(Player),nl,
+		format('--------------Its your turn ~s ----------- ~n',[Player]),
 		getPawnNumber(N),
 		getPawnMov(X, Y), %mover o peao
 		move(X, Y, [Player, N], Board, AuxBoard),

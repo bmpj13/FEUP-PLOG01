@@ -1,5 +1,6 @@
 :- dynamic(position/3).
 :- dynamic(wallNumber/3).
+:- dynamic(currentPlayer/1).
 
 setCell(Index, Element, List, NewList) :-
 		length(AuxL, Index),
@@ -17,3 +18,5 @@ position([yellow, 2], 14, 20).
 %type,horizontal number, vertical number
 wallNumber(orange,9,9).
 wallNumber(yellow,9,9).
+
+currentPlayer(orange).
