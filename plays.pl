@@ -17,9 +17,10 @@ move(X, Y, Pawn, Board, NewBoard) :-
     setBoardCell(X, Y, Pawn, AuxBoard, NewBoard).
 
 placeWall(X, Y,'h',Board, NewBoard) :-
-    setBoardCell(X, Y, [horizontal, placed], Board, AuxBoard),
-  	Nx is X + 1,
-  	setBoardCell(Nx, Y, [horizontal, placed], AuxBoard, NewBoard).
+		Nx is round(X/2),
+    setBoardCell(Nx, Y, [horizontal, placed], Board, AuxBoard),
+  	Nx2 is Nx + 1,
+  	setBoardCell(Nx2, Y, [horizontal, placed], AuxBoard, NewBoard).
 
 placeWall(X, Y,'v',Board, NewBoard) :-
     setBoardCell(X, Y, [vertical, placed], Board, AuxBoard),
