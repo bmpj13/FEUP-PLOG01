@@ -15,3 +15,13 @@ move(X, Y, Pawn, Board, NewBoard) :-
   	assert(position(Pawn, X, Y)),
     setBoardCell(Px, Py, square, Board, AuxBoard),
     setBoardCell(X, Y, Pawn, AuxBoard, NewBoard).
+
+placeWall(X, Y,'h',Board, NewBoard) :-
+    setBoardCell(X, Y, [horizontal, placed], Board, AuxBoard),
+  	Nx is X + 1,
+  	setBoardCell(Nx, Y, [horizontal, placed], AuxBoard, NewBoard).
+
+placeWall(X, Y,'v',Board, NewBoard) :-
+    setBoardCell(X, Y, [vertical, placed], Board, AuxBoard),
+  	Ny is Y + 2,
+  	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
