@@ -1,5 +1,5 @@
 :- ensure_loaded('cli.pl').
-:- ensure_loaded('board/logic.pl').
+
 
 
 play(Player, Board, NewBoard) :-

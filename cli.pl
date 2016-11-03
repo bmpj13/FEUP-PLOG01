@@ -12,7 +12,7 @@ getPawnMov(X,Y) :-
 	getMovCoords(X1, Y1),
 	getMovCoords(X2, Y2),
 	X is X1 + X2,
-	Y is Y1 + Y2,write(X),write('  '), write(Y).
+	Y is Y1 + Y2.
 
 getMovCoords(X, Y) :-
 	getMovDirection(M),
@@ -24,7 +24,7 @@ getMovCoords(X, Y) :-
 
 getMovDirection(M) :-
 		write('Direction'),nl,
-		write('1. North || 2. South || 3. West || 4. East || 5. None'),
+		write('1. North || 2. South || 3. West || 4. East || 5. None'),nl,
 		read(M).
 
 
@@ -34,7 +34,7 @@ getPawnNumber(N) :-
 		read(N).
 
 
-cli_get_digit(D) :-
-        get_code(C),
+getNumber(N) :-
+        get_code(C), %numero em ascii
         get_char(_), %para ler o enter tambem
-        D is C - 48, write(D). %ascii de 0 e 48
+        N is C - 48. %ascii de 0 e 48

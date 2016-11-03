@@ -34,4 +34,4 @@ board([[square, [vertical, empty], square, [vertical, empty], square, [vertical,
 position([orange, 1], 6, 6).
 position([orange, 2], 14, 6).
 position([yellow, 1], 6, 20).
-position([yellow, 1], 14, 20).
+position([yellow, 2], 14, 20).
