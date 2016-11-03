@@ -19,4 +19,5 @@ position([yellow, 2], 14, 20).
 wallNumber(orange,9,9).
 wallNumber(yellow,9,9).
 
+%Initial Player
 currentPlayer(orange).

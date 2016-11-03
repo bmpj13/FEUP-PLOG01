@@ -5,19 +5,43 @@
 play(Player, Board, NewBoard) :-
 		format('--------------Its your turn ~s ----------- ~n',[Player]),
 		getPawnNumber(N),
-		getPawnMov(X, Y), %mover o peao
-		move(X, Y, [Player, N], Board, AuxBoard),
+	  %mover o peao
+		move([Player, N], Board, AuxBoard),
 		getWallCoords(X1, Y1, O), %posicionar a parede
 		placeWall(Player,X1, Y1, O, AuxBoard, NewBoard). %ver se o numero de paredes for 0 não perguntar as coordenadas
 
+move(Pawn, Board, NewBoard) :-
+	moveOneSpace(Pawn, Board, AuxBoard),
+	moveOneSpace(Pawn, AuxBoard, NewBoard).
 
-move(X, Y, Pawn, Board, NewBoard) :-
-		retract(position(Pawn, Px, Py)),
-		Nx is Px + X*2,
+moveOneSpace(Pawn, Board, NewBoard) :-%secalhar o move vai ter que ser uma posição de cada vez para verificar colisoes com paredes
+		repeat, %verificar colisoes
+			getMovCoords(X,Y),
+			position(Pawn, Px, Py),
+			wallCoords(X,Y,Px,Py,Wx,Wy),
+			nth0(Wy, Board, Line),
+			nth0(Wx, Line, WallElem),
+		checkWall(WallElem),
+		retract(position(Pawn, Xtmp , Ytmp )),
+		Nx is Px + X*2, % * 2 por causa da parede
 		Ny is Py + Y*2,
   	assert(position(Pawn, Nx, Ny)),
     emptyPosition(Px,Py,Board,AuxBoard),
     setBoardCell(Nx, Ny, Pawn, AuxBoard, NewBoard).
+
+%posicao da parede que tem que ser atravessada para passar para a proxima posição
+% x,y é o offset px,py posicao do jogador wx, wy é o retorno com as coordenadas da parede
+wallCoords(X,Y,Px,Py,Wx,Wy) :-
+	(X =:= 0 , Wx is round(Px/2) , Wy is Py + Y);
+	(Y =:= 0 , Wx is Px + X , Wy is Py).
+
+checkWall([_ | [placed | _ ]]) :-
+					write('----There is a wall in the way you have to choose another path!----'),nl,
+					fail.
+
+checkWall([_ | [empty | _]]) :-
+					true.
+
 
 emptyPosition(Px,Py,Board,NBoard) :-
 	(((Px =:= 6 ; Px =:= 14) , Py =:= 6) , setBoardCell(Px, Py, [orange, base], Board, NBoard));
