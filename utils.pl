@@ -21,8 +21,14 @@ position([yellow, 2], 14, 20).
 
 %Initial Wall Number
 %type,horizontal number, vertical number
-wallNumber(orange,1,1).
+wallNumber(orange,9,9).
 wallNumber(yellow,9,9).
 
 %Initial Player
 currentPlayer(orange).
+
+%Base position
+basePosition([orange, 1], 6, 6).
+basePosition([orange, 2], 14, 6).
+basePosition([yellow, 1], 6, 20).
+basePosition([yellow, 2], 14, 20).

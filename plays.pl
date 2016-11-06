@@ -22,7 +22,9 @@ handleWall(Player, Board, Board) :-
 
 move(Pawn, Board, NewBoard) :-
 	moveOneSpace(Pawn, Board, AuxBoard),
-	moveOneSpace(Pawn, AuxBoard, NewBoard).
+	displayBoard(AuxBoard),
+	moveOneSpace(Pawn, AuxBoard, NewBoard),
+	displayBoard(NewBoard).
 
 
 moveOneSpace(Pawn, Board, NewBoard) :-%secalhar o move vai ter que ser uma posição de cada vez para verificar colisoes com paredes
@@ -49,20 +51,19 @@ noWallBlocking(Pawn, Board, X, Y) :-
 		position(Pawn, Px, Py),
 		wallCoords(X,Y, Px,Py, Wx, Wy),
 		elementCoords(Board, Wx, Wy, Elem),
-		checkWall(Elem).
+		checkWallColision(Elem).
 
 
 targetIsValid(Pawn, Board, X, Y) :-
-		targetCoords(Pawn, X,Y, Tx,Ty), !,
+		targetCoords(Pawn, X,Y, Tx,Ty),
 		inBounds(Tx, Ty),
 		elementCoords(Board, Tx, Ty, Elem),
 		(Elem = square ; Elem = [orange, base] ; Elem = [yellow, base]).
 
 
 targetIsValid(Pawn, Board, X, Y) :-
-		write('---- There is a player in that position. Please choose another path. ----'), nl,
+		write('---- You can \'t move to that position you are either out of bonds or there is a player in that position. ----'), nl,
 		fail.
-
 
 
 targetCoords(Pawn, X, Y, Tx, Ty) :-
@@ -71,14 +72,11 @@ targetCoords(Pawn, X, Y, Tx, Ty) :-
 		Ty is Py + Y*2.
 
 
-
 inBounds(Tx, Ty) :-
 		Tx >= 0, Tx < 21,
 		Ty >= 0, Ty < 27.
 
-inBounds(Tx, Ty) :-
-		write('---- Target coordinates are out of bounds! ----'), nl,
-		fail.
+
 
 
 
@@ -88,11 +86,11 @@ wallCoords(X,Y,Px,Py,Wx,Wy) :-
 	(X =:= 0 , Wx is round(Px/2) , Wy is Py + Y);
 	(Y =:= 0 , Wx is Px + X , Wy is Py).
 
-checkWall([_ | [placed | _ ]]) :-
+checkWallColision([_ | [placed | _ ]]) :-
 					write('----There is a wall in the way you have to choose another path!----'),nl,
 					fail.
 
-checkWall([_ | [empty | _]]) :-
+checkWallColision([_ | [empty | _]]) :-
 					true.
 
 
@@ -122,6 +120,7 @@ placeWall(Player,X, Y,'v', Board, NewBoard) :-
 
 
 placeWall(Player,X, Y,'h',Board, NewBoard) :-
+		checkWallCoords(X, Y,'h',Board),
 		retract(wallNumber(Player, H, V)),
 		Nh is H - 1,
 		assert(wallNumber(Player, Nh, V)),
@@ -131,9 +130,52 @@ placeWall(Player,X, Y,'h',Board, NewBoard) :-
   	setBoardCell(Nx2, Y, [horizontal, placed], AuxBoard, NewBoard).
 
 placeWall(Player,X, Y,'v',Board, NewBoard) :-
+		checkWallCoords(X, Y,'v',Board),
 		retract(wallNumber(Player, H, V)),
 		Nv is V - 1,
 		assert(wallNumber(Player, H, Nv)),
     setBoardCell(X, Y, [vertical, placed], Board, AuxBoard),
   	Ny is Y + 2,
   	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
+
+
+checkWallCoords(X, Y,'v',Board) :-
+		X < 20, X > 0,
+		Y < 25, Y >= 0,
+		X mod 2 =:= 1,
+		Y mod 2 =:= 0,
+		noWallPlaced(Board, X, Y, 'v'),
+		Cx is X - 1,
+		Cy is Y + 1,
+		noWallPlaced(Board, Cx, Cy, 'h').
+
+checkWallCoords(X, Y,'h',Board) :-
+		X >= 0, X < 19,
+		Y > 0, Y < 26,
+		X mod 2 =:= 0,
+		Y mod 2 =:= 1,
+		noWallPlaced(Board, X, Y, 'h'),
+		Cx is X + 1,write('como esta?4'),
+		Cy is Y - 1,write('como esta?5'),
+		noWallPlaced(Board, Cx, Cy, 'v').
+
+noWallPlaced(Board, X, Y, 'h') :-
+	Nx is round(X/2),
+	elementCoords(Board, Nx, Y, Elem),
+	Elem = [_ | [empty | _]],
+	Nx2 is Nx + 1,
+	elementCoords(Board, Nx2, Y, Elem),
+	Elem = [_ | [empty | _]].
+
+
+noWallPlaced(Board, X, Y, 'v') :-
+	elementCoords(Board, X, Y, Elem),
+	Elem = [_ | [empty | _]],
+	Ny is Y + 2,
+	elementCoords(Board, X, Ny, Elem),
+	Elem = [_ | [empty | _]].
+
+
+checkWallCoords(_,_,_,_) :-
+		write('---- Invalid wall coordenates ----'),nl,
+		fail.
