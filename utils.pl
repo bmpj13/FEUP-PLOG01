@@ -27,8 +27,9 @@ wallNumber(yellow,9,9).
 %Initial Player
 currentPlayer(orange).
 
-%Base position
-basePosition([orange, 1], 6, 6).
-basePosition([orange, 2], 14, 6).
-basePosition([yellow, 1], 6, 20).
-basePosition([yellow, 2], 14, 20).
+%target position
+%player / target number
+targePosition([yellow, 1], 6, 6).
+targePosition([yellow, 2], 14, 6).
+targePosition([orange, 1], 6, 20).
+targePosition([orange, 2], 14, 20).

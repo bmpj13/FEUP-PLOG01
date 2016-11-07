@@ -3,10 +3,9 @@
 :- ensure_loaded('board/display.pl').
 :- ensure_loaded('board/logic.pl').
 :- ensure_loaded('plays.pl').
-
+:- ensure_loaded('ai.pl').
 
 %jogo
-
 game :-
 		%inicializacoes
 		board(X),

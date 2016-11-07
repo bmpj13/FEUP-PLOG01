@@ -6,12 +6,12 @@ translate(square, 'bottom', '   ').
 
 % Orange's first pawn
 translate([orange, 1], 'top', '___').
-translate([orange, 1], 'mid', '|O1').
+translate([orange, 1], 'mid', '|O|').
 translate([orange, 1], 'bottom', '\'\'\'').
 
 % Orange's second pawn
 translate([orange, 2], 'top', '___').
-translate([orange, 2], 'mid', '|O2').
+translate([orange, 2], 'mid', '|O|').
 translate([orange, 2], 'bottom', '^^^').
 
 % Orange's base
@@ -21,12 +21,12 @@ translate([orange, base], 'bottom', '   ').
 
 % Yellow's first pawn
 translate([yellow, 1], 'top', '___').
-translate([yellow, 1], 'mid', '|Y1').
+translate([yellow, 1], 'mid', '|Y|').
 translate([yellow, 1], 'bottom', '\'\'\'').
 
 % Yellow's second pawn
 translate([yellow, 2], 'top', '___').
-translate([yellow, 2], 'mid', '|Y2').
+translate([yellow, 2], 'mid', '|Y|').
 translate([yellow, 2], 'bottom', '^^^').
 
 % Yellow's base
