@@ -1,4 +1,5 @@
 :- use_module(library(lists)).
+:- use_module(library(samsort)).
 :- ensure_loaded('board/init.pl').
 :- ensure_loaded('board/display.pl').
 :- ensure_loaded('board/logic.pl').

@@ -29,15 +29,11 @@ evaluateBestDirection(Player,Id,Direction):-
   %East
   Xe is X + 1,Ye is Y,
   getBestDistanceToTarget(Xe,Ye,Player,E),
-  %calcular a mais curta
-  getSmaller(N,S,D1),
-  getSmaller(W,E,D2),
-  getSmaller(D1,D2,D),
-  format('N->~w S->~w W->~w E->~w ~n',[N,S,W,E]),
-  ((D =:= N , Direction is 1);
-   (D =:= S , Direction is 2);
-   (D =:= W , Direction is 3);
-   (D =:= E , Direction is 4)).
+  %ordenar distancias
+  samsort( [[N,1],[S,2],[W,3],[E,4]],  Direction),
+  write(Direction).
+
+
 
 %menor distancia das cordenadas x y a um dos target do player Player
 getBestDistanceToTarget(X,Y,Player,N) :-
