@@ -17,6 +17,9 @@ getPawnMov(X,Y) :-
 
 getMovCoords(X, Y) :-
 	getMovDirection(M),
+	convertDirection(M,X,Y).
+
+convertDirection(M,X,Y) :-
 	((M =:= 1 , X is 0 , Y is -1);
 	 (M =:= 2 , X is 0 , Y is 1);
 	 (M =:= 3 , X is -1, Y is 0);

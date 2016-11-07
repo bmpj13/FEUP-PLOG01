@@ -155,8 +155,8 @@ checkWallCoords(X, Y,'h',Board) :-
 		X mod 2 =:= 0,
 		Y mod 2 =:= 1,
 		noWallPlaced(Board, X, Y, 'h'),
-		Cx is X + 1,write('como esta?4'),
-		Cy is Y - 1,write('como esta?5'),
+		Cx is X + 1,
+		Cy is Y - 1,
 		noWallPlaced(Board, Cx, Cy, 'v').
 
 noWallPlaced(Board, X, Y, 'h') :-
