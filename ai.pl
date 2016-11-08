@@ -12,7 +12,7 @@ evaluateBestPawn(Player,N) :-
 
 
 
-evaluateBestDirection(Player,Id,Direction):-
+evaluateBestDirection(Player,Id,Directions):-
   position([Player,Id],X,Y),
   %calcular distancia a que fica do targer
   %North
@@ -27,8 +27,10 @@ evaluateBestDirection(Player,Id,Direction):-
   %East
   Xe is X + 1,Ye is Y,
   getBestDistanceToTarget(Xe,Ye,Player,E),
+  %stay in the same place
+  getBestDistanceToTarget(X,Y,Player,Stay),
   %ordenar distancias
-  samsort( [[N,1],[S,2],[W,3],[E,4]],  Direction).
+  samsort( [[N,1],[S,2],[W,3],[E,4],[Stay,5]  ],  Directions).
 
 evaluateBestWall(Player,Walls) :-
   getOponent(Player,Oponent),
@@ -67,15 +69,9 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   Wall2 = [Wx,Wy2,O].
 
 
-
-
-
-
 getOponent(Player,Oponent):-
   (Player = yellow, Oponent = orange);
   (Player = orange, Oponent = yellow).
-
-
 
 
 %menor distancia das cordenadas x y a um dos target do player Player

@@ -26,7 +26,6 @@ wallNumber(yellow,9,9).
 
 %Initial Player
 currentPlayer(orange).
-
 %target position
 %player / target number
 targePosition([yellow, 1], 6, 6).

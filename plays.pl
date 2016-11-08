@@ -1,13 +1,22 @@
 :- ensure_loaded('cli.pl').
 
 
+play(M,Player, Board, NewBoard):-
+	(M =:= 1, playHuman(Player, Board, NewBoard));
+	(M =:= 2, Player = yellow , playBot(Player,Board,NewBoard));
+	(M =:= 2, Player = orange , playHuman(Player,Board,NewBoard));
+	(M =:= 3, playBot(Player, Board, NewBoard)).
 
-play(Player, Board, NewBoard) :-
-		format('--------------Its your turn ~s ----------- ~n',[Player]),
-		getPawnNumber(N),
-		move([Player, N], Board, AuxBoard),
-		handleWall(Player, AuxBoard, NewBoard).
+playHuman(Player, Board, NewBoard) :-
+	format('--------------Its your turn ~s ----------- ~n',[Player]),
+	getPawnNumber(N),
+	moveHuman([Player, N], Board, AuxBoard),
+	handleWall(Player, AuxBoard, NewBoard).
 
+playBot(Player,Board,NewBoard):-write(Player),nl,nl,nl,
+	evaluateBestPawn(Player,N),
+	evaluateBestDirection(Player,N,Directions),
+	moveBot([Player, N],Directions, Board, NewBoard).
 
 handleWall(Player, Board, NewBoard) :-
 	hasWalls(Player), !,
@@ -19,18 +28,36 @@ handleWall(Player, Board, Board) :-
 	true.
 
 
+moveHuman(Pawn, Board, NewBoard) :-
+		moveOneSpaceHuman(Pawn,Board,AuxBoard),
+		moveOneSpaceHuman(Pawn,AuxBoard,NewBoard).
 
-move(Pawn, Board, NewBoard) :-
-	moveOneSpace(Pawn, Board, AuxBoard),
-	displayBoard(AuxBoard),
-	moveOneSpace(Pawn, AuxBoard, NewBoard),
+moveBot(Pawn,Directions,Board, NewBoard) :-
+		moveOneSpaceBot(Pawn,Directions,Board,AuxBoard),
+		moveOneSpaceBot(Pawn,Directions,AuxBoard,NewBoard).
+
+
+moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-
+	iterateDirectionList(Directions,X,Y,Pawn,Board),
+	moveOneSpace(Pawn, X, Y, Board, NewBoard),
 	displayBoard(NewBoard).
 
+iterateDirectionList([[_|D]|Res],X,Y,Pawn,Board) :-
+	write(D),
+	convertDirection(D,X,Y),
+	validPosition(Pawn, Board, X, Y), !.
 
-moveOneSpace(Pawn, Board, NewBoard) :-%secalhar o move vai ter que ser uma posição de cada vez para verificar colisoes com paredes
-		repeat, %verificar colisoes
-			once(getMovCoords(X,Y)),
-		validPosition(Pawn, Board, X, Y),
+iterateDirectionList([[_|D]|Res],X,Y,Pawn,Board) :-
+	iterateDirectionList(Res,X,Y,Pawn,Board).
+
+moveOneSpaceHuman(Pawn,Board,NewBoard) :-
+	repeat, %verificar colisoes
+		once(getMovCoords(X,Y)),
+	validPosition(Pawn, Board, X, Y),
+	moveOneSpace(Pawn, X, Y, Board, NewBoard),
+	displayBoard(NewBoard).
+
+moveOneSpace(Pawn, X, Y, Board, NewBoard) :-
 		targetCoords(Pawn, X, Y, Nx, Ny),
 		retract(position(Pawn, Px, Py)),
     emptyPosition(Px,Py,Board,AuxBoard),
