@@ -13,10 +13,8 @@ playHuman(Player, Board, NewBoard) :-
 	moveHuman([Player, N], Board, AuxBoard),
 	handleWall(Player, AuxBoard, NewBoard).
 
-playBot(Player,Board,NewBoard):-write(Player),nl,nl,nl,
-	evaluateBestPawn(Player,N),
-	evaluateBestDirection(Player,N,Directions),
-	moveBot([Player, N],Directions, Board, NewBoard).
+playBot(Player,Board,NewBoard):-
+	moveBot(Player, Board, NewBoard).
 
 handleWall(Player, Board, NewBoard) :-
 	hasWalls(Player), !,
@@ -32,9 +30,12 @@ moveHuman(Pawn, Board, NewBoard) :-
 		moveOneSpaceHuman(Pawn,Board,AuxBoard),
 		moveOneSpaceHuman(Pawn,AuxBoard,NewBoard).
 
-moveBot(Pawn,Directions,Board, NewBoard) :-
-		moveOneSpaceBot(Pawn,Directions,Board,AuxBoard),
-		moveOneSpaceBot(Pawn,Directions,AuxBoard,NewBoard).
+moveBot(Player,Board, NewBoard) :-
+		evaluateBestPawn(Player,N),
+		evaluateBestDirection(Player,N,Directions),
+		moveOneSpaceBot([Player,N],Directions,Board,AuxBoard),
+		evaluateBestDirection(Player,N,Directions2),
+		moveOneSpaceBot([Player,N],Directions2,AuxBoard,NewBoard).
 
 
 moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-

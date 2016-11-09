@@ -30,7 +30,7 @@ evaluateBestDirection(Player,Id,Directions):-
   %stay in the same place
   getBestDistanceToTarget(X,Y,Player,Stay),
   %ordenar distancias
-  samsort( [[N,1],[S,2],[W,3],[E,4],[Stay,5]  ],  Directions).
+  samsort( [[N,1],[S,2],[W,3],[E,4],[Stay,5]  ],  Directions),write(Directions).
 
 evaluateBestWall(Player,Walls) :-
   getOponent(Player,Oponent),
