@@ -1,11 +1,13 @@
 :- ensure_loaded('cli.pl').
+:- ensure_loaded('board/logic.pl').
 
 
-play(M,Player, Board, NewBoard):-
+play(M, L, Player, Board, NewBoard) :-
 	(M =:= 1, playHuman(Player, Board, NewBoard));
-	(M =:= 2, Player = yellow , playBot(Player,Board,NewBoard));
 	(M =:= 2, Player = orange , playHuman(Player,Board,NewBoard));
-	(M =:= 3, playBot(Player, Board, NewBoard)).
+	(M =:= 2, Player = yellow , playBot(L, Player,Board,NewBoard));
+	(M =:= 3, playBot(L, Player, Board, NewBoard)).
+
 
 playHuman(Player, Board, NewBoard) :-
 	format('--------------Its your turn ~s ----------- ~n',[Player]),
@@ -13,26 +15,52 @@ playHuman(Player, Board, NewBoard) :-
 	moveHuman([Player, N], Board, AuxBoard),
 	handleWall(Player, AuxBoard, NewBoard).
 
-playBot(Player,Board,NewBoard):-
-	moveBot(Player, Board, AuxBoard),
-	handleWallBot(Player, AuxBoard, NewBoard).
+playBot(L, Player,Board,NewBoard):-
+	moveBot(L, Player, Board, AuxBoard),
+	handleWallBot(L, Player, AuxBoard, NewBoard).
 
 
-handleWallBot(Player, Board, NewBoard) :-
+
+moveHuman(Pawn, Board, NewBoard) :-
+	moveOneSpaceHuman(Pawn,Board,AuxBoard),
+	moveOneSpaceHuman(Pawn,AuxBoard,NewBoard).
+
+moveBot(1, Player, Board, NewBoard) :-
+	evaluateBestPawn(Player,N),
+	auxMoveBot(Player,N,Board,AuxBoard),
+	(checkBotWin(Player, N) ; auxMoveBot(Player,N,AuxBoard,NewBoard)).
+
+
+moveBot(2, Player, Board, NewBoard) :-
+	random_member(N, [1, 2]),
+	Pawn = [Player, N],
+	moveOneSpaceRandom(Pawn, Board, AuxBoard),
+	moveOneSpaceRandom(Pawn, AuxBoard, NewBoard).
+
+
+
+handleWallBot(1, Player, Board, NewBoard) :-
 	hasWalls(Player), !,
 	evaluateBestWall(Player,Walls),
 	iterateWallList(Walls,Player,Board,NewBoard).
 
+
+handleWallBot(2, Player, Board, NewBoard) :-
+	hasWalls(Player), !,
+	repeat,
+		once(randomWall(X, Y, O)),
+		placeWall(Player, X, Y, O, Board, NewBoard).
+
+
+
 iterateWallList([],Player,Board,NewBoard) :- %ver cruzados tambem
-	 random(0, 19, X),
-	 random(0, 25, Y),write(Y),
-	 random_member(O, [h,v]),
+	 randomWall(X, Y, O),
 	 iterateWallList([[X,Y,O]],Player,Board,NewBoard).
 
-iterateWallList([[X,Y,O]|Res],Player,Board,NewBoard) :-
+iterateWallList([[X,Y,O] | _], Player, Board, NewBoard) :-
 	placeWall(Player, X, Y, O, Board, NewBoard).
 
-iterateWallList([[X,Y,O]|Res],Player,Board,NewBoard) :-
+iterateWallList([[_,_,_] | Res], Player, Board, NewBoard) :-
 	iterateWallList(Res,Player,Board,NewBoard).
 
 
@@ -44,25 +72,39 @@ handleWall(Player, Board, NewBoard) :-
 		once(getWallCoords(X, Y, O)),		% posicionar a parede
 	placeWall(Player, X, Y, O, Board, NewBoard). 	%ver se o numero de paredes for 0 não perguntar as coordenadas
 
-handleWall(Player, Board, Board) :-
+handleWall(_, Board, Board) :-
 	true.
 
 
-moveHuman(Pawn, Board, NewBoard) :-
-		moveOneSpaceHuman(Pawn,Board,AuxBoard),
-		moveOneSpaceHuman(Pawn,AuxBoard,NewBoard).
 
-moveBot(Player,Board, NewBoard) :-
-		evaluateBestPawn(Player,N),
-		auxMoveBot(Player,N,Board,AuxBoard),
-		(checkBotWin(Player, N) ; auxMoveBot(Player,N,AuxBoard,NewBoard)).
+moveOneSpaceRandom(Pawn, Board, NewBoard) :-
+	repeat,
+		randomMove(X, Y),
+	validPosition(Pawn, Board, X, Y),
+	moveOneSpace(Pawn, X, Y, Board, NewBoard).
+
+
+randomMove(X, Y) :-
+		random_member(X, [-1, 0, 1]),
+		(
+			(X =:= 0, random_member(Y, [-1, 0, 1])) ;
+			(X =\= 0, Y is 0)
+		).
+
+
+randomWall(X, Y, O) :-
+		random(0, 19, X),
+ 		random(0, 25, Y),
+ 		random_member(O, [h,v]).
+
+
 
 checkBotWin(Player,N) :-
 	position([Player,N], X, Y),
 	targePosition([Player, 1], Tx1, Ty1),
-	targePosition([Player, 2], Tx2, Ty2),
-	(X =:=Tx1 ; X =:= Tx2),
-	 Y=:=Ty1.
+	targePosition([Player, 2], Tx2, _),
+	(X =:= Tx1 ; X =:= Tx2),
+	 Y =:= Ty1.
 
 
 auxMoveBot(Player,N,Board,NewBoard) :-
@@ -75,12 +117,13 @@ moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-
 	moveOneSpace(Pawn, X, Y, Board, NewBoard),
 	displayBoard(NewBoard).
 
-iterateDirectionList([[_|D]|Res],X,Y,Pawn,Board) :-
+iterateDirectionList([[_|D] | _], X, Y, Pawn, Board) :-
 	convertDirection(D,X,Y),
 	validPosition(Pawn, Board, X, Y), !.
 
-iterateDirectionList([[_|D]|Res],X,Y,Pawn,Board) :-
+iterateDirectionList([[_|_] | Res], X, Y, Pawn, Board) :-
 	iterateDirectionList(Res,X,Y,Pawn,Board).
+
 
 moveOneSpaceHuman(Pawn,Board,NewBoard) :-
 	repeat, %verificar colisoes
@@ -88,54 +131,6 @@ moveOneSpaceHuman(Pawn,Board,NewBoard) :-
 	validPosition(Pawn, Board, X, Y),
 	moveOneSpace(Pawn, X, Y, Board, NewBoard),
 	displayBoard(NewBoard).
-
-moveOneSpace(Pawn, X, Y, Board, NewBoard) :-
-		targetCoords(Pawn, X, Y, Nx, Ny),
-		retract(position(Pawn, Px, Py)),
-    emptyPosition(Px,Py,Board,AuxBoard),
-		assert(position(Pawn, Nx, Ny)),
-    setBoardCell(Nx, Ny, Pawn, AuxBoard, NewBoard).
-
-
-
-validPosition(Pawn, Board, 0, 0) :-
-		true.
-
-validPosition(Pawn, Board, X, Y) :-
-		targetIsValid(Pawn, Board, X, Y), !,
-		noWallBlocking(Pawn, Board, X, Y).
-
-
-noWallBlocking(Pawn, Board, X, Y) :-
-		position(Pawn, Px, Py),
-		wallCoords(X,Y, Px,Py, Wx, Wy),
-		elementCoords(Board, Wx, Wy, Elem),
-		checkWallColision(Elem).
-
-
-targetIsValid(Pawn, Board, X, Y) :-
-		targetCoords(Pawn, X,Y, Tx,Ty),
-		inBounds(Tx, Ty),
-		elementCoords(Board, Tx, Ty, Elem),
-		(Elem = square ; Elem = [orange, base] ; Elem = [yellow, base]).
-
-
-targetIsValid(Pawn, Board, X, Y) :-
-		write('---- You can \'t move to that position you are either out of bonds or there is a player in that position. ----'), nl,
-		fail.
-
-
-targetCoords(Pawn, X, Y, Tx, Ty) :-
-		position(Pawn, Px, Py),
-		Tx is Px + X*2,
-		Ty is Py + Y*2.
-
-
-inBounds(Tx, Ty) :-
-		Tx >= 0, Tx < 21,
-		Ty >= 0, Ty < 27.
-
-
 
 
 
@@ -153,12 +148,6 @@ checkWallColision([_ | [empty | _]]) :-
 					true.
 
 
-emptyPosition(Px,Py,Board,NBoard) :-
-	(((Px =:= 6 ; Px =:= 14) , Py =:= 6) , setBoardCell(Px, Py, [orange, base], Board, NBoard));
-	(((Px =:= 6 ; Px =:= 14) , Py =:= 20) , setBoardCell(Px, Py, [yellow, base], Board, NBoard));
-	(setBoardCell(Px, Py, square, Board, NBoard)).
-
-
 
 hasWalls(Player) :-
 	wallNumber(Player, H, V),
@@ -166,13 +155,13 @@ hasWalls(Player) :-
 
 
 
-placeWall(Player,X, Y,'h', Board, NewBoard) :-
+placeWall(Player, _, _, 'h', _, _) :-
 		wallNumber(Player, 0, _), !,
 		write('---- You\'re out of horizontal walls ----'), nl,
 		fail.
 
 
-placeWall(Player,X, Y,'v', Board, NewBoard) :-
+placeWall(Player, _, _, 'v', _, _) :-
 		wallNumber(Player, _, 0), !,
 		write('---- You\'re out of vertical walls ----'), nl,
 		fail.

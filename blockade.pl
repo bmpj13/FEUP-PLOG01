@@ -1,12 +1,12 @@
 :- use_module(library(lists)).
 :- use_module(library(samsort)).
 :- use_module(library(random)).
+:- use_module(library(system)).
 :- ensure_loaded('board/init.pl').
 :- ensure_loaded('board/display.pl').
 :- ensure_loaded('board/logic.pl').
 :- ensure_loaded('plays.pl').
 :- ensure_loaded('ai.pl').
-:- use_module(library(system)).
 :- now(Timestamp),
    setrand(Timestamp).
 
@@ -18,11 +18,11 @@ game(M) :-
 				once(retract(board(BoardInit))),
 				once(displayBoard(BoardInit)),
 				once(retract(currentPlayer(P))),
-			 	once(play(M,P, BoardInit, BoardEnd)),
+			 	once(play(M, 2, P, BoardInit, BoardEnd)),
 				once(changeCurrentPlayer(P)),
 				once(assert(board(BoardEnd))),
 			checkEnd,
-		once(retract(board(Board))),
+		once(retract(board(_))),
 		once(assert(board(X))).% esta a guardar o board inicial para podermos executar outra vez no sictus é tambem preciso guardar as posições originais e tirar as antigas assim como numero de paredes .. fazer predicado !
 
 

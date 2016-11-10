@@ -11,13 +11,13 @@ evaluateBestPawn(Player,N) :-
   choosePlayer(Nend,NPlayer1,NPlayer2,N).
 
 
-choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+choosePlayer(Nend, NPlayer1, NPlayer2, N) :-
   Nend =:= NPlayer1 ,Nend =:= NPlayer2,random_member(RandPlayer, [1,2]), N is RandPlayer.
 
-choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+choosePlayer(Nend, NPlayer1, _, N) :-
   Nend =:= NPlayer1 , N is 1.
 
-choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+choosePlayer(Nend, _, NPlayer2, N) :-
   Nend =:= NPlayer2 , N is 2.
 
 

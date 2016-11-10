@@ -68,12 +68,13 @@ displayBoardAux([L1 | Ls], Line) :-
 	N is Line+1,
 	displayBoardAux(Ls, N).
 
-displayBoardAux([], Line) :-
+
+displayBoardAux([], _) :-
 	write(' ------------------------------------------------------------------'), nl,
-	wallNumber(orange,Ohor,Over),
-	format('-Orange has ~w horizontal walls and ~w vertical walls ~n',[Ohor,Over]),
-	wallNumber(yellow,Yhor,Yver),
-	format('-Yellow has ~w horizontal walls and ~w vertical walls ~n',[Yhor,Yver]),nl.
+	wallNumber(orange, O_hor, O_ver),
+	format('-Orange has ~w horizontal walls and ~w vertical walls ~n',[O_hor,O_ver]),
+	wallNumber(yellow, Y_hor, Y_ver),
+	format('-Yellow has ~w horizontal walls and ~w vertical walls ~n',[Y_hor,Y_ver]),nl.
 
 
 
@@ -96,7 +97,7 @@ displayLine([E1 | Es], Type) :-
 	displayElement(E1, Type),
 	displayLine(Es, Type).
 
-displayLine([], Type) :-
+displayLine([], _) :-
 	write(' | '),
 	nl.
 
@@ -105,13 +106,13 @@ displayLine([E1 | Es], Type, Line) :-
 	displayElement(E1, Type),
 	displayLine(Es, Type, Line).
 
-displayLine([], Type, Line) :-
+displayLine([], _, Line) :-
 	Line mod 2 =\= 0,
 	write('  '),
 	write(Line),
 	nl.
 
-displayLine([], Type, Line) :-
+displayLine([], _, Line) :-
 	Line mod 2 =:= 0,
 	write(' |  '),
 	write(Line),
