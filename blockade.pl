@@ -1,10 +1,14 @@
 :- use_module(library(lists)).
 :- use_module(library(samsort)).
+:- use_module(library(random)).
 :- ensure_loaded('board/init.pl').
 :- ensure_loaded('board/display.pl').
 :- ensure_loaded('board/logic.pl').
 :- ensure_loaded('plays.pl').
 :- ensure_loaded('ai.pl').
+:- use_module(library(system)).
+:- now(Timestamp),
+   setrand(Timestamp).
 
 %jogo humano vs humano
 game(M) :-

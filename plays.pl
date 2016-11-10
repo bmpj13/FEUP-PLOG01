@@ -14,7 +14,29 @@ playHuman(Player, Board, NewBoard) :-
 	handleWall(Player, AuxBoard, NewBoard).
 
 playBot(Player,Board,NewBoard):-
-	moveBot(Player, Board, NewBoard).
+	moveBot(Player, Board, AuxBoard),
+	handleWallBot(Player, AuxBoard, NewBoard).
+
+
+handleWallBot(Player, Board, NewBoard) :-
+	hasWalls(Player), !,
+	evaluateBestWall(Player,Walls),
+	iterateWallList(Walls,Player,Board,NewBoard).
+
+iterateWallList([],Player,Board,NewBoard) :- %ver cruzados tambem
+	 random(0, 19, X),
+	 random(0, 25, Y),write(Y),
+	 random_member(O, [h,v]),
+	 iterateWallList([[X,Y,O]],Player,Board,NewBoard).
+
+iterateWallList([[X,Y,O]|Res],Player,Board,NewBoard) :-
+	placeWall(Player, X, Y, O, Board, NewBoard).
+
+iterateWallList([[X,Y,O]|Res],Player,Board,NewBoard) :-
+	iterateWallList(Res,Player,Board,NewBoard).
+
+
+
 
 handleWall(Player, Board, NewBoard) :-
 	hasWalls(Player), !,
@@ -32,10 +54,20 @@ moveHuman(Pawn, Board, NewBoard) :-
 
 moveBot(Player,Board, NewBoard) :-
 		evaluateBestPawn(Player,N),
-		evaluateBestDirection(Player,N,Directions),
-		moveOneSpaceBot([Player,N],Directions,Board,AuxBoard),
-		evaluateBestDirection(Player,N,Directions2),
-		moveOneSpaceBot([Player,N],Directions2,AuxBoard,NewBoard).
+		auxMoveBot(Player,N,Board,AuxBoard),
+		(checkBotWin(Player, N) ; auxMoveBot(Player,N,AuxBoard,NewBoard)).
+
+checkBotWin(Player,N) :-
+	position([Player,N], X, Y),
+	targePosition([Player, 1], Tx1, Ty1),
+	targePosition([Player, 2], Tx2, Ty2),
+	(X =:=Tx1 ; X =:= Tx2),
+	 Y=:=Ty1.
+
+
+auxMoveBot(Player,N,Board,NewBoard) :-
+	evaluateBestDirection(Player,N,Directions),
+	moveOneSpaceBot([Player,N],Directions,Board,NewBoard).
 
 
 moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-
@@ -44,7 +76,6 @@ moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-
 	displayBoard(NewBoard).
 
 iterateDirectionList([[_|D]|Res],X,Y,Pawn,Board) :-
-	write(D),
 	convertDirection(D,X,Y),
 	validPosition(Pawn, Board, X, Y), !.
 
@@ -168,42 +199,42 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
 
 
 checkWallCoords(X, Y,'v',Board) :-
-		X < 20, X > 0,
-		Y < 25, Y >= 0,
 		X mod 2 =:= 1,
 		Y mod 2 =:= 0,
+		X < 20, X > 0,
+		Y < 25, Y >= 0,
 		noWallPlaced(Board, X, Y, 'v'),
 		Cx is X - 1,
 		Cy is Y + 1,
 		noWallPlaced(Board, Cx, Cy, 'h').
 
+
+
 checkWallCoords(X, Y,'h',Board) :-
-		X >= 0, X < 19,
-		Y > 0, Y < 26,
 		X mod 2 =:= 0,
 		Y mod 2 =:= 1,
-		noWallPlaced(Board, X, Y, 'h'),
+		X >= 0, X < 19,
+		Y > 0, Y < 26,
+		noWallPlaced(Board, X, Y, 'h'),write('ola1'),
 		Cx is X + 1,
 		Cy is Y - 1,
-		noWallPlaced(Board, Cx, Cy, 'v').
-
-noWallPlaced(Board, X, Y, 'h') :-
-	Nx is round(X/2),
-	elementCoords(Board, Nx, Y, Elem),
-	Elem = [_ | [empty | _]],
-	Nx2 is Nx + 1,
-	elementCoords(Board, Nx2, Y, Elem),
-	Elem = [_ | [empty | _]].
-
-
-noWallPlaced(Board, X, Y, 'v') :-
-	elementCoords(Board, X, Y, Elem),
-	Elem = [_ | [empty | _]],
-	Ny is Y + 2,
-	elementCoords(Board, X, Ny, Elem),
-	Elem = [_ | [empty | _]].
+		noWallPlaced(Board, Cx, Cy, 'v'), write('ola2').
 
 
 checkWallCoords(_,_,_,_) :-
 		write('---- Invalid wall coordenates ----'),nl,
 		fail.
+
+noWallPlaced(Board, X, Y, 'h') :-
+	Nx is round(X/2),
+	elementCoords(Board, Nx, Y, Elem1),
+	Nx2 is Nx + 1,
+	elementCoords(Board, Nx2, Y, Elem2),
+	(Elem1 = [_, empty] ; Elem2 = [_, empty]).
+
+
+noWallPlaced(Board, X, Y, 'v') :-
+	elementCoords(Board, X, Y, Elem1),
+	Ny is Y + 2,
+	elementCoords(Board, X, Ny, Elem2),
+	(Elem1 = [_, empty] ; Elem2 = [_, empty]).

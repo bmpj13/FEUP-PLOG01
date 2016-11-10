@@ -8,8 +8,17 @@ evaluateBestPawn(Player,N) :-
   getBestDistanceToTarget(X1,Y1,Player,NPlayer1),%a menor distancia para um target do player1
   getBestDistanceToTarget(X2,Y2,Player,NPlayer2),%a menor distancia para um target do player2
   getSmaller(NPlayer1,NPlayer2,Nend),%player com menor distancia para ganhar
-  ((Nend =:= NPlayer1 , N is 1) ; (Nend =:= NPlayer2 , N is 2)).
+  choosePlayer(Nend,NPlayer1,NPlayer2,N).
 
+
+choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+  Nend =:= NPlayer1 ,Nend =:= NPlayer2,random_member(RandPlayer, [1,2]), N is RandPlayer.
+
+choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+  Nend =:= NPlayer1 , N is 1.
+
+choosePlayer(Nend,NPlayer1,NPlayer2,N) :-
+  Nend =:= NPlayer2 , N is 2.
 
 
 evaluateBestDirection(Player,Id,Directions):-
@@ -27,10 +36,13 @@ evaluateBestDirection(Player,Id,Directions):-
   %East
   Xe is X + 1,Ye is Y,
   getBestDistanceToTarget(Xe,Ye,Player,E),
-  %stay in the same place
-  getBestDistanceToTarget(X,Y,Player,Stay),
   %ordenar distancias
-  samsort( [[N,1],[S,2],[W,3],[E,4],[Stay,5]  ],  Directions),write(Directions).
+  samsort( [[N,1],[S,2],[W,3],[E,4]],  AuxDirections),
+  shuffleList(AuxDirections,Directions).
+
+shuffleList([H|T],Nlist):-
+  random_permutation(T, NewT),
+  Nlist = [H|NewT].
 
 evaluateBestWall(Player,Walls) :-
   getOponent(Player,Oponent),
@@ -51,7 +63,7 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   (Direction = 1 ; Direction = 2 ),
   position(Pawn,Px,Py),
   convertDirection(Direction,X,Y),
-  wallCoords(X,Y,Px,Py,Wx,Wy),
+  Wx is Px + X , Wy is Py + Y,
   O = h ,
   Wall1 = [Wx,Wy,O],
   Wx2 is Wx - 1,
@@ -62,7 +74,7 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   (Direction = 3 ; Direction = 4 ),
   position(Pawn,Px,Py),
   convertDirection(Direction,X,Y),
-  wallCoords(X,Y,Px,Py,Wx,Wy),
+  Wx is Px + X , Wy is Py + Y,
   O = v ,
   Wall1 = [Wx,Wy,O],
   Wy2 is Wy - 2,
