@@ -18,7 +18,7 @@ game(M) :-
 				once(retract(board(BoardInit))),
 				once(displayBoard(BoardInit)),
 				once(retract(currentPlayer(P))),
-			 	once(play(M, 2, P, BoardInit, BoardEnd)),
+			 	once(play(M, 1, P, BoardInit, BoardEnd)),
 				once(changeCurrentPlayer(P)),
 				once(assert(board(BoardEnd))),
 			checkEnd,

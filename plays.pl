@@ -74,6 +74,10 @@ handleWallBot(2, Player, Board, NewBoard) :-
 	placeWall(Player, X, Y, O, Board, NewBoard).
 
 
+handleWallBot(_, _, Board, Board) :-
+	true.
+
+
 
 auxMoveBot(Player,N,Board,NewBoard) :-
 	evaluateBestDirection(Player,N,Directions),
