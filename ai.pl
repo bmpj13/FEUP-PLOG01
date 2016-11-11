@@ -1,4 +1,5 @@
 :- ensure_loaded('board/graph.pl').
+:- ensure_loaded('utils.pl').
 
 
 distance(X,Y,TargetX,TargetY,N) :-
@@ -37,14 +38,16 @@ evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   position([Player,Id], X, Y),
   graph(G),
   V1 = [X,Y],
+  write(Player),
   targePosition([Player, 1], Tx1, Ty1),
   targePosition([Player, 2], Tx2, Ty2),
+  write(Player), write('---'), write(Id), nl,
+  write(Tx1), write('---'), write(Ty1), nl,
+  write(Tx2), write('---'), write(Ty2), nl,
   V2 = [Tx1, Ty1],
   V3 = [Tx2, Ty2],
-  min_path(V1, V2, G, Path1, Cost1),
-  min_path(V1, V3, G, Path2, Cost2).
-
-evaluateMinPath(_, _, _, 0, _, 0).
+  (min_path(V1, V2, G, Path1, Cost1) ; (Path = [], Cost1 is 0)),
+  (min_path(V1, V3, G, Path2, Cost2) ; (Path = [], Cost2 is 0)).
 
 
 evaluateBestDirection(Player,Id,Directions):-
@@ -117,11 +120,6 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   Wall1 = [Wx,Wy,O],
   Wy2 is Wy - 2,
   Wall2 = [Wx,Wy2,O].
-
-
-getOponent(Player,Oponent):-
-  (Player = yellow, Oponent = orange);
-  (Player = orange, Oponent = yellow).
 
 
 %menor distancia das cordenadas x y a um dos target do player Player

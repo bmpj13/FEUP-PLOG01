@@ -82,10 +82,10 @@ placeWall(Player, _, _, 'v', _, _) :-
 placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
 	checkWallCoords(X, Y,'h',Board),
   manageEdges(remove, X,Y,'h'),
-  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
-  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
-  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
-  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  evaluateMinPath(Player, 1, P1, Cost1, P2, Cost2), write(P1), nl, write(P2), nl, nl,
+  evaluateMinPath(Player, 2, P3, Cost3, P4, Cost4), write(P3), nl, write(P4), nl, nl,
+  evaluateMinPath(Oponent, 1, P5, Cost5, P6, Cost6), write(P5), nl, write(P6), nl, nl,
+  evaluateMinPath(Oponent, 2, P7, Cost7, P8, Cost8), write(P7), nl, write(P8), nl, nl, !,
   playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nh is H - 1,
@@ -100,10 +100,10 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
   getOponent(Player, Oponent),
 	checkWallCoords(X, Y,'v',Board),
   manageEdges(remove, X,Y,'v'),
-  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
-  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
-  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
-  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  evaluateMinPath(Player, 1, P1, Cost1, P2, Cost2), write(P1), nl, write(P2), nl, nl,
+  evaluateMinPath(Player, 2, P3, Cost3, P4, Cost4), write(P3), nl, write(P4), nl, nl,
+  evaluateMinPath(Oponent, 1, P5, Cost5, P6, Cost6), write(P5), nl, write(P6), nl, nl,
+  evaluateMinPath(Oponent, 2, P7, Cost7, P8, Cost8), write(P7), nl, write(P8), nl, nl, !,
   playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nv is V - 1,
@@ -158,7 +158,7 @@ checkWallCoords(X, Y,'v',Board) :-
 	noWallPlaced(Board, X, Y, 'v'),
 	Cx is X - 1,
 	Cy is Y + 1,
-	noWallPlaced(Board, Cx, Cy, 'h').
+	noWallCrossing(Board, Cx, Cy, 'h').
 
 
 checkWallCoords(X, Y,'h',Board) :-
@@ -169,7 +169,7 @@ checkWallCoords(X, Y,'h',Board) :-
 	noWallPlaced(Board, X, Y, 'h'),
 	Cx is X + 1,
 	Cy is Y - 1,
-	noWallPlaced(Board, Cx, Cy, 'v').
+	noWallCrossing(Board, Cx, Cy, 'v').
 
 
 checkWallCoords(_,_,_,_) :-
@@ -183,10 +183,25 @@ noWallPlaced(Board, X, Y, 'h') :-
   elementCoords(Board, Nx, Y, Elem1),
   Nx2 is Nx + 1,
   elementCoords(Board, Nx2, Y, Elem2),
-  (Elem1 = [_, empty] ; Elem2 = [_, empty]).
+  (Elem1 = [_, empty] , Elem2 = [_, empty]).
 
 
 noWallPlaced(Board, X, Y, 'v') :-
+  elementCoords(Board, X, Y, Elem1),
+  Ny is Y + 2,
+  elementCoords(Board, X, Ny, Elem2),
+  (Elem1 = [_, empty] , Elem2 = [_, empty]).
+
+
+noWallCrossing(Board, X, Y, 'h') :-
+  Nx is round(X/2),
+  elementCoords(Board, Nx, Y, Elem1),
+  Nx2 is Nx + 1,
+  elementCoords(Board, Nx2, Y, Elem2),
+  (Elem1 = [_, empty] ; Elem2 = [_, empty]).
+
+
+noWallCrossing(Board, X, Y, 'v') :-
   elementCoords(Board, X, Y, Elem1),
   Ny is Y + 2,
   elementCoords(Board, X, Ny, Elem2),

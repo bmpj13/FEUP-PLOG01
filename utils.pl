@@ -13,6 +13,11 @@ elementCoords(Board, X, Y, Elem) :-
 		nth0(X, Line, Elem).
 
 
+getOponent(Player,Oponent):-
+  (Player = yellow, Oponent = orange);
+  (Player = orange, Oponent = yellow).
+
+
 %Initial Position
 position([orange, 1], 6, 6).
 position([orange, 2], 14, 6).

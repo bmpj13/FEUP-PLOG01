@@ -49,8 +49,12 @@ moveOneSpaceHuman(Pawn,Board,NewBoard) :-
 
 moveBot(1, Player, Board, NewBoard) :-
 	evaluateBestPawn(Player,N),
+	write('--- '), write(Player), write(N), write(' ----'), nl, nl,
 	auxMoveBot(Player,N,Board,AuxBoard),
-	(checkBotWin(Player, N) ; auxMoveBot(Player,N,AuxBoard,NewBoard)).
+	(
+		(checkBotWin(Player, N), NewBoard = AuxBoard) ;
+		auxMoveBot(Player,N,AuxBoard,NewBoard)
+	).
 
 
 moveBot(2, Player, Board, NewBoard) :-
@@ -80,8 +84,12 @@ handleWallBot(_, _, Board, Board) :-
 
 
 auxMoveBot(Player,N,Board,NewBoard) :-
-	evaluateBestDirectionPro(Player, N, Direction),
-	moveOneSpaceBot([Player,N], Direction, Board, NewBoard).
+	evaluateBestDirectionPro(Player, N, [X,Y]),
+	(
+		(validPosition([Player,N], Board, X, Y),
+		 moveOneSpaceBot([Player,N], [X,Y], Board, NewBoard)) ;
+		(NewBoard = Board)
+	).
 
 
 
