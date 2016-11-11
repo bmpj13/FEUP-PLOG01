@@ -41,9 +41,12 @@ handleWall(_, Board, Board) :-
 moveOneSpaceHuman(Pawn,Board,NewBoard) :-
 	repeat, %verificar colisoes
 		once(getMovCoords(X,Y)),
-	validPosition(Pawn, Board, X, Y),
-	moveOneSpace(Pawn, X, Y, Board, NewBoard),
+	validPosition(Pawn, Board, X, Y,Nx,Ny),
+	moveOneSpace(Pawn, Nx, Ny, Board, NewBoard),
 	displayBoard(NewBoard).
+
+
+
 
 
 
@@ -85,8 +88,8 @@ handleWallBot(_, _, Board, Board) :-
 auxMoveBot(Player,N,Board,NewBoard) :-
 	evaluateBestDirectionPro(Player, N, [X,Y]),
 	(
-		(validPosition([Player,N], Board, X, Y),
-		 moveOneSpaceBot([Player,N], [X,Y], Board, NewBoard)) ;
+		(validPosition([Player,N], Board, X, Y,Nx,Ny),
+		 moveOneSpaceBot([Player,N], [Nx,Ny], Board, NewBoard)) ;
 		(NewBoard = Board)
 	).
 
@@ -114,8 +117,8 @@ iterateWallList([[_,_,_] | Res], Player, Board, NewBoard) :-
 moveOneSpaceRandom(Pawn, Board, NewBoard) :-
 	repeat,
 		randomMove(X, Y),
-	validPosition(Pawn, Board, X, Y),
-	moveOneSpace(Pawn, X, Y, Board, NewBoard).
+	validPosition(Pawn, Board, X, Y,Nx,Ny),
+	moveOneSpace(Pawn, Nx, Ny, Board, NewBoard).
 
 
 randomMove(X, Y) :-

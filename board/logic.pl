@@ -34,29 +34,49 @@ moveOneSpace(Pawn, X, Y, Board, NewBoard) :-
 
 
 
-validPosition(_, _, 0, 0) :-
+validPosition(_, _, 0, 0,_) :-
 		true.
 
-validPosition(Pawn, Board, X, Y) :-
-	targetIsValid(Pawn, Board, X, Y), !,
-	noWallBlocking(Pawn, Board, X, Y).
+validPosition(Pawn, Board, X, Y,Nx,Ny) :-
+	targetIsValid(Pawn, Board, X, Y,Nx,Ny).
 
 
 noWallBlocking(Pawn, Board, X, Y) :-
 	position(Pawn, Px, Py),
-	wallCoords(X,Y, Px,Py, Wx, Wy),
+	wallCoords(X,Y, Px,Py, Wx, Wy), format('~n Wx : ~w | Wy : ~w',[Wx, Wy]),
 	elementCoords(Board, Wx, Wy, Elem),
 	checkWallColision(Elem).
 
 
-targetIsValid(Pawn, Board, X, Y) :-
+targetIsValid(Pawn, Board, X, Y,Nx,Ny) :-
 	targetCoords(Pawn, X,Y, Tx,Ty),
 	inBounds(Tx, Ty),
 	elementCoords(Board, Tx, Ty, Elem),
-	(Elem = square ; Elem = [orange, base] ; Elem = [yellow, base]).
+	(
+    ((Elem = square ; Elem = [orange, base] ; Elem = [yellow, base]),
+      Nx is X ,Ny is Y, !,
+      noWallBlocking(Pawn, Board, X, Y)) ;
+    ((Elem = [orange, 1] ; Elem = [orange, 2] ; Elem = [yellow, 1];Elem = [yellow, 1] ),
+      checkJumpOver(Pawn,X,Y,Nx,Ny),
+      Aux1 is Nx + X,
+      Aux2 is Ny + Y, !,
+      noWallBlocking(Pawn, Board, Aux1, Aux2), write('after wall'))
+  ).
 
 
-targetIsValid(_, _, _, _) :-
+checkJumpOver(Pawn,X,Y,Nx,Ny) :-
+    write('JUMP OVER'), nl, nl,
+    Nx is X + X,
+    Ny is Y + Y,
+    targetCoords(Pawn, Nx,Ny, Tx,Ty),
+  	inBounds(Tx, Ty).
+
+
+
+
+
+
+targetIsValid(_, _, _, _,_) :-
 	write('---- You can \'t move to that position you are either out of bonds or there is a player in that position. ----'), nl,
 	fail.
 

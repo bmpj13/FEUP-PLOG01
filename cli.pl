@@ -26,6 +26,8 @@ convertDirection(M,X,Y) :-
 	 (M =:= 4 , X is 1,Y is 0);
 	 (M =:= 5 , X is 0,Y is 0)).
 
+
+
 getMovDirection(M) :-
 		write('Direction'),nl,
 		write('1. North || 2. South || 3. West || 4. East || 5. None'),nl,
