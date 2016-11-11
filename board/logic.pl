@@ -79,8 +79,11 @@ placeWall(Player, _, _, 'v', _, _) :-
 	fail.
 
 
-placeWall(Player,X, Y,'h',Board, NewBoard) :-
+placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
 	checkWallCoords(X, Y,'h',Board),
+  manageEdges(remove, X,Y,'h'),
+  evaluateMinPath(_, _, _, Cost1, _, Cost2), !,
+  playerHasPath(X, Y, O, Cost1, Cost2),
 	retract(wallNumber(Player, H, V)),
 	Nh is H - 1,
 	assert(wallNumber(Player, Nh, V)),
@@ -92,6 +95,9 @@ placeWall(Player,X, Y,'h',Board, NewBoard) :-
 
 placeWall(Player,X, Y,'v',Board, NewBoard) :-
 	checkWallCoords(X, Y,'v',Board),
+  manageEdges(remove, X,Y,'v'),
+  evaluateMinPath(_, _, _, Cost1, _, Cost2), !,
+  playerHasPath(X, Y, O, Cost1, Cost2),
 	retract(wallNumber(Player, H, V)),
 	Nv is V - 1,
 	assert(wallNumber(Player, H, Nv)),
@@ -99,6 +105,35 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
 	Ny is Y + 2,
 	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
 
+
+playerHasPath(_, _, _, Cost1, Cost2) :-
+  (Cost1 =\= 0 , Cost2 =\= 0), write(Cost1), write(Cost2).
+
+playerHasPath(X, Y, O, _, _) :-
+  write('fodass'), manageEdges(add, X, Y, O), write('oioioi'), fail.
+
+
+manageEdges(Management, X,Y,'h') :-
+  retract(graph(G)),
+  Y1 is Y - 1,
+  Y2 is Y + 1,
+  NX is X + 2,
+  (
+    (Management = remove, del_edges(G,[[X,Y1]-[X,Y2],[X,Y2]-[X,Y1],[NX,Y1]-[NX,Y2],[NX,Y2]-[NX,Y1]], Ng), nl, nl, write('removeh'), nl, nl) ;
+    (Management = add, add_edges(G,[[X,Y1]-[X,Y2],[X,Y2]-[X,Y1],[NX,Y1]-[NX,Y2],[NX,Y2]-[NX,Y1]], Ng))
+  ),
+  assert(graph(Ng)).
+
+manageEdges(Management, X,Y,'v') :-
+  retract(graph(G)),
+  X1 is X - 1,
+  X2 is X + 1,
+  NY is Y + 2,
+  (
+    (Management = remove, del_edges(G,[[X1,Y]-[X2,Y],[X2,Y]-[X1,Y],[X1,NY]-[X2,NY],[X2,NY]-[X1,NY]], Ng), nl, nl, write('removev'), nl, nl) ;
+    (Management = add, add_edges(G,[[X1,Y]-[X2,Y],[X2,Y]-[X1,Y],[X1,NY]-[X2,NY],[X2,NY]-[X1,NY]], Ng))
+  ),
+  assert(graph(Ng)).
 
 
 checkWallCoords(X, Y,'v',Board) :-
@@ -117,10 +152,10 @@ checkWallCoords(X, Y,'h',Board) :-
 	Y mod 2 =:= 1,
 	X >= 0, X < 19,
 	Y > 0, Y < 26,
-	noWallPlaced(Board, X, Y, 'h'),write('ola1'),
+	noWallPlaced(Board, X, Y, 'h'),
 	Cx is X + 1,
 	Cy is Y - 1,
-	noWallPlaced(Board, Cx, Cy, 'v'), write('ola2').
+	noWallPlaced(Board, Cx, Cy, 'v').
 
 
 checkWallCoords(_,_,_,_) :-

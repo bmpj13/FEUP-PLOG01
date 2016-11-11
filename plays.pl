@@ -80,24 +80,14 @@ handleWallBot(_, _, Board, Board) :-
 
 
 auxMoveBot(Player,N,Board,NewBoard) :-
-	evaluateBestDirection(Player,N,Directions),
-	moveOneSpaceBot([Player,N],Directions,Board,NewBoard).
+	evaluateBestDirectionPro(Player, N, Direction),
+	moveOneSpaceBot([Player,N], Direction, Board, NewBoard).
 
 
 
-moveOneSpaceBot(Pawn,Directions,Board,NewBoard) :-
-	iterateDirectionList(Directions,X,Y,Pawn,Board),
+moveOneSpaceBot(Pawn, [X,Y], Board,NewBoard) :-
 	moveOneSpace(Pawn, X, Y, Board, NewBoard),
 	displayBoard(NewBoard).
-
-
-
-iterateDirectionList([[_|D] | _], X, Y, Pawn, Board) :-
-	convertDirection(D,X,Y),
-	validPosition(Pawn, Board, X, Y), !.
-
-iterateDirectionList([[_|_] | Res], X, Y, Pawn, Board) :-
-	iterateDirectionList(Res,X,Y,Pawn,Board).
 
 
 

@@ -13,6 +13,7 @@
 %jogo humano vs humano
 game(M) :-
 		%inicializacoes
+    initGraph,
 		board(X),
 			repeat,
 				once(retract(board(BoardInit))),

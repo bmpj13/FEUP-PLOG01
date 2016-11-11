@@ -1,3 +1,6 @@
+:- ensure_loaded('board/graph.pl').
+
+
 distance(X,Y,TargetX,TargetY,N) :-
   N is round(abs(X - TargetX)/2 +  abs(Y - TargetY)/2).
 
@@ -12,13 +15,38 @@ evaluateBestPawn(Player,N) :-
 
 
 choosePlayer(Nend, NPlayer1, NPlayer2, N) :-
-  Nend =:= NPlayer1 ,Nend =:= NPlayer2,random_member(RandPlayer, [1,2]), N is RandPlayer.
+  Nend =:= NPlayer1, Nend =:= NPlayer2, random_member(RandPlayer, [1,2]), N is RandPlayer.
 
 choosePlayer(Nend, NPlayer1, _, N) :-
   Nend =:= NPlayer1 , N is 1.
 
 choosePlayer(Nend, _, NPlayer2, N) :-
   Nend =:= NPlayer2 , N is 2.
+
+
+evaluateBestDirectionPro(Player, Id, Direction) :-
+  position([Player, Id], X, Y),
+  evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2),
+  getBestCoordinates(Path1, Cost1, Path2, Cost2, [Nx,Ny]),
+  OffsetX is round((Nx - X)/2),
+  OffsetY is round((Ny - Y)/2),
+  Direction = [OffsetX, OffsetY].
+
+
+evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
+  position([Player,Id], X, Y),
+  graph(G),
+  V1 = [X,Y],
+  targePosition([Player, 1], Tx1, Ty1),
+  targePosition([Player, 2], Tx2, Ty2),
+  V2 = [Tx1, Ty1],
+  V3 = [Tx2, Ty2],
+  min_path(V1, V2, G, Path1, Cost1),
+  min_path(V1, V3, G, Path2, Cost2),
+  write(Cost1),
+  write(Cost2).
+
+evaluateMinPath(_, _, _, 0, _, 0).
 
 
 evaluateBestDirection(Player,Id,Directions):-
@@ -40,9 +68,21 @@ evaluateBestDirection(Player,Id,Directions):-
   samsort( [[N,1],[S,2],[W,3],[E,4]],  AuxDirections),
   shuffleList(AuxDirections,Directions).
 
+
 shuffleList([H|T],Nlist):-
   random_permutation(T, NewT),
   Nlist = [H|NewT].
+
+
+getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+  Cost1 =< Cost2, !,
+  nth0(1, Path1, NewCoords).
+
+getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+  Cost2 < Cost1, !,
+  nth0(1, Path2, NewCoords).
+
+
 
 evaluateBestWall(Player,Walls) :-
   getOponent(Player,Oponent),
