@@ -49,7 +49,6 @@ moveOneSpaceHuman(Pawn,Board,NewBoard) :-
 
 moveBot(1, Player, Board, NewBoard) :-
 	evaluateBestPawn(Player,N),
-	write('--- '), write(Player), write(N), write(' ----'), nl, nl,
 	auxMoveBot(Player,N,Board,AuxBoard),
 	(
 		(checkBotWin(Player, N), NewBoard = AuxBoard) ;

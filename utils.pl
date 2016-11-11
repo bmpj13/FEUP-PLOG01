@@ -18,6 +18,12 @@ getOponent(Player,Oponent):-
   (Player = orange, Oponent = yellow).
 
 
+min([],X,X).
+min([H|T],M,X) :- H =< M, min(T,H,X).
+min([H|T],M,X) :- M < H, min(T,M,X).
+min([H|T],X) :- min(T,H,X).
+
+
 %Initial Position
 position([orange, 1], 6, 6).
 position([orange, 2], 14, 6).

@@ -7,12 +7,15 @@ distance(X,Y,TargetX,TargetY,N) :-
 
 
 evaluateBestPawn(Player,N) :-
-  position([Player, 1],X1,Y1),
-  position([Player, 2],X2,Y2),
-  getBestDistanceToTarget(X1,Y1,Player,NPlayer1),%a menor distancia para um target do player1
-  getBestDistanceToTarget(X2,Y2,Player,NPlayer2),%a menor distancia para um target do player2
-  getSmaller(NPlayer1,NPlayer2,Nend),%player com menor distancia para ganhar
-  choosePlayer(Nend,NPlayer1,NPlayer2,N).
+  evaluateMinPath(Player, 1, Path1, Cost1, Path2, Cost2),
+  evaluateMinPath(Player, 2, Path3, Cost3, Path4, Cost4),
+  min([Cost1, Cost2, Cost3, Cost4], MinCost),
+  (
+    (MinCost =:= Cost1, N is 1) ;
+    (MinCost =:= Cost2, N is 1) ;
+    (MinCost =:= Cost3, N is 2) ;
+    (MinCost =:= Cost4, N is 2)
+  ).
 
 
 choosePlayer(Nend, NPlayer1, NPlayer2, N) :-
@@ -38,16 +41,12 @@ evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   position([Player,Id], X, Y),
   graph(G),
   V1 = [X,Y],
-  write(Player),
   targePosition([Player, 1], Tx1, Ty1),
   targePosition([Player, 2], Tx2, Ty2),
-  write(Player), write('---'), write(Id), nl,
-  write(Tx1), write('---'), write(Ty1), nl,
-  write(Tx2), write('---'), write(Ty2), nl,
   V2 = [Tx1, Ty1],
   V3 = [Tx2, Ty2],
-  (min_path(V1, V2, G, Path1, Cost1) ; (Path = [], Cost1 is 0)),
-  (min_path(V1, V3, G, Path2, Cost2) ; (Path = [], Cost2 is 0)).
+  (min_path(V1, V2, G, Path1, Cost1) ; (Path1 = [], Cost1 is 0)),
+  (min_path(V1, V3, G, Path2, Cost2) ; (Path2 = [], Cost2 is 0)).
 
 
 evaluateBestDirection(Player,Id,Directions):-
