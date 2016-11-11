@@ -9,13 +9,10 @@ distance(X,Y,TargetX,TargetY,N) :-
 evaluateBestPawn(Player,N) :-
   evaluateMinPath(Player, 1, Path1, Cost1, Path2, Cost2),
   evaluateMinPath(Player, 2, Path3, Cost3, Path4, Cost4),
-  min([Cost1, Cost2, Cost3, Cost4], MinCost),
-  (
-    (MinCost =:= Cost1, N is 1) ;
-    (MinCost =:= Cost2, N is 1) ;
-    (MinCost =:= Cost3, N is 2) ;
-    (MinCost =:= Cost4, N is 2)
-  ).
+  min([Cost1, Cost2], MinPlayer1),
+  min([Cost3, Cost4], MinPlayer2),
+  min([MinPlayer1, MinPlayer2], MinCost),
+  choosePlayer(MinCost, MinPlayer1, MinPlayer2, N).
 
 
 choosePlayer(Nend, NPlayer1, NPlayer2, N) :-
