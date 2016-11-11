@@ -82,8 +82,11 @@ placeWall(Player, _, _, 'v', _, _) :-
 placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
 	checkWallCoords(X, Y,'h',Board),
   manageEdges(remove, X,Y,'h'),
-  evaluateMinPath(_, _, _, Cost1, _, Cost2), !,
-  playerHasPath(X, Y, O, Cost1, Cost2),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
+  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nh is H - 1,
 	assert(wallNumber(Player, Nh, V)),
@@ -94,10 +97,14 @@ placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wal
 
 
 placeWall(Player,X, Y,'v',Board, NewBoard) :-
+  getOponent(Player, Oponent),
 	checkWallCoords(X, Y,'v',Board),
   manageEdges(remove, X,Y,'v'),
-  evaluateMinPath(_, _, _, Cost1, _, Cost2), !,
-  playerHasPath(X, Y, O, Cost1, Cost2),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
+  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nv is V - 1,
 	assert(wallNumber(Player, H, Nv)),
@@ -106,11 +113,18 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
 	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
 
 
-playerHasPath(_, _, _, Cost1, Cost2) :-
-  (Cost1 =\= 0 , Cost2 =\= 0), write(Cost1), write(Cost2).
+playerHasPath(_, _, _, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8) :-
+  Cost1 =\= 0,
+  Cost2 =\= 0,
+  Cost3 =\= 0,
+  Cost4 =\= 0,
+  Cost5 =\= 0,
+  Cost6 =\= 0,
+  Cost7 =\= 0,
+  Cost8 =\= 0.
 
-playerHasPath(X, Y, O, _, _) :-
-  write('fodass'), manageEdges(add, X, Y, O), write('oioioi'), fail.
+playerHasPath(X, Y, O, _, _, _, _, _, _, _, _) :-
+  manageEdges(add, X, Y, O), fail.
 
 
 manageEdges(Management, X,Y,'h') :-
@@ -119,7 +133,7 @@ manageEdges(Management, X,Y,'h') :-
   Y2 is Y + 1,
   NX is X + 2,
   (
-    (Management = remove, del_edges(G,[[X,Y1]-[X,Y2],[X,Y2]-[X,Y1],[NX,Y1]-[NX,Y2],[NX,Y2]-[NX,Y1]], Ng), nl, nl, write('removeh'), nl, nl) ;
+    (Management = remove, del_edges(G,[[X,Y1]-[X,Y2],[X,Y2]-[X,Y1],[NX,Y1]-[NX,Y2],[NX,Y2]-[NX,Y1]], Ng)) ;
     (Management = add, add_edges(G,[[X,Y1]-[X,Y2],[X,Y2]-[X,Y1],[NX,Y1]-[NX,Y2],[NX,Y2]-[NX,Y1]], Ng))
   ),
   assert(graph(Ng)).
@@ -130,7 +144,7 @@ manageEdges(Management, X,Y,'v') :-
   X2 is X + 1,
   NY is Y + 2,
   (
-    (Management = remove, del_edges(G,[[X1,Y]-[X2,Y],[X2,Y]-[X1,Y],[X1,NY]-[X2,NY],[X2,NY]-[X1,NY]], Ng), nl, nl, write('removev'), nl, nl) ;
+    (Management = remove, del_edges(G,[[X1,Y]-[X2,Y],[X2,Y]-[X1,Y],[X1,NY]-[X2,NY],[X2,NY]-[X1,NY]], Ng)) ;
     (Management = add, add_edges(G,[[X1,Y]-[X2,Y],[X2,Y]-[X1,Y],[X1,NY]-[X2,NY],[X2,NY]-[X1,NY]], Ng))
   ),
   assert(graph(Ng)).

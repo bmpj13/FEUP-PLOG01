@@ -91,9 +91,10 @@ moveOneSpaceBot(Pawn, [X,Y], Board,NewBoard) :-
 
 
 
-iterateWallList([],Player,Board,NewBoard) :- %ver cruzados tambem
-	 randomWall(X, Y, O),
-	 iterateWallList([[X,Y,O]],Player,Board,NewBoard).
+iterateWallList([],Player,Board,Board) :- %ver cruzados tambem
+	 %randomWall(X, Y, O),
+	 %iterateWallList([[X,Y,O]],Player,Board,NewBoard).
+	 true.
 
 iterateWallList([[X,Y,O] | _], Player, Board, NewBoard) :-
 	placeWall(Player, X, Y, O, Board, NewBoard).

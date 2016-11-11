@@ -42,9 +42,7 @@ evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   V2 = [Tx1, Ty1],
   V3 = [Tx2, Ty2],
   min_path(V1, V2, G, Path1, Cost1),
-  min_path(V1, V3, G, Path2, Cost2),
-  write(Cost1),
-  write(Cost2).
+  min_path(V1, V3, G, Path2, Cost2).
 
 evaluateMinPath(_, _, _, 0, _, 0).
 
