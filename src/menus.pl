@@ -60,6 +60,7 @@ waitInput :-
 
 about :-
   clearScreen,
+  out('____________________________Blockade Rules_________________________________________'),
   out('Blockade is a board game for two players, invented by Mirko Marchesi'),
   out('and published by Lakeside Industries in 1975.'),
   nl,nl,
@@ -74,5 +75,6 @@ about :-
   out('Walls always cover two squares and must be placed according to their color (vertically or horizontally).'),
   out('Pawns may jump over other pawns that are blocking their path.'),
   out('Once players are out of walls, they keep moving pawns until one wins.'),
+  out('__________________________________________________________________________________'),
   waitInput,
   blockade.
