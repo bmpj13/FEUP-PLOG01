@@ -59,10 +59,3 @@ linkVertical(X, Y) :-
   assert(edge(Vertex1-Vertex2)),
   assert(edge(Vertex2-Vertex1)),
   linkVertical(X, Y2).
-
-
-writeList([]).
-
-writeList([H | T]) :-
-  write(H), nl,
-  writeList(T).

@@ -8,7 +8,8 @@ out(O):-
   write(O),
   nl.
 
-blockade :-
+
+intro :-
   clearScreen,
   out('__________________________________________________________________________________'),
   out('  ______   _                 _                 _        '),
@@ -21,7 +22,10 @@ blockade :-
   out('                            Made by:'),
   out('                                  Joao Barbosa'),
   out('                                  Jose Martins'),
-  out('                                                        '),
+  out('                                                        ').
+
+blockade :-
+  intro,
   out('   1. Player vs  Player'),
   out('   2. Player vs  Bot'),
   out('   3. Bot vs  Bot'),
@@ -29,8 +33,14 @@ blockade :-
   out('   5. Exit'),
   out('__________________________________________________________________________________'),
   read(Option),
-  ((Option =:= 5) ; (Option =:= 4, about) ; (game(Option))).
+  ((Option =:= 5) ; (Option =:= 4, about) ; (dificultyMenu(Dificulty), game(Option,Dificulty))).
 
+
+dificultyMenu(Option) :-
+  intro,
+  out('   1. Hard'),
+  out('   2. Easy'),
+  read(Option).
 
 waitInput :-
   get_char(_),

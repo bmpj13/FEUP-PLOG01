@@ -3,10 +3,10 @@
 
 
 play(M, L, Player, Board, NewBoard) :-
-	(M =:= 1, playHuman(Player, Board, NewBoard));
-	(M =:= 2, Player = orange , playHuman(Player,Board,NewBoard));
-	(M =:= 2, Player = yellow , playBot(L, Player,Board,NewBoard));
-	(M =:= 3, playBot(L, Player, Board, NewBoard)).
+	(M =:= 1, logMessagesState(1), playHuman(Player, Board, NewBoard));
+	(M =:= 2, Player = orange ,logMessagesState(1), playHuman(Player,Board,NewBoard));
+	(M =:= 2, Player = yellow ,logMessagesState(0), playBot(L, Player,Board,NewBoard));
+	(M =:= 3, logMessagesState(0), playBot(L, Player, Board, NewBoard)).
 
 
 
@@ -17,6 +17,7 @@ playHuman(Player, Board, NewBoard) :-
 	handleWall(Player, AuxBoard, NewBoard).
 
 playBot(L, Player,Board,NewBoard):-
+	format('--------------Its Bot ~s turn----------- ~n',[Player]),
 	moveBot(L, Player, Board, AuxBoard),
 	handleWallBot(L, Player, AuxBoard, NewBoard).
 

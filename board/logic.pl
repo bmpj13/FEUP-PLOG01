@@ -54,7 +54,7 @@ validPosition(Pawn, Board, X, Y,Nx,Ny) :-
   ).
 
 validPosition(_, _, _, _,_,_) :-
-	write('---- You can \'t move to that position. ----'), nl,
+	displayLog('---- You can \'t move to that position. ----'),
 	fail.
 
 
@@ -81,13 +81,13 @@ inBounds(Tx, Ty) :-
 
 placeWall(Player, _, _, 'h', _, _) :-
 	wallNumber(Player, 0, _), !,
-	write('---- You\'re out of horizontal walls ----'), nl,
+	displayLog('---- You\'re out of horizontal walls ----'),
 	fail.
 
 
 placeWall(Player, _, _, 'v', _, _) :-
 	wallNumber(Player, _, 0), !,
-	write('---- You\'re out of vertical walls ----'), nl,
+	displayLog('---- You\'re out of vertical walls ----'),
 	fail.
 
 
@@ -185,7 +185,7 @@ checkWallCoords(X, Y,'h',Board) :-
 
 
 checkWallCoords(_,_,_,_) :-
-	write('---- Invalid wall coordenates ----'),nl,
+	displayLog('---- Invalid wall coordenates ----'),
 	fail.
 
 
@@ -229,7 +229,7 @@ wallCoords(X,Y,Px,Py,Wx,Wy) :-
 
 
 checkWallColision([_ | [placed | _ ]]) :-
-	write('----There is a wall in the way you have to choose another path!----'),nl,
+	displayLog('----There is a wall in the way you have to choose another path!----'),
 	fail.
 
 

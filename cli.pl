@@ -46,3 +46,8 @@ getNumber(N) :-
         get_code(C), %numero em ascii
         get_char(_), %para ler o enter tambem
         N is C - 48. %ascii de 0 e 48
+
+
+displayLog(Message) :-
+	logMessages(X),
+	((X =:= 1 , out(Message)) ; (true)).

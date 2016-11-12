@@ -1,6 +1,7 @@
 :- dynamic(position/3).
 :- dynamic(wallNumber/3).
 :- dynamic(currentPlayer/1).
+:- dynamic(logMessages/1).
 
 setCell(Index, Element, List, NewList) :-
 		length(AuxL, Index),
@@ -22,6 +23,21 @@ min([],X,X).
 min([H|T],M,X) :- H =< M, min(T,H,X).
 min([H|T],M,X) :- M < H, min(T,M,X).
 min([H|T],X) :- min(T,H,X).
+
+writeList([]).
+
+writeList([H | T]) :-
+  write(H), nl,
+  writeList(T).
+
+
+%log messages
+logMessages(1).
+
+logMessagesState(X):-
+	retract(logMessages(_)),
+	assert(logMessages(X)).
+
 
 
 %Initial Position
