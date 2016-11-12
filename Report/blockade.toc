@@ -12,4 +12,4 @@
 \contentsline {section}{\numberline {4}Interface com o Utilizador}{8}
 \contentsline {section}{\numberline {5}Conclus\IeC {\~o}es}{8}
 \contentsline {section}{Bibliografia}{9}
-\contentsline {section}{\numberline {A}C\IeC {\'o}digo}{9}
+\contentsline {section}{\numberline {A}Anexo C\IeC {\'o}digo}{9}
