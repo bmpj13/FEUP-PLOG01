@@ -43,6 +43,8 @@ dificultyMenu(Option) :-
   read(Option).
 
 waitInput :-
+  nl,nl,nl,
+  out('             ------Press Enter------ '),
   get_char(_),
   get_char(_).
 
@@ -62,7 +64,5 @@ about :-
   out('Walls always cover two squares and must be placed according to their color (vertically or horizontally).'),
   out('Pawns may jump over other pawns that are blocking their path.'),
   out('Once players are out of walls, they keep moving pawns until one wins.'),
-  nl,nl,nl,
-  out('             ------Press Enter------ '),
   waitInput,
   blockade.
