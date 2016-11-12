@@ -45,9 +45,11 @@ blockade :-
 
 dificultyMenu(Option) :-
   intro,
+  out('Dificulty:'),
   out('   1. Hard'),
   out('   2. Easy'),
   out('   3. Back'),
+  out('__________________________________________________________________________________'),
   read(Option).
 
 waitInput :-
