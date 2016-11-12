@@ -135,9 +135,20 @@ Estes predicados podem ser encontrados no ficheiro board/logic.pl.
 
 Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
 
-\subsection{Avaliação do Tabuleiro} Avaliação do estado do jogo, que permitirá comparar a aplicação das diversas jogadas disponíveis. Exemplo: \textit{value(+Board, +Player, -Value)}.
+\subsection{Avaliação do Tabuleiro} Na nossa implementação, não existe uma avaliação direta do tabuleiro, para comparar as diferentes jogadas possíveis, pois:
+\begin{itemize}
+	\item Quando o jogador é um humano, a direção do movimento é pedida via linha de comandos. Neste contexto, a avaliação da jogada é ignorada, pois o jogador deve ter liberdade para a fazer, independentemente da sua qualidade.
+	
+	\item Quando o jogador é um computador em nível fácil, os movimentos são aleatórios, não havendo qualquer avaliação do tabuleiro.
+	
+	\item Quando o jogador é um computador em nível difícil, a movimentação das peças é feita com recurso a \textit{pathfinding}, que nos devolve a melhor jogada possível. \\
+Este algoritmo avalia internamente o grafo, e determina qual o caminho de menor custo para o jogador. Esta avaliação do tabuleiro é indireta, visto que os algoritmos sobre grafos utilizados estão implementados nas biliotecas do \textit{Prolog}.
+\end{itemize}
 
-\subsection{Final do Jogo} Verificação do fim do jogo, com identificação do vencedor. Exemplo: \textit{game\_over(+Board, -Winner)}.
+Avaliação do estado do jogo, que permitirá comparar a aplicação das diversas jogadas disponíveis. Exemplo: \textit{value(+Board, +Player, -Value)}.
+
+\subsection{Final do Jogo} A verificação de que o jogo chegou ao fim é testada usando o predicado \mbox{\textit{checkEnd}}. Este predicado não precisa de argumentos, pois as posições dos jogadores são extraídas diretamente da base de dados, utilizando o predicado auxiliar \textit{position(+Player, -X, -Y)}. \par
+Se alguns dos jogadores chegar ao seu objetivo, i.e. a uma das bases do oponente, então o predicado retorna \textit{true}, e, consequentemente, termina o ciclo de jogo.
 
 
 
