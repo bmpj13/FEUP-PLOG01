@@ -3,7 +3,7 @@
 :- dynamic(vertex/1).
 :- dynamic(graph/1).
 
-
+%initializes the representetio graph
 initGraph :-
   linkHorizontal(0, 0),
   linkVertical(0, 0),
@@ -12,7 +12,8 @@ initGraph :-
   vertices_edges_to_ugraph(Vertices, Edges, G),
   assert(graph(G)).
 
-
+%add al the vertices and edges in horizontal to the data base
+%linkHorizontal(+X,+Y)
 linkHorizontal(_, 28) :-
   true.
 
@@ -35,7 +36,8 @@ linkHorizontal(X, Y) :-
   assert(edge(Vertex2-Vertex1)),
   linkHorizontal(X2, Y).
 
-
+%add al the vertices and edges in vertical to the data base
+%linkVertical(+X,+Y) 
 linkVertical(22, _) :-
   true.
 

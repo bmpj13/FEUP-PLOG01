@@ -38,9 +38,9 @@ initGame(X):-
    assert(currentPlayer(orange)).
 
 
-
+%Main Game cycle
+%game(+M,+D)
 game(M,D) :-
-
     initGame(X),
 			repeat,
 				once(retract(board(BoardInit))),
@@ -54,20 +54,13 @@ game(M,D) :-
 	   finalize(X),
      blockade.
 
-
-changeCurrentPlayer(P):-
+%updates to cuurent player to next one
+%changeCurrentPlayer(+P)
+changeCurrentPlayer(P) :-
 	(P = orange , assert(currentPlayer(yellow)));
 	(P = yellow , assert(currentPlayer(orange))).
 
+%check's if anyone has won
 checkEnd :-
 		(position([orange | _],X,Y) , ((X =:= 6 ; X =:= 14) , Y =:= 20) , winMessage(orange));
 		(position([yellow | _],X,Y) , ((X =:= 6 ; X =:= 14) , Y =:= 6) , winMessage(yellow)).
-
-
-winMessage(Player) :-
-		format('------------------------------------- ~n',[]),
-		format('--------___________________---------- ~n',[]),
-		format('-------|   You Win ~s  |-------- ~n',[Player]),
-		format('-------|  Congratulations  |--------- ~n',[]),
-		format('-------|___________________|--------- ~n',[]),
-		format('------------------------------------- ~n',[]).

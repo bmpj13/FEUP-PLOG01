@@ -24,14 +24,6 @@ getMovCoords(X, Y) :-
 	getMovDirection(M),
 	convertDirection(M,X,Y).
 
-convertDirection(M,X,Y) :-
-	((M =:= 1 , X is 0 , Y is -1);
-	 (M =:= 2 , X is 0 , Y is 1);
-	 (M =:= 3 , X is -1, Y is 0);
-	 (M =:= 4 , X is 1,Y is 0);
-	 (M =:= 5 , X is 0,Y is 0)).
-
-
 
 getMovDirection(M) :-
 		out('Direction'),
@@ -56,3 +48,11 @@ getNumber(N) :-
 displayLog(Message) :-
 	logMessages(X),
 	((X =:= 1 , out(Message)) ; (true)).
+
+winMessage(Player) :-
+		format('------------------------------------- ~n',[]),
+		format('--------___________________---------- ~n',[]),
+		format('-------|   You Win ~s  |-------- ~n',[Player]),
+		format('-------|  Congratulations  |--------- ~n',[]),
+		format('-------|___________________|--------- ~n',[]),
+		format('------------------------------------- ~n',[]).

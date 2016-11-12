@@ -1,30 +1,35 @@
 :- ensure_loaded('../utils.pl').
 
-
+%set the board ceel in the position (X,Y) to Elem
+%setBoardCell(+X, +Y, +Elem, +Board, -NewBoard)
 setBoardCell(X, Y, Elem, Board, NewBoard) :-
   nth0(Y, Board, Line),
   setCell(X, Elem, Line, Nline),
   setCell(Y, Nline, Board, NewBoard).
 
-
+%calculates the targets coords to where the Pawn is moving based on the offset (X,Y)
+%targetCoords(+Pawn, +X, +Y, -Tx, -Ty)
 targetCoords(Pawn, X, Y, Tx, Ty) :-
 	position(Pawn, Px, Py),
 	Tx is Px + X*2,
 	Ty is Py + Y*2.
 
-
+%cleans the position (Px,Py) of the board accordingly to the cell
+%emptyPosition(+Px,+Py,+Board,-NBoard)
 emptyPosition(Px,Py,Board,NBoard) :-
 	(((Px =:= 6 ; Px =:= 14) , Py =:= 6) , setBoardCell(Px, Py, [orange, base], Board, NBoard));
 	(((Px =:= 6 ; Px =:= 14) , Py =:= 20) , setBoardCell(Px, Py, [yellow, base], Board, NBoard));
 	(setBoardCell(Px, Py, square, Board, NBoard)).
 
-
+%checks if the Player hasWalls
+%hasWalls(+Player)
 hasWalls(Player) :-
 	wallNumber(Player, H, V),
 	(H =\= 0 ; V =\= 0).
 
 
-
+%moves the Pawn with the (X,Y) offset
+%moveOneSpace(+Pawn, +X, +Y, +Board, -NewBoard)
 moveOneSpace(Pawn, X, Y, Board, NewBoard) :-
 	targetCoords(Pawn, X, Y, Nx, Ny),
 	retract(position(Pawn, Px, Py)),
@@ -37,7 +42,9 @@ moveOneSpace(Pawn, X, Y, Board, NewBoard) :-
 validPosition(_, _, 0, 0,0,0) :-
 		true.
 
-
+%checks if the position to where the Pawn is trying to move is valid and instantiate (Nx,Ny)
+% to the new position that are diferent if the player jumps over other player
+%validPosition(+Pawn, +Board, +X, +Y,-Nx,-Ny)
 validPosition(Pawn, Board, X, Y,Nx,Ny) :-
 	targetCoords(Pawn, X,Y, Tx,Ty),
 	inBounds(Tx, Ty),
@@ -57,7 +64,8 @@ validPosition(_, _, _, _,_,_) :-
 	displayLog('---- You can \'t move to that position. ----'),
 	fail.
 
-
+%checks if there is no wall blocking the position to where the Pawn is trying to move
+%noWallBlocking(+Pawn, +Board, +X, +Y)
 noWallBlocking(Pawn, Board, X, Y) :-
 	position(Pawn, Px, Py),
 	wallCoords(X,Y, Px,Py, Wx, Wy),
@@ -65,14 +73,16 @@ noWallBlocking(Pawn, Board, X, Y) :-
 	checkWallColision(Elem).
 
 
-
+%checks if it's possible to jump over the other player
+%checkJumpOver(+Pawn,+X,+Y,-Nx,-Ny)
 checkJumpOver(Pawn,X,Y,Nx,Ny) :-
     Nx is X + X,
     Ny is Y + Y,
     targetCoords(Pawn, Nx,Ny, Tx,Ty),
   	inBounds(Tx, Ty).
 
-
+%check's if the player is in the board bounds
+%inBounds(+Tx, +Ty)
 inBounds(Tx, Ty) :-
 	Tx >= 0, Tx < 21,
 	Ty >= 0, Ty < 27.
@@ -90,7 +100,8 @@ placeWall(Player, _, _, 'v', _, _) :-
 	displayLog('---- You\'re out of vertical walls ----'),
 	fail.
 
-
+%check if it's possible to place a wall and if it is place it creating a NewBoard
+%placeWall(+Player,+X, +Y,+O,+Board, -NewBoard)
 placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
 	checkWallCoords(X, Y,'h',Board),
   manageEdges(remove, X,Y,'h'),
@@ -124,7 +135,8 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
 	Ny is Y + 2,
 	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
 
-
+%check' if the player has path to the targets after placing a wall
+%playerHasPath(+X, +Y, +O, +Cost1, +Cost2, +Cost3, +Cost4, +Cost5, +Cost6, +Cost7, +Cost8)
 playerHasPath(_, _, _, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8) :-
   Cost1 =\= 0,
   Cost2 =\= 0,
@@ -140,7 +152,8 @@ playerHasPath(X, Y, O, _, _, _, _, _, _, _, _) :-
   displayLog('You can\'t fully block a player'),
   fail.
 
-
+%manages the edges of the graph removing edges if a wall is placed so that the graph loses connectivity in that part
+%manageEdges(+Management, +X,+Y,+O)
 manageEdges(Management, X,Y,'h') :-
   retract(graph(G)),
   Y1 is Y - 1,
@@ -163,7 +176,8 @@ manageEdges(Management, X,Y,'v') :-
   ),
   assert(graph(Ng)).
 
-
+% auxiliar to the placeWall predicate, check's if it's possible to place a wall with position (X,Y) and Orientatio O
+%checkWallCoords(+X, +Y, +O, +Board)
 checkWallCoords(X, Y,'v',Board) :-
 	X mod 2 =:= 1,
 	Y mod 2 =:= 0,
@@ -191,7 +205,8 @@ checkWallCoords(_,_,_,_) :-
 	fail.
 
 
-
+%check's if there is no wall placed at the position X,Y with Orientation O
+%noWallPlaced(+Board, +X, +Y, +O)
 noWallPlaced(Board, X, Y, 'h') :-
   Nx is round(X/2),
   elementCoords(Board, Nx, Y, Elem1),
@@ -206,7 +221,8 @@ noWallPlaced(Board, X, Y, 'v') :-
   elementCoords(Board, X, Ny, Elem2),
   (Elem1 = [_, empty] , Elem2 = [_, empty]).
 
-
+%check's if the wall that is trying to be placed is not crossing another wall
+%noWallCrossing(+Board, +X, +Y, +O)
 noWallCrossing(Board, X, Y, 'h') :-
   Nx is round(X/2),
   elementCoords(Board, Nx, Y, Elem1),
@@ -223,13 +239,14 @@ noWallCrossing(Board, X, Y, 'v') :-
 
 
 
-%posicao da parede que tem que ser atravessada para passar para a proxima posição
-% x,y é o offset px,py posicao do jogador wx, wy é o retorno com as coordenadas da parede
+%Calculates the wall Coords to where the player is trying to move, based on the offset of the movement and the player position
+%wallCoords(+X,+Y,+Px,+Py,-Wx,-Wy)
 wallCoords(X,Y,Px,Py,Wx,Wy) :-
   (X =:= 0 , Wx is round(Px/2) , Wy is Py + Y);
   (Y =:= 0 , Wx is Px + X , Wy is Py).
 
-
+%fails if the wall received is placed, suceeds if it is not
+%checkWallColision(+Wall)
 checkWallColision([_ | [placed | _ ]]) :-
 	displayLog('----There is a wall in the way you have to choose another path!----'),
 	fail.

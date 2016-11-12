@@ -1,3 +1,4 @@
+%external representation
 % 3x3 Components:
 % Square
 translate(square, 'top', '   ').
@@ -53,7 +54,8 @@ translate([horizontal, empty], 'single', '----- ').
 translate([horizontal, placed], 'single', 'XXXXX ').
 
 
-
+% displays the board
+% displayBoard(+Ls)
 displayBoard(Ls) :-
 	nl,
 	write('******************************BLOCKADE*****************************'), nl,

@@ -1,11 +1,13 @@
 :- ensure_loaded('board/graph.pl').
 :- ensure_loaded('utils.pl').
 
-
+%calculates the distance between the point (X,Y) and (TargetX,TargetY)
+%distance(+X,+Y,+TargetX,+TargetY,-N)
 distance(X,Y,TargetX,TargetY,N) :-
   N is round(abs(X - TargetX)/2 +  abs(Y - TargetY)/2).
 
-
+%evaluates the best pawn to move
+%evaluateBestPawn(+Player,+N)
 evaluateBestPawn(Player,N) :-
   evaluateMinPath(Player, 1, Path1, Cost1, Path2, Cost2),
   evaluateMinPath(Player, 2, Path3, Cost3, Path4, Cost4),
@@ -14,7 +16,8 @@ evaluateBestPawn(Player,N) :-
   min([MinPlayer1, MinPlayer2], MinCost),
   choosePlayer(MinCost, MinPlayer1, MinPlayer2, N).
 
-
+%auxiliar to the evaluateBestPawn predicate choose the best player based on the distance and if the distances are equal choose's a player randomly
+%choosePlayer(+Nend, +NPlayer1, +NPlayer2, -N)
 choosePlayer(Nend, NPlayer1, NPlayer2, N) :-
   Nend =:= NPlayer1, Nend =:= NPlayer2, random_member(RandPlayer, [1,2]), N is RandPlayer.
 
@@ -24,7 +27,8 @@ choosePlayer(Nend, NPlayer1, _, N) :-
 choosePlayer(Nend, _, NPlayer2, N) :-
   Nend =:= NPlayer2 , N is 2.
 
-
+%evaluates the best direction based on path finding (considering the wall placement)
+%evaluateBestDirectionPro(+Player, +Id, -Direction)
 evaluateBestDirectionPro(Player, Id, Direction) :-
   position([Player, Id], X, Y),
   evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2),
@@ -33,7 +37,8 @@ evaluateBestDirectionPro(Player, Id, Direction) :-
   OffsetY is round((Ny - Y)/2),
   Direction = [OffsetX, OffsetY].
 
-
+%evaluates the minimum path to the to targets of the Pawn(Player,Id), instatiating the values of the path and cost
+%evaluateMinPath(+Player, +Id, -Path1, -Cost1, -Path2, -Cost2)
 evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   position([Player,Id], X, Y),
   graph(G),
@@ -45,8 +50,9 @@ evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   (min_path(V1, V2, G, Path1, Cost1) ; (Path1 = [], Cost1 is 0)),
   (min_path(V1, V3, G, Path2, Cost2) ; (Path2 = [], Cost2 is 0)).
 
-
-evaluateBestDirection(Player,Id,Directions):-
+%evaluates the best direction based on the distance to the target's (not considering the wall placement)
+%evaluateBestDirection(+Player,+Id,-Directions)
+evaluateBestDirection(Player,Id,Directions) :-
   position([Player,Id],X,Y),
   %calcular distancia a que fica do targer
   %North
@@ -65,12 +71,14 @@ evaluateBestDirection(Player,Id,Directions):-
   samsort( [[N,1],[S,2],[W,3],[E,4]],  AuxDirections),
   shuffleList(AuxDirections,Directions).
 
-
+%shuffle's a list, mantaining the head unaltered
+%evaluateBestDirection(+Player,+Id,-Directions)
 shuffleList([H|T],Nlist):-
   random_permutation(T, NewT),
   Nlist = [H|NewT].
 
-
+%get the coordintes of the best position to move considering to path and to costs
+%getBestCoordinates(+Path1, +Cost1, +Path2, +Cost2, -NewCoords)
 getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
   Cost1 =< Cost2, !,
   nth0(1, Path1, NewCoords).
@@ -80,7 +88,8 @@ getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
   nth0(1, Path2, NewCoords).
 
 
-
+%evalutes the best wall to place for the Player instatiating a list of the best Walls
+%evaluateBestWall(+Player,-Walls)
 evaluateBestWall(Player,Walls) :-
   getOponent(Player,Oponent),
   evaluateBestPawn(Oponent,Id),
@@ -95,6 +104,9 @@ evaluateBestWall(Player,Walls) :-
   createWallCoords([Oponent,Id],Elem4,W7,W8),
   Walls = [W1,W2,W3,W4,W5,W6,W7,W8].
 
+
+%instantiate to wall cords based on the pawn and direction
+%createWallCoords(+Pawn, +[_ , Direction],-Wall1,-Wall2)
 %north/south
 createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   (Direction = 1 ; Direction = 2 ),
@@ -118,7 +130,8 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
   Wall2 = [Wx,Wy2,O].
 
 
-%menor distancia das cordenadas x y a um dos target do player Player
+%gets the minor distance of the coordinates (X,Y) to the one of the target's of the Player
+%getBestDistanceToTarget(+X,+Y,+Player,-N)
 getBestDistanceToTarget(X,Y,Player,N) :-
     targePosition([Player, 1], Tx,Ty),
     distance(X,Y,Tx,Ty,N1),
@@ -126,7 +139,8 @@ getBestDistanceToTarget(X,Y,Player,N) :-
     distance(X,Y,Tx2,Ty2,N2),
     getSmaller(N1,N2,N).
 
-
-getSmaller(N1,N2,N):-
+%takes to number ans intatiates N with the smaller argument
+%getSmaller(+N1,+N2,-N)
+getSmaller(N1,N2,N) :-
   (N1 < N2, N is N1) ;
   (N1 >= N2, N is N2).
