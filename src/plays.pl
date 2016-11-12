@@ -6,7 +6,7 @@ play(M, L, Player, Board, NewBoard) :-
 	(M =:= 1, logMessagesState(1), playHuman(Player, Board, NewBoard));
 	(M =:= 2, Player = orange ,logMessagesState(1), playHuman(Player,Board,NewBoard));
 	(M =:= 2, Player = yellow ,logMessagesState(0), playBot(L, Player,Board,NewBoard));
-	(M =:= 3, logMessagesState(0), playBot(L, Player, Board, NewBoard)).
+	(M =:= 3, waitInput,logMessagesState(0), playBot(L, Player, Board, NewBoard)).
 
 
 

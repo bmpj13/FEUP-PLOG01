@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  12 NOV 2016 17:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  12 NOV 2016 18:33
 entering extended mode
 **./blockade.tex
 (blockade.tex
@@ -482,76 +482,81 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 30.
  [1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <./feup-logo.png>] [2] (bl
-ockade.toc
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <./feup-logo.png>]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 5.
+(Font)              <7> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 5.
-)
+(Font)              <5> on input line 39.
+
+Overfull \hbox (14.04767pt too wide) in paragraph at lines 42--43
+\OT1/cmr/m/n/10 produc~ao do \OT1/cmr/bx/n/10 Bloc-kade\OT1/cmr/m/n/10 . Adi-c
+i-o-nal-mente, per-mite que os jo-ga-do-res se-jam []
+ []
+
+[2] (blockade.toc)
 \tf@toc=\write3
 \openout3 = `blockade.toc'.
 
-[3]
-Overfull \hbox (2.22292pt too wide) in paragraph at lines 57--59
+ [3]
+Overfull \hbox (2.22292pt too wide) in paragraph at lines 60--62
 []\OT1/cmr/m/n/10 Este tra-ba-lho foi de-sen-vol-vido no ^ambito da uni-dade cu
 r-ri-cu-lar \Pro-gramac~ao
  []
 
 [4]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 70.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 73.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 70.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
 
-<fig1.jpg, id=22, 714.67pt x 405.515pt>
+<fig1.jpg, id=24, 714.67pt x 405.515pt>
 File: fig1.jpg Graphic file (type jpg)
  <use fig1.jpg>
-Package pdftex.def Info: fig1.jpg used on input line 78.
+Package pdftex.def Info: fig1.jpg used on input line 81.
 (pdftex.def)             Requested size: 214.40265pt x 121.65543pt.
 
-<fig2.jpg, id=23, 501.875pt x 376.40625pt>
+<fig2.jpg, id=25, 501.875pt x 376.40625pt>
 File: fig2.jpg Graphic file (type jpg)
  <use fig2.jpg>
-Package pdftex.def Info: fig2.jpg used on input line 86.
+Package pdftex.def Info: fig2.jpg used on input line 89.
 (pdftex.def)             Requested size: 200.74643pt x 150.55983pt.
- [5 <./fig1.jpg> <./fig2.jpg>] <fig3.png, id=28, 545.78906pt x 564.60938pt>
+ [5 <./fig1.jpg> <./fig2.jpg>] <fig3.png, id=30, 532.23843pt x 552.56438pt>
 File: fig3.png Graphic file (type png)
  <use fig3.png>
-Package pdftex.def Info: fig3.png used on input line 99.
-(pdftex.def)             Requested size: 382.04973pt x 395.22386pt.
+Package pdftex.def Info: fig3.png used on input line 102.
+(pdftex.def)             Requested size: 372.56435pt x 386.79242pt.
 
-Overfull \hbox (37.04973pt too wide) in paragraph at lines 99--100
+Overfull \hbox (27.56435pt too wide) in paragraph at lines 102--103
  [] 
  []
 
-[6 <./fig3.png>] <fig4.png, id=33, 326.72063pt x 603.75563pt>
+[6 <./fig3.png>] <fig4.png, id=35, 326.72063pt x 603.75563pt>
 File: fig4.png Graphic file (type png)
  <use fig4.png>
-Package pdftex.def Info: fig4.png used on input line 111.
+Package pdftex.def Info: fig4.png used on input line 114.
 (pdftex.def)             Requested size: 228.70287pt x 422.62605pt.
 
-[7 <./fig4.png>] [8] [9] <fig5.png, id=46, 397.485pt x 185.94469pt>
+[7 <./fig4.png>] [8] [9] <fig5.png, id=47, 397.485pt x 185.94469pt>
 File: fig5.png Graphic file (type png)
 
 <use fig5.png>
 Package pdftex.def Info: fig5.png used on input line 201.
 (pdftex.def)             Requested size: 278.2376pt x 130.16037pt.
- <fig6.png, id=47, 377.91188pt x 172.39406pt>
+ <fig6.png, id=48, 377.91188pt x 172.39406pt>
 File: fig6.png Graphic file (type png)
  <use fig6.png>
 Package pdftex.def Info: fig6.png used on input line 207.
 (pdftex.def)             Requested size: 264.5365pt x 120.675pt.
 
-<fig7.png, id=48, 250.68657pt x 73.02281pt>
+<fig7.png, id=49, 250.68657pt x 73.02281pt>
 File: fig7.png Graphic file (type png)
  <use fig7.png>
 Package pdftex.def Info: fig7.png used on input line 215.
 (pdftex.def)             Requested size: 175.47939pt x 51.1156pt.
 
-<fig8.png, id=49, 176.91093pt x 73.77562pt>
+<fig8.png, id=50, 176.91093pt x 73.77562pt>
 File: fig8.png Graphic file (type png)
  <use fig8.png>
 Package pdftex.def Info: fig8.png used on input line 219.
@@ -562,23 +567,24 @@ No file blockade.bbl.
 
 ] (blockade.aux) ) 
 Here is how much of TeX's memory you used:
- 2342 strings out of 493334
- 30756 string characters out of 3139225
- 99045 words of memory out of 3000000
- 5829 multiletter control sequences out of 15000+200000
- 8847 words of font info for 31 fonts, out of 3000000 for 9000
+ 2351 strings out of 493334
+ 30866 string characters out of 3139225
+ 98045 words of memory out of 3000000
+ 5837 multiletter control sequences out of 15000+200000
+ 9206 words of font info for 32 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,7n,25p,504b,237s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
 mbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on blockade.pdf (12 pages, 509064 bytes).
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmti10.pfb>
+Output written on blockade.pdf (12 pages, 517251 bytes).
 PDF statistics:
- 86 PDF objects out of 1000 (max. 8388607)
+ 90 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
