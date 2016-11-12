@@ -227,7 +227,30 @@ Em ambiente de jogo é representado o tabuleiro atual e no fim deste são aprese
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusões}
-Que conclui deste projecto? Como poderia melhorar o trabalho desenvolvido?
+Tendo em conta resultado final da implementação, é possível afirmar que os principais objetivos deste projeto foram cumpridos:
+\begin{itemize}
+	\item Reprodução completa do jogo \textbf{Blockade}.
+	\item Modos de jogo \texttt{Humano vs Humano}, \texttt{Humano vs Computador}, \texttt{Computador vs Computador}.
+	\item Dois níveis de inteligência para o \textbf{\textit{bot}}.
+	\item Interface com o utilizador
+\end{itemize}
+\ \par
+Durante o desenvolvimento, foi possível perceber as potencialidades do \textit{Prolog}, e as vantagens de utilizar programação em lógica: a codificação das operações de natureza puramente lógica tornam-se mais intuitivas de realizar, e a implementação de certos algoritmos é facilitada pela natureza da linguagem. \\
+É também de notar que o \textit{Prolog} possui muitas bibliotecas que podem ajudar a construir código com qualidade e segurança e, por esse motivo, foram utilizadas sempre que fossem convenientes. \par
+No entanto, é importante reconhecer que, devido à inexperiência na linguagem, algumas implementações poderiam ser melhoradas. Especificamente, o tabuleiro de jogo possui 2 representações internas: uma em lista de listas, e outra em grafo. Isto acontece porque a representação inicial utilizada foi lista de listas, mas devido ao \textit{pathfinding}, foi também necessário a criação de um grafo. \par
+As duas representações foram mantidas porque:
+\begin{itemize}
+	\item A maioria dos predicados utiliza a representação em lista de listas.
+	\item O \textit{refactor} dos mesmos predicados seria custoso, em termos de tempo.
+	\item A utilização única de representação em grafo provocaria algum \textit{overhead} em certas componentes (p.ex no \textit{display} do tabuleiro).
+\end{itemize}
+No entanto, esta solução apresenta algumas desvantagens:
+\begin{itemize}
+	\item Ocupa mais espaço em memória.
+	\item A atualização do tabuleiro ocorre em dois sítios.
+\end{itemize}
+Um maior conhecimento prévio do \textit{Prolog}, e das bibliotecas que oferece, preveniria este acontecimento. \\ \par
+Concluímos, portanto, que este projeto possibilitou a aprendizagem e consolidação de um novo tipo de paradigma de programação, abrindo novos horizontes e novas possibilidades, na definição e implementação de soluções para novos problemas.
 
 
 \clearpage
