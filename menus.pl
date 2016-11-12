@@ -20,8 +20,8 @@ intro :-
   out(' |______/  \\_) \\___/  \\____)|_| \\_)\\_____| \\____||_____)'),
   out('                                                        '),
   out('                            Made by:'),
-  out('                                  Joao Barbosa'),
-  out('                                  Jose Martins'),
+  out('                                  Joao Barbosa - up201406241'),
+  out('                                  Jose Martins - up201404189'),
   out('                                                        ').
 
 blockade :-
@@ -33,13 +33,21 @@ blockade :-
   out('   5. Exit'),
   out('__________________________________________________________________________________'),
   read(Option),
-  ((Option =:= 5) ; (Option =:= 4, about) ; (dificultyMenu(Dificulty), game(Option,Dificulty))).
+  (
+    (Option =:= 5) ;
+    (Option =:= 4, about) ;
+    (
+      (Option =:= 1, clearScreen , game(Option,1));
+      ((dificultyMenu(Dificulty)), ((Dificulty =:= 3 , blockade) ; (clearScreen , game(Option,Dificulty))))
+    )
+  ).
 
 
 dificultyMenu(Option) :-
   intro,
   out('   1. Hard'),
   out('   2. Easy'),
+  out('   3. Back'),
   read(Option).
 
 waitInput :-

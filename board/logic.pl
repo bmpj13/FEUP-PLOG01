@@ -136,7 +136,9 @@ playerHasPath(_, _, _, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8) :
   Cost8 =\= 0.
 
 playerHasPath(X, Y, O, _, _, _, _, _, _, _, _) :-
-  manageEdges(add, X, Y, O), fail.
+  manageEdges(add, X, Y, O),
+  displayLog('You can\'t fully block a player'),
+  fail.
 
 
 manageEdges(Management, X,Y,'h') :-
