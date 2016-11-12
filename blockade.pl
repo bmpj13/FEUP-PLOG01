@@ -7,14 +7,41 @@
 :- ensure_loaded('board/logic.pl').
 :- ensure_loaded('plays.pl').
 :- ensure_loaded('ai.pl').
+:- ensure_loaded('menus.pl').
+
+%numeros random com seed diferente
 :- now(Timestamp),
    setrand(Timestamp).
 
-%jogo humano vs humano
+%inicializacoes
+initGame(X):-
+  initGraph,
+  board(X).
+
+
+%fim
+ finalize(X):-
+   retract(board(_)),
+   assert(board(X)),
+   retractall(edge(_)),
+   retractall(vertex(_)),
+   retract(graph(_)),
+   retractall(wallNumber(_,_,_)),
+   assert(wallNumber(orange,9,9)),
+   assert(wallNumber(yellow,9,9)),
+   retractall(position(_,_,_)),
+   assert(position([orange, 1], 6, 6)),
+   assert(position([orange, 2], 14, 6)),
+   assert(position([yellow, 1], 6, 20)),
+   assert(position([yellow, 2], 14, 20)),
+   retract(currentPlayer(_)),
+   assert(currentPlayer(orange)).
+
+
+
 game(M) :-
-		%inicializacoes
-    initGraph,
-		board(X),
+
+    initGame(X),
 			repeat,
 				once(retract(board(BoardInit))),
 				once(displayBoard(BoardInit)),
@@ -22,9 +49,10 @@ game(M) :-
 			 	once(play(M, 1, P, BoardInit, BoardEnd)),
 				once(changeCurrentPlayer(P)),
 				once(assert(board(BoardEnd))),
-			checkEnd,
-		once(retract(board(_))),
-		once(assert(board(X))).% esta a guardar o board inicial para podermos executar outra vez no sictus é tambem preciso guardar as posições originais e tirar as antigas assim como numero de paredes .. fazer predicado !
+			checkEnd,!,
+     waitInput,
+	   finalize(X),
+     blockade.
 
 
 changeCurrentPlayer(P):-

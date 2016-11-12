@@ -50,7 +50,7 @@ validPosition(Pawn, Board, X, Y,Nx,Ny) :-
       checkJumpOver(Pawn,X,Y,Nx,Ny),
       Aux1 is Nx + X,
       Aux2 is Ny + Y, !,
-      noWallBlocking(Pawn, Board, Aux1, Aux2), write('after wall'))
+      noWallBlocking(Pawn, Board, Aux1, Aux2))
   ).
 
 validPosition(_, _, _, _,_,_) :-
@@ -60,21 +60,17 @@ validPosition(_, _, _, _,_,_) :-
 
 noWallBlocking(Pawn, Board, X, Y) :-
 	position(Pawn, Px, Py),
-	wallCoords(X,Y, Px,Py, Wx, Wy), format('~n Wx : ~w | Wy : ~w',[Wx, Wy]),
+	wallCoords(X,Y, Px,Py, Wx, Wy),
 	elementCoords(Board, Wx, Wy, Elem),
 	checkWallColision(Elem).
 
 
 
 checkJumpOver(Pawn,X,Y,Nx,Ny) :-
-    write('JUMP OVER'), nl, nl,
     Nx is X + X,
     Ny is Y + Y,
     targetCoords(Pawn, Nx,Ny, Tx,Ty),
   	inBounds(Tx, Ty).
-
-
-
 
 
 inBounds(Tx, Ty) :-
