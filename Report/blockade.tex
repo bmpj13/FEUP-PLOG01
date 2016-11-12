@@ -99,6 +99,8 @@ O jogo possui uma representação interna, utilizada para o processamento e arma
 \includegraphics[scale = 0.7]{fig3.png}
 \end{center}
 
+O tabuleiro é tambem representado internamente por um grafo, de modo a permitir a utilização de algoritmos de  ''Path Finding'' na avaliação das melhores jogadas e em algumas verificações.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Visualização do Tabuleiro} 
@@ -118,15 +120,17 @@ As jogadas são obtidas através do input do jogador ou através dos algoritmos 
 \newpage
 \subsection{Execução de Jogadas} 
 
-Depois de obtidas as coordenadas para a movimentação do jogador é utilizado o predicado validPosition(+Pawn,+ Board, +X,+ Y,-Nx,-Ny), este predicado recebe o offset (X,Y) para onde o jogador se quer mover em relação á sua posição atual e falha quando as coordenadas finais da ''futura'' posição do jogador se encontram fora das dimensões do tabuleiro ou quando existe uma parede a bloquear a movimentação para as novas coordenadas.\\
-Assim que a jogada se encontra validada é chamado o predicado moveOneSpace(+Pawn, +X, +Y, +Board, -NewBoard), que move o peão num offset (X,Y) criando um novo tabuleiro.\\
-Existe tambem outro predicado para validar e posicionar as paredes. Este denomina-se placeWall(+Player,+X,+ Y,+O,+Board, -NewBoard),  o predicado é bem sucedido quando as coordenadas da parede são validas, criando assim um novo tabuleiro.\\
-No entanto o predicado fallha quando as coordenadas são invalidas devido a um dos motivos:
+Depois de obtidas as coordenadas para a movimentação do jogador é utilizado o predicado validPosition(+Pawn,+ Board, +X,+ Y,-Nx,-Ny), este predicado recebe o offset (X,Y) para onde o jogador se quer mover em relação á sua posição atual e falha quando as coordenadas finais da ''futura'' posição do jogador se encontram fora das dimensões do tabuleiro ou quando existe uma parede a bloquear a movimentação para as novas coordenadas.
+\par Assim que a jogada se encontra validada é chamado o predicado moveOneSpace(+Pawn, +X, +Y, +Board, -NewBoard), que move o peão num offset (X,Y) criando um novo tabuleiro.
+\par Existe tambem outro predicado para validar e posicionar as paredes. Este denomina-se placeWall(+Player,+X,+ Y,+O,+Board, -NewBoard),  o predicado é bem sucedido quando as coordenadas da parede são validas, criando assim um novo tabuleiro.
+\par No entanto o predicado fallha quando as coordenadas são invalidas devido a um dos motivos:
 \begin{itemize}
 \item A parede está para lá dos limites do tabuleiro
 \item A parede está cruzada com outra parede
 \item A parede bloqueia completamente o jogador (ou seja quando o posicionamente da parede impossibilita que um dos peões deixe de ter um caminho para as bases adversárias)
 \end{itemize}
+
+Estes predicados podem ser encontrados no ficheiro board/logic.pl.
 
 
 Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do jogo. Exemplo: \textit{move(+Move, +Board, -NewBoard)}.
@@ -135,11 +139,55 @@ Validação e execução de uma jogada num tabuleiro, obtendo o novo estado do j
 
 \subsection{Final do Jogo} Verificação do fim do jogo, com identificação do vencedor. Exemplo: \textit{game\_over(+Board, -Winner)}.
 
-\subsection{Jogada do Computador} Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade. Por exemplo: \textit{choose\_move(+Level, +Board, -Move)}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Jogada do Computador} 
+
+Foram implementados dois niveis de dificuldade para a jogada do computador:
+
+\textbf{Nivel Facil}
+\begin{itemize}
+\item Este modo é totalmente aleatório, desta forma não realiza nenhuma consideração sobre o estado de jogo. Para criar a jogada são utilizados os predicados:
+	\begin{itemize}
+		\item randomMove(-X, -Y) - para calcular uma movimentação aleatória.
+		\item randomWall(-X, -Y, -O) - para calcular uma parede aleatória.
+	\end{itemize}
+	 Quando as coordenadas devolvidas não são validas, os predicados voltam a ser executados, até ser encontrada uma jogada possivel.
+\end{itemize}
+
+\textbf{Nivel Dificil}
+\begin{itemize}
+\item Este modo procura a melhor jogada possivel no momento, utilizando ''path finding'' para encontrar o caminho mais curto tendo em consideração todas as paredes já posicionadas, assim é escolhido de entre o dois peões do jogador o melhor a ser movido e a melhor direção para o mover.
+No que diz respeito ás paredes, é feito o processo contrário ou seja o predicado determina o melhor peão do oponente e a melhor direção para ele se movimentar tentando depois colocar uma parede a bloquea-lo, se não for possivel colocar a parede a bloquear a melhor direção do melhor peão do oponente é escolhida outra parede, de modo a bloquea-lo noutra direção.
+ Para criar a jogada são utilizados os predicados:
+ \begin{itemize}
+		\item evaluateBestPawn(+Player,-N) - para calcular o melhor peão a movimentar.
+		\item evaluateBestDirectionPro(+Player,+Id, -Direction)-  para calcular a melhor direção para o peão.
+		\item evaluateBestWall(+Player,-Walls)- para calcular uma lista ordenada com as melhores paredes a posicionar para bloquear o oponente de Player.
+	\end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade. Por exemplo: \textit{choose\_move(+Level, +Board, -Move)}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Interface com o Utilizador}
+
+
+
+
+
+
+
 
 Descrever o módulo de interface com o utilizador em modo de texto.
 

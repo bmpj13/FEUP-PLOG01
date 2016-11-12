@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  12 NOV 2016 13:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  12 NOV 2016 16:20
 entering extended mode
 **./blockade.tex
 (blockade.tex
@@ -527,21 +527,21 @@ Overfull \hbox (37.04973pt too wide) in paragraph at lines 99--100
  [] 
  []
 
-[6 <./fig3.png>] <fig4.png, id=33, 328.22626pt x 577.40718pt>
+[6 <./fig3.png>] <fig4.png, id=33, 326.72063pt x 603.75563pt>
 File: fig4.png Graphic file (type png)
  <use fig4.png>
-Package pdftex.def Info: fig4.png used on input line 109.
-(pdftex.def)             Requested size: 229.7568pt x 404.18228pt.
+Package pdftex.def Info: fig4.png used on input line 111.
+(pdftex.def)             Requested size: 228.70287pt x 422.62605pt.
 
 [7 <./fig4.png>]
-Overfull \hbox (48.74295pt too wide) in paragraph at lines 136--137
+Overfull \hbox (48.74295pt too wide) in paragraph at lines 140--141
 []\OT1/cmr/m/n/10 Verificac~ao do fim do jogo, com iden-ti-ficac~ao do ven-ce
 -dor. Exem-plo: \OT1/cmr/m/it/10 game[]over(+Board,
  []
 
-[8]
+[8] [9] [10]
 No file blockade.bbl.
-[9
+[11
 
 ] (blockade.aux) ) 
 Here is how much of TeX's memory you used:
@@ -559,9 +559,9 @@ gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2
 .9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts
 /type1/public/amsfonts/cm/cmti10.pfb>
-Output written on blockade.pdf (9 pages, 486197 bytes).
+Output written on blockade.pdf (11 pages, 490738 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
+ 75 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

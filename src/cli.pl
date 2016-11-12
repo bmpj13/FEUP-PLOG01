@@ -1,6 +1,11 @@
 %placing wall
+getPlaceWal(Answer) :-
+		out('Do you want to place a wall this turn?'),
+		out('1. yes || 2. no '),
+		read(Answer).
+
 getWallCoords(X, Y, O) :-
-		write('Wall coords'),nl,
+		out('Wall coords'),
 		write('Enter X coord: '),
 		read(X),
 		write('Enter Y coord: '),
@@ -29,14 +34,14 @@ convertDirection(M,X,Y) :-
 
 
 getMovDirection(M) :-
-		write('Direction'),nl,
-		write('1. North || 2. South || 3. West || 4. East || 5. None'),nl,
+		out('Direction'),
+		out('1. North || 2. South || 3. West || 4. East || 5. None'),
 		read(M).
 
 
 getPawnNumber(N) :-
-		write('Wich pawn do you want to move?'),nl,
-		write('1.Pawn number 1 || 2. Pawn number 2 '),nl,
+		out('Wich pawn do you want to move?'),
+		out('1.Pawn number 1 || 2. Pawn number 2 '),
 		read(N).
 
 

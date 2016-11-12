@@ -31,9 +31,14 @@ moveHuman(Pawn, Board, NewBoard) :-
 
 handleWall(Player, Board, NewBoard) :-
 	hasWalls(Player), !,
-	repeat,
-		once(getWallCoords(X, Y, O)),		% posicionar a parede
-	placeWall(Player, X, Y, O, Board, NewBoard). 	%ver se o numero de paredes for 0 não perguntar as coordenadas
+	getPlaceWal(Awnser),
+	(
+		(Awnser =:= 1,
+		repeat,
+			once(getWallCoords(X, Y, O)),		% posicionar a parede
+		placeWall(Player, X, Y, O, Board, NewBoard)); 	%ver se o numero de paredes for 0 não perguntar as coordenadas
+		(Awnser =:= 2,NewBoard = Board)
+	).
 
 handleWall(_, Board, Board) :-
 	true.
