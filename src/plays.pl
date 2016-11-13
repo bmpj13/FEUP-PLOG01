@@ -7,7 +7,7 @@ play(M, L, Player, Board, NewBoard) :-
 	(M =:= 1, logMessagesState(1), playHuman(Player, Board, NewBoard));
 	(M =:= 2, Player = orange ,logMessagesState(1), playHuman(Player,Board,NewBoard));
 	(M =:= 2, Player = yellow ,logMessagesState(0), playBot(L, Player,Board,NewBoard));
-	(M =:= 3, waitInput,logMessagesState(0), playBot(L, Player, Board, NewBoard)).
+	(M =:= 3, format("~n Next Player: ~s ~n",[Player]),waitInput,logMessagesState(0), playBot(L, Player, Board, NewBoard)).
 
 
 %make a play human side
@@ -131,7 +131,8 @@ moveOneSpaceRandom(Pawn, Board, NewBoard) :-
 	repeat,
 		randomMove(X, Y),
 	validPosition(Pawn, Board, X, Y,Nx,Ny),
-	moveOneSpace(Pawn, Nx, Ny, Board, NewBoard).
+	moveOneSpace(Pawn, Nx, Ny, Board, NewBoard),
+	displayBoard(NewBoard).
 
 %caculates a random offset (X,Y) to make a random move
 %randomMove(X, Y)
