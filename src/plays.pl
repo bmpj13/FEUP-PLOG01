@@ -115,7 +115,7 @@ moveOneSpaceBot(Pawn, [X,Y], Board,NewBoard) :-
 
 %iterate's a wall list trying to place one of the walls in the list
 %iterateWallList(+WallList, +Player, +Board, -NewBoard)
-iterateWallList([],Player,Board,Board) :- %ver cruzados tambem
+iterateWallList([], _, Board, Board) :- %ver cruzados tambem
 	 true.
 
 iterateWallList([[X,Y,O] | _], Player, Board, NewBoard) :-

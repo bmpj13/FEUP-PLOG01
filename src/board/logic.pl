@@ -105,11 +105,11 @@ placeWall(Player, _, _, 'v', _, _) :-
 placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
 	checkWallCoords(X, Y,'h',Board),
   manageEdges(remove, X,Y,'h'),
-  evaluateMinPath(Player, 1, P1, Cost1, P2, Cost2),
-  evaluateMinPath(Player, 2, P3, Cost3, P4, Cost4),
-  evaluateMinPath(Oponent, 1, P5, Cost5, P6, Cost6),
-  evaluateMinPath(Oponent, 2, P7, Cost7, P8, Cost8), !,
-  playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
+  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  playerHasPath(X, Y, 'h', Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nh is H - 1,
 	assert(wallNumber(Player, Nh, V)),
@@ -123,17 +123,18 @@ placeWall(Player,X, Y,'v',Board, NewBoard) :-
   getOponent(Player, Oponent),
 	checkWallCoords(X, Y,'v',Board),
   manageEdges(remove, X,Y,'v'),
-  evaluateMinPath(Player, 1, P1, Cost1, P2, Cost2),
-  evaluateMinPath(Player, 2, P3, Cost3, P4, Cost4),
-  evaluateMinPath(Oponent, 1, P5, Cost5, P6, Cost6),
-  evaluateMinPath(Oponent, 2, P7, Cost7, P8, Cost8), !,
-  playerHasPath(X, Y, O, Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
+  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  playerHasPath(X, Y, 'v', Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nv is V - 1,
 	assert(wallNumber(Player, H, Nv)),
   setBoardCell(X, Y, [vertical, placed], Board, AuxBoard),
 	Ny is Y + 2,
 	setBoardCell(X, Ny, [vertical, placed], AuxBoard, NewBoard).
+
 
 %check' if the player has path to the targets after placing a wall
 %playerHasPath(+X, +Y, +O, +Cost1, +Cost2, +Cost3, +Cost4, +Cost5, +Cost6, +Cost7, +Cost8)

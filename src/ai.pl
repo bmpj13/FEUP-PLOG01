@@ -9,8 +9,8 @@ distance(X,Y,TargetX,TargetY,N) :-
 %evaluates the best pawn to move
 %evaluateBestPawn(+Player,+N)
 evaluateBestPawn(Player,N) :-
-  evaluateMinPath(Player, 1, Path1, Cost1, Path2, Cost2),
-  evaluateMinPath(Player, 2, Path3, Cost3, Path4, Cost4),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
   min([Cost1, Cost2], MinPlayer1),
   min([Cost3, Cost4], MinPlayer2),
   min([MinPlayer1, MinPlayer2], MinCost),
@@ -79,11 +79,11 @@ shuffleList([H|T],Nlist):-
 
 %get the coordintes of the best position to move considering to path and to costs
 %getBestCoordinates(+Path1, +Cost1, +Path2, +Cost2, -NewCoords)
-getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+getBestCoordinates(Path1, Cost1, _, Cost2, NewCoords) :-
   Cost1 =< Cost2, !,
   nth0(1, Path1, NewCoords).
 
-getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+getBestCoordinates(_, Cost1, Path2, Cost2, NewCoords) :-
   Cost2 < Cost1, !,
   nth0(1, Path2, NewCoords).
 
