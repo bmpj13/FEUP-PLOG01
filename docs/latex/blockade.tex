@@ -9,14 +9,18 @@
 \usepackage{verbatim}
 \usepackage{fancyhdr}
 
+
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead{}
 \fancyfoot[R]{\thepage}
 
+\graphicspath{{./images/}}
+
 
 \begin{document}
+\nocite{*}
 
 \setlength{\textwidth}{16cm}
 \setlength{\textheight}{22cm}
@@ -46,7 +50,7 @@
 No âmbito da unidade curricular "Programação em Lógica" do 3º ano do Mestrado Integrado em Engenharia Informática e Computação, da Faculdade de Engenharia da Universidade do Porto, foi proposto o desenvolvimento de um jogo de tabuleiro, utilizando a linguagem \textit{Prolog}. O jogo  escolhido denomina-se \textbf{Blockade}. \par
 A utilização de \textit{Prolog}, uma linguagem do paradigma da programação lógica, mostrou-se não só interessante, pois foi possível perceber as grandes potencialidades e vantagens da linguagem, como também desafiante, devido à inexperiência neste tipo de paradigma. \par
 Para o desenvolvimento do projeto, foi necessário perceber e estruturar os conceitos-chave do jogo, de forma a obter a melhor forma de proceder à implementação do jogo. Além disso, foi necessário aprofundar o conhecimento sobre as bibliotecas disponibilizadas pela linguagem, para garantir qualidade e segurança no código. \par
-O resultado final da implementação do jogo mostra-se como uma boa reprodução do \textbf{Blockade}. Adicionalmente, permite que os jogadores sejam \mbox{\textbf{humanos}} (que escolhem as jogadas que pretendem fazer), ou \textbf{\textit{bots}} (que avaliam a melhor jogada que podem executar).
+O resultado final da implementação do jogo mostra-se como uma boa reprodução do \textbf{Blockade}. Adicionalmente, permite que os jogadores sejam \textbf{humanos} (que escolhem as jogadas que pretendem fazer), ou \textbf{\textit{bots}} (que avaliam a melhor jogada que podem executar).
 
 \newpage
 
@@ -62,10 +66,9 @@ O resultado final da implementação do jogo mostra-se como uma boa reprodução
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introdução}
-
-
-Este trabalho foi desenvolvido no âmbito da unidade curricular “Programação em Lógica” do 3º ano do Mestrado Integrado em Engenharia Informática e Computação da Faculdade de Engenharia da Universidade do Porto. O seu objetivo é o de implementar em Prolog um jogo de tabuleiro de 2 jogadores de forma a possibilitar o jogo Humano vs. Humano, Humano vs. Computador e Computador vs. Computador.
-Neste relatório será descrito o jogo que escolhemos para a nossa implementação – o “Blockade” – assim como as suas regras. De seguida, serão detalhadas algumas funcionalidades e características da nossa implementação, desde a representação do jogo e visualização do tabuleiro até a avaliação de jogadas pelo computador e final do jogo. Por fim, serão apresentadas as conclusões que obtivemos da realização deste trabalho, bem como a sua bibliografia.
+Este projeto foi desenvolvido no âmbito da unidade curricular “Programação em Lógica” do 3º ano do Mestrado Integrado em Engenharia Informática e Computação, da Faculdade de Engenharia da Universidade do Porto. O seu objetivo é implementar em \textit{Prolog} um jogo de tabuleiro de 2 jogadores, possibilitando os modos de jogo \texttt{Humano vs. Humano, Humano vs. Computador e Computador vs. Computador}. \par
+Neste relatório será descrito o jogo que escolhemos para a nossa implementação – o \textbf{Blockade} – assim como as suas regras. De seguida, serão detalhadas algumas funcionalidades e características da nossa implementação, desde a representação do jogo e visualização do tabuleiro, até à avaliação de jogadas pelo computador e final do jogo. \par
+Por fim, serão apresentadas as conclusões que obtivemos da realização deste trabalho, bem como a sua bibliografia.
 
 
 
@@ -73,7 +76,7 @@ Neste relatório será descrito o jogo que escolhemos para a nossa implementaç�
 \newpage
 \section{O Jogo Blockade}
 
-Blockade trata-se de um jogo de tabuleiro produzido pela primeira vez em 1975 pela Lakeside Games.
+Blockade trata-se de um jogo de tabuleiro, produzido pela primeira vez em 1975 pela Lakeside Games.
 O jogo é desenhado para 2 jogadores sendo que cada um possui: 
 
 \begin{itemize}
@@ -82,14 +85,13 @@ O jogo é desenhado para 2 jogadores sendo que cada um possui:
 \item 9 Paredes azuis (que só podem ser colocadas horizontalmente)
 \end{itemize}
 
-O tabuleiro do jogo é um quadriculado com dimensões 11x14, com 2 pontos amarelos e dois pontos laranja que representam a base, e as posições iniciais, dos dois peões de cada jogador. Estes pontos distam 4 quadrículas de cada canto na diagonal. 
+O tabuleiro do jogo é um quadriculado com dimensões 11x14, com 2 pontos amarelos e dois pontos laranja que representam as bases, e as posições iniciais, dos dois peões de cada jogador. Estes pontos distam 4 quadrículas de cada canto na diagonal. 
 
 \begin{center}
 \includegraphics[scale = 0.3]{fig1.jpg}
 \end{center}
 
-Trata-se de um jogo de turnos, em que em cada turno um jogador pode mover um dos seus peões, uma ou duas quadrículas (horizontalmente, verticalmente ou uma combinação das duas), e posicionar uma parede de modo a tentar bloquear os movimentos do adversário.
-As paredes ocupam sempre duas quadrículas e devem ser posicionadas de acordo com a sua cor. Peões podem saltar por cima de outros peões que estejam a bloquear o seu caminho.
+Trata-se de um jogo de turnos, em que em cada turno um jogador pode mover um dos seus peões, uma ou duas quadrículas (horizontalmente, verticalmente ou uma combinação das duas), e posicionar uma parede de modo a tentar bloquear os movimentos do adversário. As paredes ocupam sempre duas quadrículas e devem ser posicionadas de acordo com a sua cor. Peões podem saltar por cima de outros peões que estejam a bloquear o seu caminho. \par
 O objetivo do jogo é levar um dos seus peões até à base de um dos peões do adversário. Quando os jogadores ficarem sem paredes para colocar, continuam a mover-se até que alguém vença o jogo. 
 
 \begin{center}
@@ -106,10 +108,10 @@ O jogo possui uma representação interna, utilizada para o processamento e arma
 
 
 \begin{center}
-\includegraphics[scale = 0.7]{fig3.png}
+\includegraphics[scale = 0.64]{fig3.png}
 \end{center}
 
-O tabuleiro é tambem representado internamente por um grafo, de modo a permitir a utilização de algoritmos de  'Path Finding' na avaliação das melhores jogadas e em algumas verificações.
+O tabuleiro é tambem representado internamente por um grafo, de modo a permitir a utilização de algoritmos de \textit{pathfinding} na avaliação das melhores jogadas, e em algumas verificações.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -118,29 +120,32 @@ O tabuleiro será visualizado através da utilização de caracteres ASCII para 
 
 
 \begin{center}
-\includegraphics[scale = 0.7]{fig4.png}
+\includegraphics[scale = 0.68]{fig4.png}
 \end{center}
 
 
 \subsection{Lista de Jogadas Válidas} 
 
-As jogadas são obtidas através do input do jogador ou através dos algoritmos implementados para permitir o calculo da jogada do computador, sendo posteriormente verificada a sua validade.
+As jogadas são obtidas através do \textit{input} do jogador, ou através dos algoritmos implementados para permitir o cálculo da jogada do computador, sendo posteriormente verificada a sua validade. \par
+Note-se que, por norma, não é necessária a utilização uma \textbf{lista} de jogadas válidas, devido à natureza do jogo. Os predicados que retornam listas de possibilidades são:
+\begin{itemize}
+	\item  \textit{evaluateBestDirection(+Player,+Id,-Directions)}
+	\item 	\textit{evaluateBestWall(+Player,-Walls)}
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Execução de Jogadas} 
 
-Depois de obtidas as coordenadas para a movimentação do jogador é utilizado o predicado \textit{validPosition(+Pawn,+ Board, +X,+ Y,-Nx,-Ny)}, este predicado recebe o offset (X,Y) para onde o jogador se quer mover em relação á sua posição atual e falha quando as coordenadas finais da ''futura'' posição do jogador se encontram fora das dimensões do tabuleiro ou quando existe uma parede a bloquear a movimentação para as novas coordenadas.
-\par Assim que a jogada se encontra validada é chamado o predicado \textit{moveOneSpace(+Pawn, +X, +Y, +Board, -NewBoard)}, que move o peão num offset (X,Y) criando um novo tabuleiro.
-\par Existe tambem outro predicado para validar e posicionar as paredes, este denomina-se \textit{placeWall(+Player,+X,+ Y,+O,+Board, -NewBoard)},  o predicado é bem sucedido quando as coordenadas da parede são validas, criando assim um novo tabuleiro.
-\par No entanto o predicado fallha quando as coordenadas são invalidas devido a um dos motivos:
+Depois de obtidas as coordenadas para a movimentação do jogador é utilizado o predicado \textit{validPosition(+Pawn,+ Board, +X,+ Y, -Nx, -Ny)}. Este predicado recebe o offset (X,Y) para onde o jogador se quer mover em relação à sua posição atual, e falha quando as coordenadas finais da ''futura'' posição do jogador se encontram fora das dimensões do tabuleiro, ou quando existe uma parede a bloquear a movimentação para as novas coordenadas.
+\par Depois de a jogada ser validada, o predicado \textit{moveOneSpace(+Pawn, +X, +Y, +Board, -NewBoard)} move o peão num offset (X,Y), criando um novo tabuleiro.
+\par Existe tambem outro predicado para validar e posicionar as paredes, denominado \textit{placeWall(+Player,+X,+ Y,+O,+Board, -NewBoard)}. O predicado é bem sucedido quando as coordenadas da parede são validas, i.e. quando o seguinte não acontece:
 \begin{itemize}
 	\item A parede está para lá dos limites do tabuleiro
 	\item A parede está cruzada com outra parede
-	\item A parede bloqueia completamente o jogador (ou seja quando o posicionamento da parede impossibilita que um dos peões deixe de ter um caminho para as bases adversárias)
+	\item A parede bloqueia completamente o jogador (ou seja quando o posicionamento da parede impossibilita que um dos peões deixe de ter caminho para as bases adversárias)
 \end{itemize}
-
-Estes predicados podem ser encontrados no ficheiro board/logic.pl.
+Se \textit{placeWall} for invocado com sucesso, cria um novo tabuleiro com as informações atualizadas. Além disso, este predicado vai também atualizar o grafo do tabuleiro.
 
 
 
@@ -158,7 +163,7 @@ Este algoritmo avalia internamente o grafo, e determina qual o caminho de menor 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Final do Jogo} A verificação de que o jogo chegou ao fim é testada usando o predicado \mbox{\textit{checkEnd}}. Este predicado não precisa de argumentos, pois as posições dos jogadores são extraídas diretamente da base de dados, utilizando o predicado auxiliar \textit{position(+Player, -X, -Y)}. \par
-Se alguns dos jogadores chegar ao seu objetivo, i.e. a uma das bases do oponente, então o predicado retorna \textit{true}, e, consequentemente, termina o ciclo de jogo.
+Se algum dos jogadores chegar ao seu objetivo, i.e. a uma das bases do oponente, então o predicado retorna \textit{true}, e, consequentemente, termina o ciclo de jogo.
 
 
 
@@ -169,7 +174,7 @@ Foram implementados dois niveis de dificuldade para a jogada do computador:
 
 \textbf{Nivel Fácil}
 \begin{itemize}
-\item Este modo é totalmente aleatório, desta forma não realiza nenhuma consideração sobre o estado de jogo. Para criar a jogada são utilizados os predicados:
+\item Este modo é totalmente aleatório, e não realiza nenhuma consideração sobre o estado de jogo. Para criar a jogada são utilizados os predicados:
 	\begin{itemize}
 		\item \textit{randomMove(-X, -Y)} - para calcular uma movimentação aleatória.
 		\item \textit{randomWall(-X, -Y, -O)} - para calcular uma parede aleatória.
@@ -179,9 +184,11 @@ Foram implementados dois niveis de dificuldade para a jogada do computador:
 
 \textbf{Nivel Difícil}
 \begin{itemize}
-\item Este modo procura a melhor jogada possivel no momento, utilizando ''path finding'' para encontrar o caminho mais curto tendo em consideração todas as paredes já posicionadas, assim é escolhido de entre os dois peões do jogador o melhor a ser movido e a melhor direção para o mover.
-No que diz respeito ás paredes, é feito o processo contrário ou seja o predicado determina o melhor peão do oponente e a melhor direção para ele se movimentar tentando depois colocar uma parede a bloquea-lo, se não for possivel colocar a parede a bloquear a melhor direção do melhor peão do oponente é escolhida outra parede, de modo a bloquea-lo noutra direção.
- Para criar a jogada neste nivel são utilizados os predicados:
+\item Este modo procura a melhor jogada possivel no momento, utilizando \textit{pathfinding} para encontrar o caminho mais curto, tendo em consideração todas as paredes já posicionadas. Assim, é escolhido de entre os dois peões do jogador o melhor a ser movido, e a melhor direção para o mover.
+\par No que diz respeito às paredes, é feito o processo contrário ou seja, o predicado determina o melhor peão do oponente e a melhor direção para ele se movimentar. 
+\par Utilizando estas informações, o computador calcula a lista de jogadas que melhor bloqueiam o movimento do oponente, ordenadas por ordem de crescente de qualidade. Se uma parede não pode ser colocada, é escolhida a seguinte, num processo recursivo. Se nenhuma parede pode ser colocada, então o computador decide não colocar nenhuma parede nessa jogada.
+
+ Para criar a jogada neste nível são utilizados os predicados:
  \begin{itemize}
 		\item \textit{evaluateBestPawn(+Player,-N)} - para calcular o melhor peão a movimentar.
 		\item \textit{evaluateBestDirectionPro(+Player,+Id, -Direction)}-  para calcular a melhor direção para o peão.
@@ -256,7 +263,8 @@ No entanto, esta solução apresenta algumas desvantagens:
 	\item Ocupa mais espaço em memória.
 	\item A atualização do tabuleiro ocorre em dois sítios.
 \end{itemize}
-Um maior conhecimento prévio do \textit{Prolog}, e das bibliotecas que oferece, preveniria este acontecimento. \\ \par
+Um maior conhecimento prévio do \textit{Prolog}, e das bibliotecas que oferece, preveniria este acontecimento. \par
+\ \par
 Concluímos, portanto, que este projeto possibilitou a aprendizagem e consolidação de um novo tipo de paradigma de programação, abrindo novos horizontes e novas possibilidades, na definição e implementação de soluções para novos problemas.
 
 
@@ -269,6 +277,6 @@ Concluímos, portanto, que este projeto possibilitou a aprendizagem e consolida�
 \newpage
 \appendix
 \section{Anexo Código}
-Código Prolog implementado devidamente comentado e outros elementos úteis que não sejam essenciais ao relatório.
+O código encontra-se disponível no ficheiro \textit{blockade.zip}.
 
 \end{document}

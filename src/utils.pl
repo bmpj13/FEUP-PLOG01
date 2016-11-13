@@ -1,6 +1,3 @@
-:- dynamic(position/3).
-:- dynamic(wallNumber/3).
-:- dynamic(currentPlayer/1).
 :- dynamic(logMessages/1).
 
 %set's a Index of a list to the Elem instatiating a NewList with the result
@@ -16,11 +13,11 @@ elementCoords(Board, X, Y, Elem) :-
 		nth0(Y, Board, Line),
 		nth0(X, Line, Elem).
 
-%get's the Oponent of the Player
-%getOponent(+Player,-Oponent)
-getOponent(Player,Oponent) :-
-  (Player = yellow, Oponent = orange);
-  (Player = orange, Oponent = yellow).
+%get's the Opponent of the Player
+%getOpponent(+Player,-Opponent)
+getOpponent(Player, Opponent) :-
+  (Player = yellow, Opponent = orange);
+  (Player = orange, Opponent = yellow).
 
 %convert's de direction M to coordinates (X,Y)
 %convertDirection(+M,-X,-Y)
@@ -57,25 +54,3 @@ logMessages(1).
 logMessagesState(X) :-
 	retract(logMessages(_)),
 	assert(logMessages(X)).
-
-
-
-%Initial Position's of the pawn's
-position([orange, 1], 6, 6).
-position([orange, 2], 14, 6).
-position([yellow, 1], 6, 20).
-position([yellow, 2], 14, 20).
-
-%Initial Wall Number
-%type,horizontal number, vertical number
-wallNumber(orange,9,9).
-wallNumber(yellow,9,9).
-
-%Initial Player
-currentPlayer(orange).
-%target position
-%targePosition([player, target number], X,Y)
-targePosition([yellow, 1], 6, 6).
-targePosition([yellow, 2], 14, 6).
-targePosition([orange, 1], 6, 20).
-targePosition([orange, 2], 14, 20).

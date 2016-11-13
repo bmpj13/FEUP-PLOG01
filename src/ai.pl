@@ -9,8 +9,8 @@ distance(X,Y,TargetX,TargetY,N) :-
 %evaluates the best pawn to move
 %evaluateBestPawn(+Player,+N)
 evaluateBestPawn(Player,N) :-
-  evaluateMinPath(Player, 1, Path1, Cost1, Path2, Cost2),
-  evaluateMinPath(Player, 2, Path3, Cost3, Path4, Cost4),
+  evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
+  evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
   min([Cost1, Cost2], MinPlayer1),
   min([Cost3, Cost4], MinPlayer2),
   min([MinPlayer1, MinPlayer2], MinCost),
@@ -43,8 +43,8 @@ evaluateMinPath(Player, Id, Path1, Cost1, Path2, Cost2) :-
   position([Player,Id], X, Y),
   graph(G),
   V1 = [X,Y],
-  targePosition([Player, 1], Tx1, Ty1),
-  targePosition([Player, 2], Tx2, Ty2),
+  targetPosition([Player, 1], Tx1, Ty1),
+  targetPosition([Player, 2], Tx2, Ty2),
   V2 = [Tx1, Ty1],
   V3 = [Tx2, Ty2],
   (min_path(V1, V2, G, Path1, Cost1) ; (Path1 = [], Cost1 is 0)),
@@ -79,11 +79,11 @@ shuffleList([H|T],Nlist):-
 
 %get the coordintes of the best position to move considering to path and to costs
 %getBestCoordinates(+Path1, +Cost1, +Path2, +Cost2, -NewCoords)
-getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+getBestCoordinates(Path1, Cost1, _, Cost2, NewCoords) :-
   Cost1 =< Cost2, !,
   nth0(1, Path1, NewCoords).
 
-getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
+getBestCoordinates(_, Cost1, Path2, Cost2, NewCoords) :-
   Cost2 < Cost1, !,
   nth0(1, Path2, NewCoords).
 
@@ -91,17 +91,17 @@ getBestCoordinates(Path1, Cost1, Path2, Cost2, NewCoords) :-
 %evalutes the best wall to place for the Player instatiating a list of the best Walls
 %evaluateBestWall(+Player,-Walls)
 evaluateBestWall(Player,Walls) :-
-  getOponent(Player,Oponent),
-  evaluateBestPawn(Oponent,Id),
-  evaluateBestDirection(Oponent,Id,Direction),
+  getOpponent(Player,Opponent),
+  evaluateBestPawn(Opponent,Id),
+  evaluateBestDirection(Opponent,Id,Direction),
   nth0(0,Direction,Elem1),
-  createWallCoords([Oponent,Id],Elem1,W1,W2),
+  createWallCoords([Opponent,Id],Elem1,W1,W2),
   nth0(1,Direction,Elem2),
-  createWallCoords([Oponent,Id],Elem2,W3,W4),
+  createWallCoords([Opponent,Id],Elem2,W3,W4),
   nth0(2,Direction,Elem3),
-  createWallCoords([Oponent,Id],Elem3,W5,W6),
+  createWallCoords([Opponent,Id],Elem3,W5,W6),
   nth0(3,Direction,Elem4),
-  createWallCoords([Oponent,Id],Elem4,W7,W8),
+  createWallCoords([Opponent,Id],Elem4,W7,W8),
   Walls = [W1,W2,W3,W4,W5,W6,W7,W8].
 
 
@@ -133,9 +133,9 @@ createWallCoords(Pawn,[_ , Direction],Wall1,Wall2) :-
 %gets the minor distance of the coordinates (X,Y) to the one of the target's of the Player
 %getBestDistanceToTarget(+X,+Y,+Player,-N)
 getBestDistanceToTarget(X,Y,Player,N) :-
-    targePosition([Player, 1], Tx,Ty),
+    targetPosition([Player, 1], Tx,Ty),
     distance(X,Y,Tx,Ty,N1),
-    targePosition([Player, 2], Tx2,Ty2),
+    targetPosition([Player, 2], Tx2,Ty2),
     distance(X,Y,Tx2,Ty2,N2),
     getSmaller(N1,N2,N).
 
