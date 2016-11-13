@@ -154,7 +154,7 @@ randomWall(X, Y, O) :-
 %checkBotWin(+Player,+N)
 checkBotWin(Player,N) :-
 	position([Player,N], X, Y),
-	targePosition([Player, 1], Tx1, Ty1),
-	targePosition([Player, 2], Tx2, _),
+	targetPosition([Player, 1], Tx1, Ty1),
+	targetPosition([Player, 2], Tx2, _),
 	(X =:= Tx1 ; X =:= Tx2),
 	 Y =:= Ty1.

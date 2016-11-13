@@ -103,12 +103,13 @@ placeWall(Player, _, _, 'v', _, _) :-
 %check if it's possible to place a wall and if it is place it creating a NewBoard
 %placeWall(+Player,+X, +Y,+O,+Board, -NewBoard)
 placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wall bloquear todos os caminhos ao jogador
+  getOpponent(Player, Opponent),
 	checkWallCoords(X, Y,'h',Board),
   manageEdges(remove, X,Y,'h'),
   evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
   evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
-  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
-  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  evaluateMinPath(Opponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Opponent, 2, _, Cost7, _, Cost8), !,
   playerHasPath(X, Y, 'h', Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nh is H - 1,
@@ -120,13 +121,13 @@ placeWall(Player,X, Y,'h',Board, NewBoard) :-%!!! não deixar dar place se a wal
 
 
 placeWall(Player,X, Y,'v',Board, NewBoard) :-
-  getOponent(Player, Oponent),
+  getOpponent(Player, Opponent),
 	checkWallCoords(X, Y,'v',Board),
   manageEdges(remove, X,Y,'v'),
   evaluateMinPath(Player, 1, _, Cost1, _, Cost2),
   evaluateMinPath(Player, 2, _, Cost3, _, Cost4),
-  evaluateMinPath(Oponent, 1, _, Cost5, _, Cost6),
-  evaluateMinPath(Oponent, 2, _, Cost7, _, Cost8), !,
+  evaluateMinPath(Opponent, 1, _, Cost5, _, Cost6),
+  evaluateMinPath(Opponent, 2, _, Cost7, _, Cost8), !,
   playerHasPath(X, Y, 'v', Cost1, Cost2, Cost3, Cost4, Cost5, Cost6, Cost7, Cost8),
 	retract(wallNumber(Player, H, V)),
 	Nv is V - 1,
