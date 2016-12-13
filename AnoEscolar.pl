@@ -16,7 +16,7 @@
 %resolve problema de uma turma
 resolveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
-  checkHasDiscipline(Class,Schedule),
+  checkHasDiscipline(Class,Schedule).
 
 
 
@@ -31,15 +31,15 @@ fillDisciplines(Days, [Dh | Dt], [H | T]):-
     fillDisciplines(Days,Dt,T).
 
 checkHasDiscipline([[DisciplineId,Test,Tpc] | Tail], Schedule) :-
-    checkSchedule(1, DisciplineId, Test, Tpc, Schedule).
+    checkSchedule(0, DisciplineId, Test, Tpc, Schedule).
 
 
 checkSchedule(_, _, [], [], _).
 
 checkSchedule(N, DisciplineId, [H1|Test], [H2|Tpc], Schedule) :-
-    Index is N mod 5,
-    element(Index, Schedule, L),
-    element(Elem, L, DisciplineId) #\/
-    (H1 #= 0 #/\ H2 #= 0),
+    Index is (N mod 5) + 1,
+    nth1(Index, Schedule, L),
+    (\+ member(L, DisciplineId),
+    H1 #= 0, H2 #= 0, !; true),
     N1 is N+1,
     checkSchedule(N1, DisciplineId, Test, Tpc, Schedule).
