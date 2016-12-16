@@ -1,14 +1,13 @@
 :-use_module(library(clpfd)).
-:- use_module(library(lists)).
-:- use_module(library(random)).
+:-use_module(library(lists)).
 
 % cada disciplina  1 a 4 dias por semana
-% cada disciplina tem 2 testes por periodo(meio e fim )
+% cada disciplina tem 2 testes por periodo(meio e fim )-> falta restringir a altura dos testes
 % alunos não podem ter mais de 2 testes por semana
 % alunos não podem ter testes em dias consecutivos
-% alunos não podem ter mais de 2 tpc por dia
+% alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
 % em pelo menos um dia por semana não pode haver tpc(um dia da semana que deve ser sempre o mesmo )
-% em cada disciplina só pode haver tpc em metade das aulas
+% em cada disciplina só pode haver tpc em metade das aulas(Afinal é VARIAVEL)
 % testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
 
 
@@ -20,10 +19,11 @@
 resolveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
-  twoTestsPerPeriod(Class),
-
+  %domain(NoTpcDay,1,5), % depois por todos os dias a 0 na lista de tpc no dia instanciado
+  twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM doPERIODO
+  testPlacementRestrictions(Days,Class),
   getLabelVars(Class,[],Res),
-  nl,write('Res'),write(Res),
+  write('res'),nl,
   labeling([],Res).
 
 
@@ -69,7 +69,40 @@ checkSchedule(N, DisciplineId, [H1|Test], [H2|Tpc], Schedule) :-
 
 twoTestsPerPeriod([]).
 
-twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]):-
+twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]) :-
     nth1(2,CurrentDiscipline,Tests),
     sum(Tests,#=,2),
     twoTestsPerPeriod(NextDiscipline).
+
+
+
+getNTestsDay([], _ , 0).
+
+getNTestsDay([CurrentDiscipline | NextDiscipline], Id, Value) :- !,
+    nth0(1,CurrentDiscipline,Tests),
+    nth0(Id,Tests,V),
+    Value #= V1 + V,
+    getNTestsDay(NextDiscipline, Id, V1).
+
+
+getAllTestList(_, Days, Days, []).
+
+getAllTestList(Class,N,Days, Result):-
+  getNTestsDay(Class, N, Val),
+  N1 is N + 1,
+  getAllTestList(Class,N1,Days, Val2),
+  Result = [Val | Val2].
+
+testPlacementRestrictions(Days,Class) :-
+  getAllTestList(Class,0,Days, Tests),%lista com todos os dias e numero de testes de todas as disciplinas da turma nesse dia
+  checkWeekTestNumber(Tests,2).
+
+
+%verifica se o num de testes por semana é menor ou igual a N
+checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], N) :-
+    sum([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday], #=<, N),
+    checkWeekTestNumber(Tail,N).
+
+%para quando a ultima semana nao tem 5 dias e condicao de paragem
+checkWeekTestNumber(L,N) :-
+    sum(L, #=<, N).
