@@ -29,20 +29,22 @@ solveClass(Days,Schedule,Disciplines,Class):-
 
   %clearTpcDay(Class,NoTpcDay),
 
-  maxNumberTpcPerDay(Class,Days,1), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
+  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   %limitNumberOfTpcPerPeriod(Class,2,Schedule,Days).
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class),
 
 
-  getDaySumList(2,Class,0,Days, Tpc),
+  getDaySumList(2,Class,0,Days,Tpc),
+  sum(Tpc, #=, TpcSum),
+
 
 
   getLabelVars(Class,[],Res),
   append([NoTpcDay],Res,Resolution),
   write('Res'), nl,
-  labeling([],Resolution),
+  labeling([maximize(TpcSum)],Resolution),
   displayClass(Class,Days),
   format('No Tpc Day: ~w ~n',[NoTpcDay]),
   write('-----------TPC-----------'),nl,write(Tpc).
