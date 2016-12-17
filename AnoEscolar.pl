@@ -1,5 +1,5 @@
-:-use_module(library(clpfd)).
-:-use_module(library(lists)).
+:- use_module(library(clpfd)).
+:- use_module(library(lists)).
 :- ensure_loaded('displayResults.pl').
 
 % -------------- Estranho --------------
@@ -16,13 +16,53 @@
 % testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
 
 
-%lê o ficheiro resolve o problema para cada turma e faz output
-%solveProblem().
-%for each class call resolve class and display results
+% lê o ficheiro resolve o problema para cada turma e faz output
+% solveProblem().
+% for each class call resolve class and display results
+
+
+solve(Days, Schedules, DisciplinesList) :-
+    processClasses(Days, Schedules, DisciplinesList, Classes),
+    listClassesVars(Classes, [], R),
+    labeling([ff, down], R).
+
+
+
+listClassesVars([Class | Classes], Acc, LabelsList) :-
+    getLabelVars(Class, [], LabelVars),
+    append(LabelVars, Acc, T),
+    listClassesVars(Classes, T, LabelsList).
+
+listClassesVars([], Acc, Acc).
+
+
+getTestDaysDifferences([_], _, []).
+
+getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value | DiffList]) :-
+    member([DisciplineId, Tests1, _], C1),
+    member([DisciplineId, Tests2, _], C2),
+    element(Idx1, Tests1, 1),
+    element(Idx2, Tests2, 1),
+    Value #= abs(Idx2 - Idx1),
+    getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList).
+    
+getTestDaysDiffSums(Classes, [DisciplineId | DisciplineIds], [Sum | Sums]) :-
+    getTestDaysDifferences(Classes, DisciplineId, DiffList),
+    sum(DiffList, #=, Sum),
+    getTestDaysDiffSums(Classes, DisciplineIds, Sums).
+
+getTestDaysDiffSums(_, [], []).
+
 
 %solver
+processClasses([Days | DaysList], [Schedule | Schedules], [Disciplines | DisciplinesList], [Class | Classes]) :-
+    solveClass(Days, Schedule, Disciplines, Class),
+    processClasses(DaysList, Schedules, DisciplinesList, Classes).
+
+processClasses(_, [], _, []).
+
 %resolve problema de uma turma
-solveClass(Days,Schedule,Disciplines,Class):-
+solveClass(Days, Schedule, Disciplines, Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
   NoTpcDay = 1, % dia da semana em que nunca há tpc
@@ -34,10 +74,10 @@ solveClass(Days,Schedule,Disciplines,Class):-
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class),
 
-  getLabelVars(Class,[],Res),
-  append([NoTpcDay],Res,Resolution),
-  write('Res'), nl,
-  labeling([ff, down],Resolution),
+  %getLabelVars(Class,[],Res),
+  %append([NoTpcDay],Res,Resolution),
+  %write('Res'), nl,
+  %labeling([ff, down],Resolution),
   displayClass(Class,Days),
   format('No Tpc Day: ~w ~n', [NoTpcDay]).
 
