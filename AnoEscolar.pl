@@ -25,11 +25,11 @@
 solveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
-  domain([NoTpcDay], 1, 5), % dia da semana em que nunca há tpc
+  NoTpcDay = 4, % dia da semana em que nunca há tpc
 
-  %clearTpcDay(Class,NoTpcDay),
   maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
+  clearTpcDay(Class,NoTpcDay),
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class),
@@ -89,7 +89,7 @@ clearTpcDay([], _).
 freeTpcDay(N, [CurrentTpc | Tpc], NoTpcDay) :-
     Index is (N mod 5) + 1,
     (
-        (Index = NoTpcDay, CurrentTpc #= 0) ;
+        (Index = NoTpcDay, CurrentTpc #= 0, !) ;
         true
     ),
     N1 is N + 1,
