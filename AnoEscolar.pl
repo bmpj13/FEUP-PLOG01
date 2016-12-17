@@ -39,7 +39,7 @@ solveClass(Days,Schedule,Disciplines,Class):-
   write('Res'), nl,
   labeling([ff, down],Resolution),
   displayClass(Class,Days),
-  format('No Tpc Day: ~w ~n',[NoTpcDay]).
+  format('No Tpc Day: ~w ~n', [NoTpcDay]).
 
 
 
@@ -148,22 +148,22 @@ twoTestsPerPeriod([]).
 twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]) :-
     nth1(2,CurrentDiscipline,Tests),
     sum(Tests,#=,2),
-    %placeTests(Tests),
+    placeTests(Tests),
     twoTestsPerPeriod(NextDiscipline).
 
 placeTests(Tests):-
   length(Tests,Days),
   InitMid is div(Days,6),
   FinMid is div(Days,2),
-  InitEnd is div(Days,2) + div(Days,6),
+  InitEnd is FinMid + div(Days,6),
   FinEnd is 0,
-  (sublist(Tests,Mid,InitMid, _ , FinMid) ; true),
-  (sublist(Tests,End,InitEnd, _ , FinEnd) ; true),
+  sublist(Tests,Mid,InitMid, _ , FinMid),
+  sublist(Tests,End,InitEnd, _ , FinEnd),
   sum(Mid, #= , 1),
   sum(End, #= , 1).
 
-%tests
 
+%tests
 getDaySum(_, [], _ , 0).
 
 getDaySum(IdList,[CurrentDiscipline | NextDiscipline], Id, Value) :- !,
