@@ -198,3 +198,21 @@ checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], 
 %para quando a ultima semana nao tem 5 dias e condicao de paragem
 checkWeekTestNumber(L, N) :-
     sum(L, #=<, N).
+
+
+
+sublist(L1, L2, I, J):-
+    sublist(L1, Temp, I, J, []),
+    !,
+    reverse(Temp, L2).
+sublist([], L2, _I, _J, L2).
+sublist(_L1, L2, I, J, L2):-
+    I > J.
+sublist(L1, L2, I, J, L2):-
+    I < 0,
+    sublist(L1, L2, 0, J, L2).
+sublist([_L|Ls], L2, I, J, Acc):-
+    I > 0,
+    sublist(Ls, L2, I-1, J-1, Acc).
+sublist([L|Ls], L2, I, J, Acc):-
+    sublist(Ls, L2, I, J-1, [L|Acc]).
