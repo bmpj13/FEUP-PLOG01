@@ -5,7 +5,7 @@
 % -------------- Estranho --------------
 % cada disciplina  1 a 4 dias por semana % isto não é da responsabilidade de quem faz o horario???
 %  -------------- TESTES --------------
-% cada disciplina tem 2 testes por periodo(meio e fim )-> falta restringir a altura dos testes
+% cada disciplina tem 2 testes por periodo(meio e fim )-> feito
 % alunos não podem ter mais de 2 testes por semana ->feito
 % alunos não podem ter testes em dias consecutivos ->feito
 %  -------------- TPC --------------
@@ -25,7 +25,7 @@
 solveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
-  NoTpcDay = 4, % dia da semana em que nunca há tpc
+  NoTpcDay = 1, % dia da semana em que nunca há tpc
 
   maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
@@ -185,23 +185,29 @@ getDaySumList(IdList,Class,N,Days, Result):- !,
 testPlacementRestrictions(Days,Class) :-
   getDaySumList(1,Class,0,Days, Tests), % lista com todos os dias e numero de testes de todas as disciplinas da turma nesse dia
   checkWeekTestNumber(Tests,2),
-  checkConsecutiveDayTests(Tests).
+  checkConsecutiveDayTests(Tests,0).
 
 
-checkConsecutiveDayTests([]).
+checkConsecutiveDayTests([],_).
 
-checkConsecutiveDayTests([D]):-
+checkConsecutiveDayTests([D],_):-
   sum([D], #=<, 1).
 
-checkConsecutiveDayTests([Day1 | [Day2 | Tail]]) :-
-  sum([Day1,Day2], #=<, 1), % dois dias seguidos não podem ter mais do que um teste, e um dia tambem não pode ter 2 testes
-  checkConsecutiveDayTests([Day2 | Tail]).
+checkConsecutiveDayTests([Day1 | [Day2 | Tail]],N) :-
+  Index is (N mod 5),
+  (
+    (Index =:= 4 , sum([Day1], #=<, 1) , sum([Day2], #=<, 1)) % caso de sexta e segunda em que pode existir teste nos dois
+      ;
+    (sum([Day1,Day2], #=<, 1))
+  ), % dois dias seguidos não podem ter mais do que um teste, e um dia tambem não pode ter 2 testes
+  N1 is N + 1,!,
+  checkConsecutiveDayTests([Day2 | Tail],N1).
 
 
 
 %verifica se o num de testes por semana é menor ou igual a N
 checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], N) :-
-    sum([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday], #=<, N),
+    sum([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday], #=<, N),!,
     checkWeekTestNumber(Tail,N).
 
 %para quando a ultima semana nao tem 5 dias e condicao de paragem
