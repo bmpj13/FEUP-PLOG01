@@ -1,38 +1,51 @@
 :-use_module(library(lists)).
 
-%resolveClass(13,[[1],[2],[2],[1,5],[1,5]],[1,2,5],L).
+%solveClass(13,[[1],[2],[2],[1,5],[1,5]],[1,2,5],L).
 
-displayClass([], _):-
-  nl,write('---------------------------------------------------------------------------------------------------------').
-
-displayClass([CurrentDiscipline | NextDiscipline], Days):-
-  nth1(1,CurrentDiscipline, DisciplineId),
-  nth1(2,CurrentDiscipline, Tests),
-  nth1(3,CurrentDiscipline, Tpc),
-  format('~n------------------------------------------Discipline- ~w ------------------------------------------',[DisciplineId]),
-  nl,write('Tests: '),nl,
-  displayDayList(Tests,0,Days),
-  nl,write('Tpc: '),nl,
-  displayDayList(Tpc,0,Days),
-  displayClass(NextDiscipline, Days).
+translateDiscipline(1,'Portugues').
+translateDiscipline(2,'Ingles').
+translateDiscipline(3,'Matematica').
+translateDiscipline(4,'Biologia').
+translateDiscipline(5,'Quimica').
+translateDiscipline(6,'Ed.Fisica').
+translateDiscipline(7,'Historia').
+translateDiscipline(_,'Vida').
 
 
 
-displayDayList(_,N,N).
+displayClass(Class, Days):-
+  format('~n---------------------------------- School Planning ----------------------------------~n',[]),
+  format('~n--------------------------------------- Tests ---------------------------------------- ~n',[]),
+  displayDayList(Class,2,0,Days),!,
+  format('~n---------------------------------------- Tpc ----------------------------------------- ~n',[]),
+  displayDayList(Class,3,0,Days),!.
 
-displayDayList(Tests,N,Days) :-
-  nth0(N,Tests,V),
-  displayNday(N,V),
+
+displayDayList(_,_,N,N).
+
+displayDayList(Class,Val,N,Days) :-
+  displayNday(N),
+  printValueTranslated(Class,Val,N),nl,
   N1 is N + 1,
-  displayDayList(Tests,N1,Days).
+  displayDayList(Class,Val,N1,Days).
 
-displayNday(N,Val) :-
+printValueTranslated([],_,_).
+
+printValueTranslated([CurrentDiscipline | NextDiscipline],Val,Index):-
+  nth1(1,CurrentDiscipline, DisciplineId),
+  translateDiscipline(DisciplineId,DisciplineString),
+  nth1(Val,CurrentDiscipline, List),
+  nth0(Index,List,Bool),
+  ((Bool =:= 1, format(' ~s |',[DisciplineString])) ; true),
+  printValueTranslated(NextDiscipline,Val,Index).
+
+
+displayNday(N) :-
   Day is (N mod 5),
-  write(Val),
   (
-    (Day =:= 0, write('-monday | '));
-    (Day =:= 1, write('-tuesday | '));
-    (Day =:= 2, write('-wednesday | '));
-    (Day =:= 3, write('-thursday | '));
-    (Day =:= 4, write('-friday '), nl)
+    (Day =:= 0, nl, format('Day ~w - Monday -> ',[N]));
+    (Day =:= 1, format('Day ~w - Tuesday -> ',[N]));
+    (Day =:= 2, format('Day ~w - Wednesday -> ',[N]));
+    (Day =:= 3, format('Day ~w - Thursday -> ',[N]));
+    (Day =:= 4, format('Day ~w - Friday -> ',[N]))
   ).

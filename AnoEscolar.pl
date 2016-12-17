@@ -45,7 +45,7 @@ getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value | DiffList]) :-
     element(Idx2, Tests2, 1),
     Value #= abs(Idx2 - Idx1),
     getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList).
-    
+
 getTestDaysDiffSums(Classes, [DisciplineId | DisciplineIds], [Sum | Sums]) :-
     getTestDaysDifferences(Classes, DisciplineId, DiffList),
     sum(DiffList, #=, Sum),
