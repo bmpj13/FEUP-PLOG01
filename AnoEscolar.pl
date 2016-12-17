@@ -27,9 +27,8 @@ solveClass(Days,Schedule,Disciplines,Class):-
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
   domain([NoTpcDay], 1, 5), % dia da semana em que nunca há tpc
 
-  clearTpcDay(Class,NoTpcDay),
-
-  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia 
+  %clearTpcDay(Class,NoTpcDay),
+  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
@@ -40,8 +39,7 @@ solveClass(Days,Schedule,Disciplines,Class):-
   write('Res'), nl,
   labeling([ff, down],Resolution),
   displayClass(Class,Days),
-  format('No Tpc Day: ~w ~n',[NoTpcDay]),
-  write('-----------TPC-----------'),nl,write(Tpc).
+  format('No Tpc Day: ~w ~n',[NoTpcDay]).
 
 
 
@@ -150,8 +148,19 @@ twoTestsPerPeriod([]).
 twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]) :-
     nth1(2,CurrentDiscipline,Tests),
     sum(Tests,#=,2),
+    %placeTests(Tests),
     twoTestsPerPeriod(NextDiscipline).
 
+placeTests(Tests):-
+  length(Tests,Days),
+  InitMid is div(Days,6),
+  FinMid is div(Days,2),
+  InitEnd is div(Days,2) + div(Days,6),
+  FinEnd is 0,
+  (sublist(Tests,Mid,InitMid, _ , FinMid) ; true),
+  (sublist(Tests,End,InitEnd, _ , FinEnd) ; true),
+  sum(Mid, #= , 1),
+  sum(End, #= , 1).
 
 %tests
 
@@ -198,21 +207,3 @@ checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], 
 %para quando a ultima semana nao tem 5 dias e condicao de paragem
 checkWeekTestNumber(L, N) :-
     sum(L, #=<, N).
-
-
-
-sublist(L1, L2, I, J):-
-    sublist(L1, Temp, I, J, []),
-    !,
-    reverse(Temp, L2).
-sublist([], L2, _I, _J, L2).
-sublist(_L1, L2, I, J, L2):-
-    I > J.
-sublist(L1, L2, I, J, L2):-
-    I < 0,
-    sublist(L1, L2, 0, J, L2).
-sublist([_L|Ls], L2, I, J, Acc):-
-    I > 0,
-    sublist(Ls, L2, I-1, J-1, Acc).
-sublist([L|Ls], L2, I, J, Acc):-
-    sublist(Ls, L2, I, J-1, [L|Acc]).
