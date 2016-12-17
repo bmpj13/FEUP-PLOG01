@@ -16,18 +16,18 @@
 
 
 %lê o ficheiro resolve o problema para cada turma e faz output
-%resolveProblem().
+%solveProblem().
 %for each class call resolve class and display results
 
 %resolve problema de uma turma
-resolveClass(Days,Schedule,Disciplines,Class):-
+solveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
   %domain(NoTpcDay,1,5), % depois por todos os dias a 0 na lista de tpc no dia instanciado
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class),
   getLabelVars(Class,[],Res),
-  write('Res'),nl,
+  write('Res'), nl, !,
   labeling([],Res),
   displayClass(Class,Days).
 
@@ -99,7 +99,7 @@ getAllTestList(Class,N,Days, Result):- !,
   Result = [Val | Val2].
 
 testPlacementRestrictions(Days,Class) :-
-  getAllTestList(Class,0,Days, Tests),%lista com todos os dias e numero de testes de todas as disciplinas da turma nesse dia
+  getAllTestList(Class,0,Days, Tests), % lista com todos os dias e numero de testes de todas as disciplinas da turma nesse dia
   checkWeekTestNumber(Tests,2),
   checkConsecutiveDayTests(Tests).
 
@@ -111,7 +111,7 @@ checkConsecutiveDayTests([D]):-
   sum([D], #=<, 1).
 
 checkConsecutiveDayTests([Day1 | [Day2 | Tail]]) :-
-  sum([Day1,Day2], #=<, 1), %dois dias seguidos não podem ter mais do que um teste, e um dia tambem não pode ter 2 testes
+  sum([Day1,Day2], #=<, 1), % dois dias seguidos não podem ter mais do que um teste, e um dia tambem não pode ter 2 testes
   checkConsecutiveDayTests([Day2 | Tail]).
 
 
@@ -122,5 +122,5 @@ checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], 
     checkWeekTestNumber(Tail,N).
 
 %para quando a ultima semana nao tem 5 dias e condicao de paragem
-checkWeekTestNumber(L,N) :-
+checkWeekTestNumber(L, N) :-
     sum(L, #=<, N).
