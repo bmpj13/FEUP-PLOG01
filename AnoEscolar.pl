@@ -25,9 +25,9 @@
 solveClass(Days,Schedule,Disciplines,Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
-  domain([NoTpcDay],1,5), % dia da semana em que nunca há tpc
+  domain([NoTpcDay], 1, 5), % dia da semana em que nunca há tpc
 
-  %clearTpcDay(Class,NoTpcDay),
+  clearTpcDay(Class,NoTpcDay),
 
   maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia 
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
@@ -73,7 +73,7 @@ getNumberDisciplineLessons(Schedule,DisciplineId,N,Days,Res) :-
 % ratio 2 tpc no maximo em metade das aulas , ratio 3 tpc no maximo um terço das aulas
 limitNumberOfTpcPerPeriod([],_,_,_).
 
-limitNumberOfTpcPerPeriod([[DisciplineId,Test,Tpc] | Tail],Ratio,Schedule,Days):-
+limitNumberOfTpcPerPeriod([[DisciplineId, _, Tpc] | Tail],Ratio,Schedule,Days):-
   getNumberDisciplineLessons(Schedule,DisciplineId,0,Days,NumberLessons),
   MaxTpc is div(NumberLessons,Ratio),
   sum(Tpc,#=<,MaxTpc),
@@ -81,11 +81,23 @@ limitNumberOfTpcPerPeriod([[DisciplineId,Test,Tpc] | Tail],Ratio,Schedule,Days):
 
 
 
-%clearTpcDay([CurrentDiscipline | NextDiscipline],NoTpcDay) :-
-%  nth1(3,CurrentDiscipline,Tpc),
+clearTpcDay([CurrentDiscipline | NextDiscipline],NoTpcDay) :-
+  nth1(3,CurrentDiscipline,Tpc),
+  freeTpcDay(0, Tpc, NoTpcDay),
+  clearTpcDay(NextDiscipline, NoTpcDay).
 
-%clearTpcDayDiscipline(Discipline,N,NoTpcDay) :-
-%    Index is (N mod 5) + 1,
+clearTpcDay([], _).
+
+freeTpcDay(N, [CurrentTpc | Tpc], NoTpcDay) :-
+    Index is (N mod 5) + 1,
+    (
+        (Index = NoTpcDay, CurrentTpc #= 0) ;
+        true
+    ),
+    N1 is N + 1,
+    freeTpcDay(N1, Tpc, NoTpcDay).
+
+freeTpcDay(_, [], _).
 
 
 
@@ -103,7 +115,7 @@ checkTpcNumber([CurrentTpc | NextTpc], N) :-
 
 
 %inicializacoes
-fillDisciplines(Days,[],[]).
+fillDisciplines(_,[],[]).
 
 % dias id das disciplinas
 fillDisciplines(Days, [Dh | Dt], [H | T]):-
