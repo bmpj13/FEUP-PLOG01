@@ -21,6 +21,14 @@
 % for each class call resolve class and display results
 
 
+run(Days, Schedules, Classes):- 
+        statistics(runtime, [T0|_]),
+        solve(Days, Schedules, Classes),
+        statistics(runtime, [T1|_]),
+        T is T1 - T0,
+        format('solve/3 took ~3d sec.~n', [T]).
+
+
 solve(Days, Schedules, Classes) :-
     format('~n---------------------------------- School Planning ----------------------------------~n',[]),
     % obter os id's de todas as disciplinas
