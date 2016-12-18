@@ -27,14 +27,17 @@ solve(Days, Schedules, Classes) :-
     flatten(Schedules, Temp),
     sort(Temp, DisciplinesList),
     nl, displayDisciplines(DisciplinesList),
+
     %aplicar restricoes a cada turma
     processClasses(Days, Schedules, DisciplinesList, Classes),
+
+    % testes de cada disciplina devem ser o mais proximo possivel entre todas as turmas
+    testsCloseBetweenClasses(Classes, DisciplinesList, Sum1, Sum2),
+
     %obter lista com todas as variaveis test e tpc para label
     listClassesVars(Classes, [], R),
 
-    testsCloseBetweenClasses(Classes, DisciplinesList, Sum1, Sum2),% testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
-    append(R, [Sum1, Sum2], Res),
-    labeling([ff, down, minimize(Sum1), minimize(Sum2)], Res),
+    labeling([ff, down, minimize(Sum1), minimize(Sum2)], R),
     (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
 
 
@@ -109,14 +112,6 @@ solveClass(Days, Schedule, Disciplines, Class):-
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class).
-
-  %getLabelVars(Class,[],Res),
-  %append([NoTpcDay],Res,Resolution),
-  %write('Res'), nl,
-  %labeling([ff, down],Resolution),
-  %displayClass(Class,Days),
-  %format('No Tpc Day: ~w ~n', [NoTpcDay]).
-
 
 
 getLabelVars([], Res,Res).
