@@ -21,11 +21,66 @@
 % for each class call resolve class and display results
 
 
-solve(Days, Schedules, DisciplinesList) :-
-    processClasses(Days, Schedules, DisciplinesList, Classes),
+solve(DaysList, Schedules, DisciplinesList, Classes) :-
+    processClasses(DaysList, Schedules, DisciplinesList, Classes),
     listClassesVars(Classes, [], R),
-    labeling([ff, down], R).
+    flatten(DisciplinesList, AuxList),
+    sort(AuxList, DisciplineIds),
+    testsCloseBetweenClasses(Classes, DisciplineIds, Sum1, Sum2),
+    append(R, [Sum1, Sum2], Res),
+    flatten([ff, down, minimize(Sum1), minimize(Sum2)], Tasd),
+    labeling(Tasd, Res),
+    displayClasses(Classes, DaysList), nl, nl, write(Sum1), nl, write(Sum2), nl.
 
+
+
+testsCloseBetweenClasses(Classes, DisciplineIds, Sum1, Sum2) :-
+    getTestDaysDiffSums(Classes, DisciplineIds, Sums1, Sums2),
+    sum(Sums1, #=, Sum1),
+    sum(Sums2, #=, Sum2).
+
+getTestDaysDifferences([_], _, [], []).
+
+getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value1 | DiffList1], [Value2 | DiffList2]) :-
+    member([DisciplineId, Tests1, _], C1),
+    member([DisciplineId, Tests2, _], C2),
+    getMidEndTerms(Tests1, Mid1, End1),
+    getMidEndTerms(Tests2, Mid2, End2),
+    element(Idx1, Mid1, 1),
+    element(Idx2, Mid2, 1),
+    Value1 #= abs(Idx2 - Idx1),
+    element(Idx3, End1, 1),
+    element(Idx4, End2, 1),
+    Value2 #= abs(Idx4 - Idx3),
+    getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList1, DiffList2).
+
+
+getMidEndTerms(Tests, Mid, End) :-
+    length(Tests, Days),
+    InitMid is div(Days,6),
+    FinMid is div(Days,2),
+    InitEnd is FinMid + div(Days,6),
+    FinEnd is 0,
+    sublist(Tests,Mid,InitMid, _ , FinMid),
+    sublist(Tests,End,InitEnd, _ , FinEnd).
+
+
+getTestDaysDiffSums(Classes, [DisciplineId | DisciplineIds], [Sum1 | Sums1], [Sum2 | Sums2]) :-
+    getTestDaysDifferences(Classes, DisciplineId, DiffList1, DiffList2),
+    sum(DiffList1, #=, Sum1),
+    sum(DiffList2, #=, Sum2),
+    getTestDaysDiffSums(Classes, DisciplineIds, Sums1, Sums2).
+
+getTestDaysDiffSums(_, [], [], []).
+
+
+flatten([], []) :- !.
+flatten([L|Ls], FlatL) :-
+    !,
+    flatten(L, NewL),
+    flatten(Ls, NewLs),
+    append(NewL, NewLs, FlatL).
+flatten(L, [L]).
 
 
 listClassesVars([Class | Classes], Acc, LabelsList) :-
@@ -36,30 +91,12 @@ listClassesVars([Class | Classes], Acc, LabelsList) :-
 listClassesVars([], Acc, Acc).
 
 
-getTestDaysDifferences([_], _, []).
-
-getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value | DiffList]) :-
-    member([DisciplineId, Tests1, _], C1),
-    member([DisciplineId, Tests2, _], C2),
-    element(Idx1, Tests1, 1),
-    element(Idx2, Tests2, 1),
-    Value #= abs(Idx2 - Idx1),
-    getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList).
-
-getTestDaysDiffSums(Classes, [DisciplineId | DisciplineIds], [Sum | Sums]) :-
-    getTestDaysDifferences(Classes, DisciplineId, DiffList),
-    sum(DiffList, #=, Sum),
-    getTestDaysDiffSums(Classes, DisciplineIds, Sums).
-
-getTestDaysDiffSums(_, [], []).
-
-
 %solver
 processClasses([Days | DaysList], [Schedule | Schedules], [Disciplines | DisciplinesList], [Class | Classes]) :-
     solveClass(Days, Schedule, Disciplines, Class),
     processClasses(DaysList, Schedules, DisciplinesList, Classes).
 
-processClasses(_, [], _, []).
+processClasses([], [], [], []).
 
 %resolve problema de uma turma
 solveClass(Days, Schedule, Disciplines, Class):-
@@ -72,14 +109,14 @@ solveClass(Days, Schedule, Disciplines, Class):-
   clearTpcDay(Class,NoTpcDay),
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
-  testPlacementRestrictions(Days,Class),
+  testPlacementRestrictions(Days,Class).
 
   %getLabelVars(Class,[],Res),
   %append([NoTpcDay],Res,Resolution),
   %write('Res'), nl,
   %labeling([ff, down],Resolution),
-  displayClass(Class,Days),
-  format('No Tpc Day: ~w ~n', [NoTpcDay]).
+  %displayClass(Class,Days),
+  %format('No Tpc Day: ~w ~n', [NoTpcDay]).
 
 
 

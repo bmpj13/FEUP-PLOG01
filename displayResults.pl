@@ -12,6 +12,12 @@ translateDiscipline(7,'Historia').
 translateDiscipline(_,'Vida').
 
 
+displayClasses([Class | Classes], [Days | DaysList]) :-
+  displayClass(Class, Days),
+  displayClasses(Classes, DaysList).
+
+displayClasses([], []).
+
 
 displayClass(Class, Days):-
   format('~n---------------------------------- School Planning ----------------------------------~n',[]),
