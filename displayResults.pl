@@ -11,16 +11,22 @@ translateDiscipline(6,'Ed.Fisica').
 translateDiscipline(7,'Historia').
 translateDiscipline(_,'Vida').
 
+displayDisciplines([]).
 
-displayClasses([Class | Classes], [Days | DaysList]) :-
+displayDisciplines([DisciplineH | DisciplineT]) :-
+  translateDiscipline(DisciplineH,DisciplineString),
+  format('Discipline Index(~w) - ~s ~n',[DisciplineH,DisciplineString]),
+  displayDisciplines(DisciplineT),!.
+
+displayClasses([Class | Classes], Days) :-
+  format('~n--------------------------------------- Class ---------------------------------------~n',[]),
   displayClass(Class, Days),
-  displayClasses(Classes, DaysList).
+  displayClasses(Classes, Days).
 
 displayClasses([], []).
 
 
 displayClass(Class, Days):-
-  format('~n---------------------------------- School Planning ----------------------------------~n',[]),
   format('~n--------------------------------------- Tests ---------------------------------------- ~n',[]),
   displayDayList(Class,2,0,Days),!,
   format('~n---------------------------------------- Tpc ----------------------------------------- ~n',[]),

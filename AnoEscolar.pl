@@ -21,16 +21,21 @@
 % for each class call resolve class and display results
 
 
-solve(DaysList, Schedules, DisciplinesList, Classes) :-
-    processClasses(DaysList, Schedules, DisciplinesList, Classes),
+solve(Days, Schedules, Classes) :-
+    format('~n---------------------------------- School Planning ----------------------------------~n',[]),
+    % obter os id's de todas as disciplinas
+    flatten(Schedules, Temp),
+    sort(Temp, DisciplinesList),
+    nl, displayDisciplines(DisciplinesList),
+    %aplicar restricoes a cada turma
+    processClasses(Days, Schedules, DisciplinesList, Classes),
+    %obter lista com todas as variaveis test e tpc para label
     listClassesVars(Classes, [], R),
-    flatten(DisciplinesList, AuxList),
-    sort(AuxList, DisciplineIds),
-    testsCloseBetweenClasses(Classes, DisciplineIds, Sum1, Sum2),
+
+    testsCloseBetweenClasses(Classes, DisciplinesList, Sum1, Sum2),% testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
     append(R, [Sum1, Sum2], Res),
-    flatten([ff, down, minimize(Sum1), minimize(Sum2)], Tasd),
-    labeling(Tasd, Res),
-    displayClasses(Classes, DaysList), nl, nl, write(Sum1), nl, write(Sum2), nl.
+    labeling([ff, down, minimize(Sum1), minimize(Sum2)], Res),
+    (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
 
 
 
@@ -53,16 +58,6 @@ getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value1 | DiffList1], [
     element(Idx4, End2, 1),
     Value2 #= abs(Idx4 - Idx3),
     getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList1, DiffList2).
-
-
-getMidEndTerms(Tests, Mid, End) :-
-    length(Tests, Days),
-    InitMid is div(Days,6),
-    FinMid is div(Days,2),
-    InitEnd is FinMid + div(Days,6),
-    FinEnd is 0,
-    sublist(Tests,Mid,InitMid, _ , FinMid),
-    sublist(Tests,End,InitEnd, _ , FinEnd).
 
 
 getTestDaysDiffSums(Classes, [DisciplineId | DisciplineIds], [Sum1 | Sums1], [Sum2 | Sums2]) :-
@@ -92,11 +87,13 @@ listClassesVars([], Acc, Acc).
 
 
 %solver
-processClasses([Days | DaysList], [Schedule | Schedules], [Disciplines | DisciplinesList], [Class | Classes]) :-
-    solveClass(Days, Schedule, Disciplines, Class),
-    processClasses(DaysList, Schedules, DisciplinesList, Classes).
+processClasses(_, [], _, []).
 
-processClasses([], [], [], []).
+processClasses(Days, [Schedule | Schedules], DisciplinesList, [Class | Classes]) :-
+    solveClass(Days, Schedule, DisciplinesList, Class),
+    processClasses(Days, Schedules, DisciplinesList, Classes).
+
+
 
 %resolve problema de uma turma
 solveClass(Days, Schedule, Disciplines, Class):-
@@ -229,16 +226,19 @@ twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]) :-
     twoTestsPerPeriod(NextDiscipline).
 
 placeTests(Tests):-
-  length(Tests,Days),
-  InitMid is div(Days,6),
-  FinMid is div(Days,2),
-  InitEnd is FinMid + div(Days,6),
-  FinEnd is 0,
-  sublist(Tests,Mid,InitMid, _ , FinMid),
-  sublist(Tests,End,InitEnd, _ , FinEnd),
+  getMidEndTerms(Tests, Mid, End),
   sum(Mid, #= , 1),
   sum(End, #= , 1).
 
+% mid sublista de uma lista na 1 altura de testes, End na segunda altura de testes
+getMidEndTerms(Tests, Mid, End) :-
+    length(Tests, Days),
+    InitMid is div(Days,6),
+    FinMid is div(Days,2),
+    InitEnd is FinMid + div(Days,6),
+    FinEnd is 0,
+    sublist(Tests,Mid,InitMid, _ , FinMid),
+    sublist(Tests,End,InitEnd, _ , FinEnd).
 
 %tests
 getDaySum(_, [], _ , 0).
