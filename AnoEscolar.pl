@@ -47,8 +47,8 @@ testsCloseBetweenClasses(Classes, DisciplineIds, Sum1, Sum2) :-
 getTestDaysDifferences([_], _, [], []).
 
 getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value1 | DiffList1], [Value2 | DiffList2]) :-
-    member([DisciplineId, Tests1, _], C1),
-    member([DisciplineId, Tests2, _], C2),
+    member([DisciplineId, Tests1, _], C1),!,%isto não pode falhar / causar backtracking?
+    member([DisciplineId, Tests2, _], C2),!,
     getMidEndTerms(Tests1, Mid1, End1),
     getMidEndTerms(Tests2, Mid2, End2),
     element(Idx1, Mid1, 1),
@@ -100,10 +100,12 @@ solveClass(Days, Schedule, Disciplines, Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
   NoTpcDay = 1, % dia da semana em que nunca há tpc
+  clearTpcDay(Class,NoTpcDay),
+
 
   maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
-  clearTpcDay(Class,NoTpcDay),
+
 
   twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class).

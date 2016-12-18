@@ -37,27 +37,58 @@ Rua Roberto Frias, sn, 4200-465 Porto, Portugal}
 
 \begin{abstract} %
 
+Resolução de um problema de otimização referente a calendarização de testes e trabalhos de casa numa escola utilizando programação em lógica com restrições em SICStus Prolog , permitindo variar o numero de turmas, disciplinas, trabalhos de casa por dia e por disciplina assim como os horários de cada turma.
+Foi implementado um conjunto de predicados de modo a aplicar todas as restrições pertinentes para uma boa resolução do problema em questão.
 
-
+\textbf{
 Deve contextualizar e resumir o trabalho, salientando o objetivo, o
 método utilizado e fazendo referência aos principais resultados e à principal conclusão que
-esses resultados permitem obter. \dots
+esses resultados permitem obter.}
+
+
 \keywords{computational geometry, graph theory, Hamilton cycles}
 \end{abstract}
 %
 \section{Introdução}
 %
+Este projeto esta a ser realizado no âmbito da unidade curricular Programação em lógica do Mestrado Integrado em Engenharia Informática e Computação.
+O objetivo do projeto prende-se com a resolução de um problema de otimização utilizando programação em lógica com restrições.
+O problema consiste na calendarização de testes e trabalhos de casa de um periodo letivo, com vários parametros váriaveis como o numero de turmas, disciplinas, trabalhos de casa (por dia e por disciplina) assim como a existencia de diferentes horários para cada turma, existem também diversas restrições que devem ser respeitadas.
+Ao longo deste artigo será descrito o respetivo problema com um nivel de detalhe mais elevado, a abordagem levada a cabo pelo grupo para a implementação de uma possivel solução assim como as conclusões retiradas do solução implementada.
+
+\textbf{
 Descrição dos objetivos e motivação do trabalho, referência
 sucinta ao problema em análise (idealmente, referência a outros trabalhos sobre o mesmo
-problema e sua abordagem), e descrição sucinta da estrutura do resto do artigo.
+problema e sua abordagem), e descrição sucinta da estrutura do resto do artigo.}
 
+\newpage
 \section{Descrição do Problema}
 %
-Descrever com detalhe o problema de otimização ou decisão em análise.
+
+O Problema ''Ano Escolar'' é referente á maracação de testes e tpc ao longo do periodo sendo que os seguintes aspetos devem ser tidos em conta na resolução apresentada:
+
+	\begin{itemize}
+	\item Cada disciplina tem 2 testes por período de aulas, que decorrem num conjunto de semanas específico (mais ou menos a meioe no fim do período). 	
+	\item Os alunos não podem ter mais do que 2 testes na mesma semana de aulas, nem testes em dias consecutivos.
+	\item Em cada dia, não pode haver TPC em mais do que 2 disciplinas.
+	\item Em pelo menos um dia por semana (que deve ser sempre o mesmo ao longo do
+	  período), não pode haver TPC. 
+	\item Em cada disciplina, só pode haver TPC em metade das aulas.
+	\item Os testes realizados pelas diferentes turmas a uma
+		mesma disciplina devem ser o mais próximos possível.
+	\end{itemize}
+O resultado deve incluir as datas dos testes de cada turma/disciplina, bem como os dias em que o professor de cada
+disciplina pode mandar trabalho para casa.
+Deve ser possível resolver problemas desta classe com diferentes parâmetros, como por exemplo variando o número de turmas e disciplinas, horários, número máximo de TPC por disciplina e por dia entre outros.
+
+
+\textbf{
+Descrever com detalhe o problema de otimização ou decisão em análise.}
 
 \section{Abordagem}
 %
-Descrever com detalhe o problema de otimização ou decisão em análise.
+A abordagem para o problema em questão consistiu inicialmente na avaliação das variáveis de decisão necessárias para a resolução do problema e por fim na melhor forma de as organizar numa estrutura que permitisse a colocação de restrições de um modo simples e eficiente.
+
 
 \subsection{Variáveis de Decisão}
 Descrever as variáveis de decisão e os seus domínios.
