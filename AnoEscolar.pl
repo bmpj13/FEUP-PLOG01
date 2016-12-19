@@ -21,7 +21,7 @@
 % for each class call resolve class and display results
 
 
-run(Days, Schedules, Classes):- 
+run(Days, Schedules, Classes):-
         statistics(runtime, [T0|_]),
         solve(Days, Schedules, Classes),
         statistics(runtime, [T1|_]),
