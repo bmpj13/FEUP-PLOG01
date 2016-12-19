@@ -45,7 +45,7 @@ solve(Days, Schedules, Classes) :-
     %obter lista com todas as variaveis test e tpc para label
     listClassesVars(Classes, [], R),
 
-    labeling([ff, down, minimize(Sum1), minimize(Sum2)], R),
+    labeling([ff, down, minimize(Sum1), minimize(Sum2), time_out(60000, _)], R),
     (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
 
 
