@@ -65,17 +65,17 @@ problema e sua abordagem), e descrição sucinta da estrutura do resto do artigo
 \section{Descrição do Problema}
 %
 
-O Problema ''Ano Escolar'' é referente á maracação de testes e tpc ao longo do periodo sendo que os seguintes aspetos devem ser tidos em conta na resolução apresentada:
+O Problema ''Ano Escolar'' é referente á maracação de testes e tpc ao longo do periodo sendo que as seguintes restrições devem ser tidas em conta na resolução apresentada:
 
 	\begin{itemize}
-	\item Cada disciplina tem 2 testes por período de aulas, que decorrem num conjunto de semanas específico (mais ou menos a meioe no fim do período). 	
+	\item Cada disciplina tem 2 testes por período de aulas, que decorrem num conjunto de semanas específico (mais ou menos a meio e no fim do período). 	
 	\item Os alunos não podem ter mais do que 2 testes na mesma semana de aulas, nem testes em dias consecutivos.
+	\item Os testes realizados pelas diferentes turmas a uma
+		    mesma disciplina devem ser o mais próximos possível.
 	\item Em cada dia, não pode haver TPC em mais do que 2 disciplinas.
 	\item Em pelo menos um dia por semana (que deve ser sempre o mesmo ao longo do
 	  período), não pode haver TPC. 
 	\item Em cada disciplina, só pode haver TPC em metade das aulas.
-	\item Os testes realizados pelas diferentes turmas a uma
-		mesma disciplina devem ser o mais próximos possível.
 	\end{itemize}
 O resultado deve incluir as datas dos testes de cada turma/disciplina, bem como os dias em que o professor de cada
 disciplina pode mandar trabalho para casa.
@@ -87,22 +87,99 @@ Descrever com detalhe o problema de otimização ou decisão em análise.}
 
 \section{Abordagem}
 %
-A abordagem para o problema em questão consistiu inicialmente na avaliação das variáveis de decisão necessárias para a resolução do problema e por fim na melhor forma de as organizar numa estrutura que permitisse a colocação de restrições de um modo simples e eficiente.
+A abordagem para o problema em questão consistiu inicialmente na avaliação das variáveis de decisão necessárias para a resolução do problema e por fim na elaboração de uma estrutura que permitisse a imposição de restrições de um modo simples e eficiente.
+Depois decidiu-se de forma a separar conceitos elaborar predicados que resolvem o problema apenas para uma turma que depois são utilizados para resolver o problema geral.
 
 
+\newpage
 \subsection{Variáveis de Decisão}
-Descrever as variáveis de decisão e os seus domínios.
+A estrutura adoptada pelo grupo para resolver o problema consiste numa lista para cada turma com tamanho igual ao numero de disciplinas da turma, sendo que cada elemento dessa mesma lista é outra lista com 3 variaveis: 
+\begin{itemize}
+	\item Identificador da disciplina - Variavel já instanciada(conhecida pelo problema);
+	\item Lista de testes - Lista com o tamanho igual ao numero de dias uteis do periodo, em que cada elemento da lista se trata de uma variavel de decisão com dominio de 0 a 1 simbolizando a existencia(1) ou não(0) de teste a disciplina em questão.
+	\item Lista de trabalhos de casa - Lista com o tamanho igual ao numero de dias uteis do periodo, em que cada elemento da lista se trata de uma variavel de decisão com dominio de 0 a 1 simbolizando a existencia(1) ou não(0) de tabalhos de casa a disciplina em questão.
+\end{itemize}
+
+\textbf{
+Descrever as variáveis de decisão e os seus domínios.}
 
 \subsection{Restrições}
- Descrever as restrições rígidas e flexíveis do problema e a sua implementação utilizando o SICStus Prolog.
+ Neste tópico serão abordadas as restrições do problema de otimização já mencionadas no ponto 2 com detalhes sobre a sua implementação. \\
+ 
+\begin{enumerate}
+
+	\item \textbf{Garantir dois testes por período para cada disciplina, mais ou menos a meio e no fim do período.}\\\\
+		Para garantir o que o numero de testes por periodo para cada disciplina fosse igual a 2 e que cada teste estivesse numa época diferente (meio do periodo ou fim do periodo), foi utilizado o predicado 	               
+		\textit{twoTestsPerPeriod(+Class)} que recebe uma turma com a estrutura especificada no ponto  \textbf{3.1} e para cada disciplina dessa turma utiliza a lista de variaveis de decisão que contem a informação dos 
+		testes, obtendo depois duas sublistas a partir desta uma de 1/6  a 3/6  o numero de dias e outra de 4/6 a 6/6, que representam então as duas épocas de testes.
+		Sendo depois garantida que em cada uma das épocas a soma dos elementos de cada lista é igual a 1 desta forma, exige-se a existencia de um teste em cada época de testes num total de dois testes por periodo.
+		\\
+	
+\newpage
+			
+	\item \textbf{Máximo de 2 testes na mesma semana de aulas, e não permitir testes em dias consecutivos.} \\\\
+		Para solucionar esta restrição foi utilizado o predicado \textit{testPlacementRestrictions(+Days,+Class)}  que recebe mais uma vez uma turma e numero de dias do periodo.
+		Este predicado obtém numa primeira instancia uma lista que contém o numero total de testes em cada dia do periodo para a turma em questão (tendo em consideração todas as disciplinas), de seguida, verifica 
+		com ajuda de predicados auxiliares que a soma dos testes em 2 dias seguidos tem que ser inferior ou igual a 1, impedindo assim a existencia de testes em dias seguidos e de vários testes no mesmo dia(foi tambem 
+		tido em consideração os fins-de-semanas, sendo então possivel a existencia de testes na sexta-feira e na segunda-feira).
+		\\
+
+	\item \textbf{Os testes realizados pelas diferentes turmas a uma mesma disciplina devem ser o mais próximos possível.} \\\\
+		De modo a permitir que os testes da mesma disciplina fossem o mais proximos possiveis em turmas diferentes foi utilizado o predicado  \textit{testsCloseBetweenClasses(+Classes, +DisciplineIds, -Sum1, -Sum2)} , 
+		que recebe todas as turmas e os identificadores de todas as disciplinas lecionadas nas turmas em questão, retornando o somatório da diferença entre os testes da mesma disciplina em turmas diferentes para a 
+		primeira época de testes(\textit{Sum1}) e para a segunda 
+		(\textit{Sum2}), depois nas opções do labeling é feita a minimização destas variaveis utilizando \textit{minimize(Sum1) , minimize(Sum2)} na lista de opções do labeling.
+		\\
+
+	\item \textbf{Em cada dia, não pode haver TPC em mais do que N disciplinas.} \\\\
+		A fim de permitir ao utilizador especificar o numero máximo de trabalhos de casa por dia, foi implementado o predicado \textit{maxNumberTpcPerDay(+Class,+Days,+N)} que em semelhança á restrição numero 2,
+		obtem uma lista com o numero total de tpc's em cada dia do periodo para a turma em questão (tendo em consideração todas as disciplinas), sucedendo-se a seguir para cada elemento desta lista, uma comparação 
+		de modo a garantir que o número de tpc's será inferior a N uma vez instanciadas as variaveis de decisão.
+		\\
+
+	\item \textbf{Em pelo menos um dia por semana (que deve ser sempre o mesmo ao longo do período), não pode haver TPC.} \\\\
+		No sentido da implementação desta restrição foi criado o predicado \textit{clearTpcDay(Class,NoTpcDay)} que recebe o dia em que não existem trabalhos de casa e depois percorre a lista de disciplinas da turma 
+		de forma a que na lista com as variáveis de decisão que dizem respeito aos tpc's, sejam instanciadas(com 0) de forma a indicar a não existencia de tpc's todas as variaveis de decisão que dizem respeito ao dia da 
+		semana especificado nos parâmetros do predicado.
+		\\
+
+	\item \textbf{Em cada disciplina, só pode haver TPC numa percentagem das aulas.} \\\\
+		Em relação a esta restrição foi concebido o predicado  \textit{limitNumberOfTpcPerPeriod(+Class,+Ratio,+Schedule,+Days)} que recebe a razão especificada pelo utilizador (ex: 2 - metade, 3 - um terço, 4 - um 
+		quarto ) e numa primeira fase é obtido o numero total de aulas de uma disciplina ao longo do período sendo que depois a soma das variaveis de decisão referentes aos trabalhos de casa é limitada de modo a ser 
+		inferior ou igual a  1/\textit{Ratio}, este processo é de seguida repetido para todas as disciplinas da turma. 
+	 	\\
+
+	\end{enumerate}
+		
+	
+	
+ 
+ 
 
 \subsection{ Função de Avaliação}
 Descrever, quando for o caso, a forma de avaliar a solução obtida e a sua implementação utilizando o SICStus Prolog.
 
 \subsection{Estratégia de Pesquisa}
+
+A estratégia de etiquetagem passa por utilizar o predicado de \textit{labeling} com a seguinte estrutura:\newline
+\centerline{\textit{labeling([ff, down, minimize(Sum1), minimize(Sum2)], R)}}\newline
+ 
+Em que
+\begin{itemize}
+\item Sum1 - Soma das somas entre a diferença de dias para cada disciplina, entre cada turma, para a primeira onda de testes.
+\item Sum2 - Soma das somas entre a diferença de dias para cada disciplina, entre cada turma, para a segunda onda de testes.
+\item R - lista de variáveis de domínio, a serem instanciadas.
+\end{itemize}
+ 
+A opção \textit{\textbf{ff}} melhora a eficiência do programa, utilizando a estratégia de \textit{First-Fail}.\newline
+Utilizando \textit{\textbf{down}}, a instanciação das variáveis ocorre por ordem descendente do seu intervalo de domínio. Esta opção permite, de forma simples e eficiente, garantir que são colocados o número máximo possível de TPCs para as turmas, que obedeçam às restrições dadas. Note-se que outra solução seria usar a opção \textit{maximize}, para a soma de todos os TPCs, mas essa estratégia seria mais lenta, oferecendo os mesmos resultados.\newline
+Finalmente, o \textit{minimize} para as variáveis \textit{Sum1} e \textit{Sum2} garante que os testes, entre turmas, estão o mais próximos entre si, o quanto possível.
+ 
+\textbf{
 Descrever a estratégia de etiquetagem
 (labeling) utilizada ou implementada, nomeadamente no que diz respeito à ordenação
-de variáveis e valores.
+de variáveis e valores.}
+
 
 \section{Visualização da Solução}
 Explicar os predicados que permitem visualizar a solução em modo de texto
