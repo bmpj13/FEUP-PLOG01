@@ -39,7 +39,7 @@ solve(Days, Schedules, Classes) :-
 
     %obter lista com todas as variaveis test e tpc para label
     listClassesVars(Classes, [], R),
-
+    !,
     labeling([ffc, down, minimize(Sum), time_out(90000, _)], R),
     (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
 
@@ -102,7 +102,7 @@ solveClass(Days, Schedule, Disciplines, Class):-
 
   NoTpcDay = 1, % dia da semana em que nunca há tpc
   clearTpcDay(Class,NoTpcDay),
-  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
+  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2 TPCs por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
 
   testPlacementRestrictions(Days,Class).
