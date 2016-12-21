@@ -28,10 +28,16 @@ displayClasses([], []).
 
 displayClass(Class, Days):-
   format('~n--------------------------------------- Tests ---------------------------------------- ~n',[]),
-  displayDayList(Class,2,0,Days),!,
+  displayTests(Class),!,
   format('~n---------------------------------------- Tpc ----------------------------------------- ~n',[]),
   displayDayList(Class,3,0,Days),!.
 
+
+displayTests([]).
+
+displayTests([[_, T, _] | Class]) :-
+  write(T), nl,
+  displayTests(Class).
 
 displayDayList(_,_,N,N).
 

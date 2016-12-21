@@ -53,16 +53,10 @@ testsCloseBetweenClasses(Classes, DisciplineIds, Sum1, Sum2) :-
 getTestDaysDifferences([_], _, [], []).
 
 getTestDaysDifferences([C1, C2 | Classes], DisciplineId, [Value1 | DiffList1], [Value2 | DiffList2]) :-
-    member([DisciplineId, Tests1, _], C1),!,%isto não pode falhar / causar backtracking?
-    member([DisciplineId, Tests2, _], C2),!,
-    getMidEndTerms(Tests1, Mid1, End1),
-    getMidEndTerms(Tests2, Mid2, End2),
-    element(Idx1, Mid1, 1),
-    element(Idx2, Mid2, 1),
-    Value1 #= abs(Idx2 - Idx1),
-    element(Idx3, End1, 1),
-    element(Idx4, End2, 1),
-    Value2 #= abs(Idx4 - Idx3),
+    member([DisciplineId, [Test1, Test2], _], C1),!, % isto não pode falhar / causar backtracking?
+    member([DisciplineId, [Test3, Test4], _], C2),!,
+    Value1 #= abs(Test3 - Test1),
+    Value2 #= abs(Test4 - Test2),
     getTestDaysDifferences([C2 | Classes], DisciplineId, DiffList1, DiffList2).
 
 
@@ -104,16 +98,13 @@ processClasses(Days, [Schedule | Schedules], DisciplinesList, [Class | Classes])
 %resolve problema de uma turma
 solveClass(Days, Schedule, Disciplines, Class):-
   fillDisciplines(Days,Disciplines,Class),
-  checkHasDiscipline(Class,Schedule),%coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
+  checkHasDiscipline(Class,Schedule), %coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
+
   NoTpcDay = 1, % dia da semana em que nunca há tpc
   clearTpcDay(Class,NoTpcDay),
-
-
   maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
   limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
 
-
-  twoTestsPerPeriod(Class), % garantir 2 testes por periodo, FALTA POLOS NO MEIO/FIM do PERIODO
   testPlacementRestrictions(Days,Class).
 
 
@@ -191,8 +182,10 @@ fillDisciplines(_,[],[]).
 
 % dias id das disciplinas
 fillDisciplines(Days, [Dh | Dt], [H | T]):-
-    length(Test,Days),
-    domain(Test,0,1),
+    getMidEndTerms(Days, MidInit, MidEnd, FinInit, FinEnd),
+    Test = [Test1, Test2],
+    domain([Test1], MidInit, MidEnd),
+    domain([Test2], FinInit, FinEnd),
     length(Tpc,Days),
     domain(Tpc,0,1),
     H = [Dh,Test,Tpc],
@@ -206,39 +199,26 @@ checkHasDiscipline([[DisciplineId,Test,Tpc] | Tail], Schedule) :-
     checkHasDiscipline(Tail,Schedule).
 
 
-checkSchedule(_, _, [], [], _).
+checkSchedule(_, _, _, [], _).
 
-checkSchedule(N, DisciplineId, [H1|Test], [H2|Tpc], Schedule) :-
+checkSchedule(N, DisciplineId, [Test1, Test2], [H2|Tpc], Schedule) :-
     Index is (N mod 5) + 1,
     nth1(Index, Schedule, L),
-    (\+ member(DisciplineId, L),
-    H1 #= 0, H2 #= 0, !; true),
+    (
+        (\+ member(DisciplineId, L), Test1 #\= N, Test2 #\= N, H2 #= 0, !)
+            ; 
+        true
+    ),
     N1 is N+1,
-    checkSchedule(N1, DisciplineId, Test, Tpc, Schedule).
+    checkSchedule(N1, DisciplineId, [Test1, Test2], Tpc, Schedule).
 
-
-twoTestsPerPeriod([]).
-
-twoTestsPerPeriod([CurrentDiscipline | NextDiscipline]) :-
-    nth1(2,CurrentDiscipline,Tests),
-    sum(Tests,#=,2),
-    placeTests(Tests),
-    twoTestsPerPeriod(NextDiscipline).
-
-placeTests(Tests):-
-  getMidEndTerms(Tests, Mid, End),
-  sum(Mid, #= , 1),
-  sum(End, #= , 1).
 
 % mid sublista de uma lista na 1 altura de testes, End na segunda altura de testes
-getMidEndTerms(Tests, Mid, End) :-
-    length(Tests, Days),
+getMidEndTerms(Days, InitMid, FinMid, InitEnd, FinEnd) :-
     InitMid is div(Days,6),
     FinMid is div(Days,2),
     InitEnd is FinMid + div(Days,6),
-    FinEnd is 0,
-    sublist(Tests,Mid,InitMid, _ , FinMid),
-    sublist(Tests,End,InitEnd, _ , FinEnd).
+    FinEnd is Days.
 
 %tests
 getDaySum(_, [], _ , 0).
@@ -259,34 +239,49 @@ getDaySumList(IdList,Class,N,Days, Result):- !,
   getDaySumList(IdList,Class,N1,Days, Val2),
   Result = [Val | Val2].
 
-testPlacementRestrictions(Days,Class) :-
-  getDaySumList(1,Class,0,Days, Tests), % lista com todos os dias e numero de testes de todas as disciplinas da turma nesse dia
-  checkWeekTestNumber(Tests,2),
-  checkConsecutiveDayTests(Tests,0).
+testPlacementRestrictions(Days, Class) :-
+  getTestsList(Class, Tests),
+  getCardinalityPairs(1, Days, Pairs, Vars),
+  global_cardinality(Tests, Pairs),
+  checkWeekTestNumber(Vars, 2),
+  checkConsecutiveDayTests(1, Vars).
 
 
-checkConsecutiveDayTests([],_).
+getTestsList([], []).
 
-checkConsecutiveDayTests([D],_):-
-  sum([D], #=<, 1).
+getTestsList([[_, [T1, T2], _] | Class], [T1, T2 | Tests]) :-
+    getTestsList(Class, Tests).
 
-checkConsecutiveDayTests([Day1 | [Day2 | Tail]],N) :-
-  Index is (N mod 5),
-  (
-    (Index =:= 4 , sum([Day1], #=<, 1) , sum([Day2], #=<, 1)) % caso de sexta e segunda em que pode existir teste nos dois
-      ;
-    (sum([Day1,Day2], #=<, 1))
-  ), % dois dias seguidos não podem ter mais do que um teste, e um dia tambem não pode ter 2 testes
-  N1 is N + 1,!,
-  checkConsecutiveDayTests([Day2 | Tail],N1).
+getCardinalityPairs(Index, Days, [], []) :-
+    Index =:= Days+1.
 
+getCardinalityPairs(Index, Days, [Index-P | Pairs], [P | Vars]) :-
+    Idx is Index + 1,
+    getCardinalityPairs(Idx, Days, Pairs, Vars).
+
+
+checkConsecutiveDayTests(Index, [T1, T2 | Tail]) :-
+    !,
+    (
+        (Idx is Index mod 5, Idx =:= 0, sum([T1, T2], #=<, 2))
+            ;
+        (sum([T1, T2], #=<, 1))
+    ),
+    Index1 is Index + 1,
+    checkConsecutiveDayTests(Index1, [T2 | Tail]).
+
+checkConsecutiveDayTests(_, L) :-
+    !,
+    sum(L, #=<, 1).
 
 
 %verifica se o num de testes por semana é menor ou igual a N
-checkWeekTestNumber([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday | Tail], N) :-
-    sum([Tmonday, Ttuesday, Twednesday, Tthursday, Tfriday], #=<, N),!,
-    checkWeekTestNumber(Tail,N).
+checkWeekTestNumber([T1, T2, T3, T4, T5 | Tail], N) :-
+    !,
+    sum([T1, T2, T3, T4, T5], #=<, N),
+    checkWeekTestNumber(Tail, N).
 
 %para quando a ultima semana nao tem 5 dias e condicao de paragem
 checkWeekTestNumber(L, N) :-
+    !,
     sum(L, #=<, N).
