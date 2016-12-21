@@ -9,6 +9,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{makeidx}  % allows for indexgeneration
 
+
+
+
 %
 
 \begin{document}
@@ -156,29 +159,26 @@ Descrever as variáveis de decisão e os seus domínios.}
  
  
 
-\subsection{ Função de Avaliação}
-Descrever, quando for o caso, a forma de avaliar a solução obtida e a sua implementação utilizando o SICStus Prolog.
+\subsection{Função de Avaliação}
+Na solução encontrada para o problema, um dos factores a ter em conta é ser necessário que os testes entre turmas, para uma dada disciplina, sejam o mais próximos entre si o quanto possível. \par
+Para garantir esta condição, são calculadas as diferenças das datas de teste entre cada par de turmas, sendo estes valores também somados no final. Como há varios testes de disciplina, estas somas também terão de ser somadas - estamos, portanto, perante uma soma de somas de somas. Este valor deve ser minimizado, quando a solução está a ser procurada.\par
+Para testar a eficiência e os resultados do programa, foi criado um predicado \textit{run}, que calcula o tempo de execução do programa.
 
 \subsection{Estratégia de Pesquisa}
-
-A estratégia de etiquetagem passa por utilizar o predicado de \textit{labeling} com a seguinte estrutura:\newline
-\centerline{\textit{labeling([ff, down, minimize(Sum1), minimize(Sum2)], R)}}\newline
+A estratégia de etiquetagem passa por utilizar o predicado de \textit{labeling} com a seguinte estrutura:\newline\newline
+\centerline{\textit{labeling([ff, down, minimize(Sum), time\_out([90000, \_])], R)}}\newline
  
 Em que
 \begin{itemize}
-\item Sum1 - Soma das somas entre a diferença de dias para cada disciplina, entre cada turma, para a primeira onda de testes.
-\item Sum2 - Soma das somas entre a diferença de dias para cada disciplina, entre cada turma, para a segunda onda de testes.
+\item Sum - Soma das somas das somas entre a diferença de dias de teste para cada disciplina, entre cada turma.
 \item R - lista de variáveis de domínio, a serem instanciadas.
 \end{itemize}
  
-A opção \textit{\textbf{ff}} melhora a eficiência do programa, utilizando a estratégia de \textit{First-Fail}.\newline
-Utilizando \textit{\textbf{down}}, a instanciação das variáveis ocorre por ordem descendente do seu intervalo de domínio. Esta opção permite, de forma simples e eficiente, garantir que são colocados o número máximo possível de TPCs para as turmas, que obedeçam às restrições dadas. Note-se que outra solução seria usar a opção \textit{maximize}, para a soma de todos os TPCs, mas essa estratégia seria mais lenta, oferecendo os mesmos resultados.\newline
-Finalmente, o \textit{minimize} para as variáveis \textit{Sum1} e \textit{Sum2} garante que os testes, entre turmas, estão o mais próximos entre si, o quanto possível.
- 
-\textbf{
-Descrever a estratégia de etiquetagem
-(labeling) utilizada ou implementada, nomeadamente no que diz respeito à ordenação
-de variáveis e valores.}
+A opção \textit{\textbf{ff}} melhora a eficiência global do programa, utilizando a estratégia de \textit{First-Fail}.\par
+Utilizando \textit{\textbf{down}}, a instanciação das variáveis ocorre por ordem descendente do seu intervalo de domínio. Esta opção permite, de forma simples e eficiente, garantir que são colocados o número máximo possível de TPCs para as turmas, que obedeçam às restrições dadas. Note-se que outra solução seria usar a opção \textit{maximize}, para a soma de todos os TPCs, mas essa estratégia seria mais lenta, oferecendo os mesmos resultados.\par
+O \textit{\textbf{minimize}}, para a variável \textit{Sum}, garante que os testes, entre turmas, estão o mais próximos entre si, o quanto possível.\par
+Finalmente, o \textit{\textbf{time\_out}} funciona como uma salvaguarda, no sentido em que para o programa, quando 1 minuto e 30 segundos estiverem decorridos, desde o início da execução. Caso decorra o tempo estipulado, então será retornada a melhor solução encontrada até então.
+
 
 
 \section{Visualização da Solução}

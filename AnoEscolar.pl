@@ -5,20 +5,14 @@
 % -------------- Estranho --------------
 % cada disciplina  1 a 4 dias por semana % isto não é da responsabilidade de quem faz o horario???
 %  -------------- TESTES --------------
-% cada disciplina tem 2 testes por periodo(meio e fim )-> feito
-% alunos não podem ter mais de 2 testes por semana ->feito
-% alunos não podem ter testes em dias consecutivos ->feito
+% cada disciplina tem 2 testes por periodo(meio e fim )
+% alunos não podem ter mais de 2 testes por semana
+% alunos não podem ter testes em dias consecutivos
+% testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
 %  -------------- TPC --------------
-% alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia -> feito
+% alunos não podem ter mais de 2(Afinal é VARIAVEL) tpc por dia
 % em pelo menos um dia por semana não pode haver tpc(um dia da semana que deve ser sempre o mesmo)
 % em cada disciplina só pode haver tpc em metade das aulas(Afinal é VARIAVEL)
-% --------------- FODEU ----------------
-% testes de cada disciplina devem ser o mais proximo possivel em todas as turmas
-
-
-% lê o ficheiro resolve o problema para cada turma e faz output
-% solveProblem().
-% for each class call resolve class and display results
 
 
 run(Days, Schedules, Classes):-
@@ -41,11 +35,12 @@ solve(Days, Schedules, Classes) :-
 
     % testes de cada disciplina devem ser o mais proximo possivel entre todas as turmas
     testsCloseBetweenClasses(Classes, DisciplinesList, Sum1, Sum2),
+    Sum #= Sum1 + Sum2,
 
     %obter lista com todas as variaveis test e tpc para label
     listClassesVars(Classes, [], R),
 
-    labeling([ff, down, minimize(Sum1), minimize(Sum2), time_out(60000, _)], R),
+    labeling([ffc, down, minimize(Sum), time_out(90000, _)], R),
     (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
 
 
