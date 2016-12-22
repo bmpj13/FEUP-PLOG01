@@ -1,6 +1,6 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
-:- ensure_loaded('displayResults.pl').
+:- ensure_loaded('DisplayResults.pl').
 
 % -------------- Estranho --------------
 % cada disciplina  1 a 4 dias por semana % isto não é da responsabilidade de quem faz o horario???
@@ -15,23 +15,21 @@
 % em cada disciplina só pode haver tpc em metade das aulas(Afinal é VARIAVEL)
 
 
-run(Days, Schedules, Classes):-
+run(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedules, Classes):-
         statistics(runtime, [T0|_]),
-        solve(Days, Schedules, Classes),
+        solve(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedules, Classes),
         statistics(runtime, [T1|_]),
         T is T1 - T0,
         format('solve/3 took ~3d sec.~n', [T]).
 
 
-solve(Days, Schedules, Classes) :-
-    format('~n---------------------------------- School Planning ----------------------------------~n',[]),
+solve(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedules, Classes) :-
     % obter os id's de todas as disciplinas
     flatten(Schedules, Temp),
     sort(Temp, DisciplinesList),
-    nl, displayDisciplines(DisciplinesList),
 
     %aplicar restricoes a cada turma
-    processClasses(Days, Schedules, DisciplinesList, Classes),
+    processClasses(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedules, DisciplinesList, Classes),
 
     % testes de cada disciplina devem ser o mais proximo possivel entre todas as turmas
     testsCloseBetweenClasses(Classes, DisciplinesList, Sum1, Sum2),
@@ -41,7 +39,7 @@ solve(Days, Schedules, Classes) :-
     listClassesVars(Classes, [], R),
     !,
     labeling([ffc, down, minimize(Sum), time_out(90000, _)], R),
-    (displayClasses(Classes, Days) ; true), nl, write(Sum1), nl, write(Sum2), nl.
+    (display(Classes, Days) ; true).
 
 
 
@@ -87,23 +85,22 @@ listClassesVars([], Acc, Acc).
 
 
 %solver
-processClasses(_, [], _, []).
+processClasses(_, _, _, _, [], _, []).
 
-processClasses(Days, [Schedule | Schedules], DisciplinesList, [Class | Classes]) :-
-    solveClass(Days, Schedule, DisciplinesList, Class),
-    processClasses(Days, Schedules, DisciplinesList, Classes).
+processClasses(Days, MaxTpcNumber, NoTpcDay, Ratio, [Schedule | Schedules], DisciplinesList, [Class | Classes]) :-
+    solveClass(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedule, DisciplinesList, Class),
+    processClasses(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedules, DisciplinesList, Classes).
 
 
 
 %resolve problema de uma turma
-solveClass(Days, Schedule, Disciplines, Class):-
+solveClass(Days, MaxTpcNumber, NoTpcDay, Ratio, Schedule, Disciplines, Class):-
   fillDisciplines(Days,Disciplines,Class),
   checkHasDiscipline(Class,Schedule), %coloca a 0 a lista de tpc e testes nos dias em que nao existem aulas dessa disciplina
 
-  NoTpcDay = 1, % dia da semana em que nunca há tpc
   clearTpcDay(Class,NoTpcDay),
-  maxNumberTpcPerDay(Class,Days,2), % alunos não podem ter mais de 2 TPCs por dia
-  limitNumberOfTpcPerPeriod(Class,2,Schedule,Days),
+  maxNumberTpcPerDay(Class, Days, MaxTpcNumber), % alunos não podem ter mais de 2 TPCs por dia
+  limitNumberOfTpcPerPeriod(Class, Ratio, Schedule, Days),
 
   testPlacementRestrictions(Days,Class).
 
@@ -144,7 +141,7 @@ limitNumberOfTpcPerPeriod([[DisciplineId, _, Tpc] | Tail],Ratio,Schedule,Days):-
 
 
 
-clearTpcDay([CurrentDiscipline | NextDiscipline],NoTpcDay) :-
+clearTpcDay([CurrentDiscipline | NextDiscipline], NoTpcDay) :-
   nth1(3,CurrentDiscipline,Tpc),
   freeTpcDay(0, Tpc, NoTpcDay),
   clearTpcDay(NextDiscipline, NoTpcDay).
