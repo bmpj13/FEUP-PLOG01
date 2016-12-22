@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.12)  22 DEC 2016 17:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.12)  22 DEC 2016 18:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,96 +608,96 @@ Underfull \hbox (badness 10000) in paragraph at lines 93--95
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--98
+Underfull \hbox (badness 10000) in paragraph at lines 97--99
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 101--102
+Underfull \hbox (badness 10000) in paragraph at lines 102--103
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--110
+Underfull \hbox (badness 10000) in paragraph at lines 109--111
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--117
+Underfull \hbox (badness 10000) in paragraph at lines 112--118
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--117
+Underfull \hbox (badness 10000) in paragraph at lines 112--118
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--122
+Underfull \hbox (badness 10000) in paragraph at lines 119--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--122
+Underfull \hbox (badness 10000) in paragraph at lines 119--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 123--127
+Underfull \hbox (badness 10000) in paragraph at lines 124--128
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 123--127
+Underfull \hbox (badness 10000) in paragraph at lines 124--128
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 128--133
+Underfull \hbox (badness 10000) in paragraph at lines 129--134
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 128--133
+Underfull \hbox (badness 10000) in paragraph at lines 129--134
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--149
+Underfull \hbox (badness 10000) in paragraph at lines 148--150
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--149
+Underfull \hbox (badness 10000) in paragraph at lines 148--150
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 164--165
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
 
  []
 
 <images/results.png, id=25, 959.585pt x 874.26625pt>
 File: images/results.png Graphic file (type png)
  <use images/results.png>
-Package pdftex.def Info: images/results.png used on input line 166.
+Package pdftex.def Info: images/results.png used on input line 167.
 (pdftex.def)             Requested size: 383.8272pt x 349.7003pt.
 
 [6 <./images/results.png>]
-Overfull \hbox (26.66824pt too wide) in paragraph at lines 170--170
+Overfull \hbox (26.66824pt too wide) in paragraph at lines 171--171
 []\OT1/cmr/m/n/10 O pro-ces-sa-mento da in-forma^^Xc~ao para \OT1/cmr/m/it/10 o
 ut-put \OT1/cmr/m/n/10 come^^Xca no pre-di-cado \OT1/cmr/m/it/10 dis-play(+Clas
 ses,
  []
 
 
-Overfull \hbox (9.55913pt too wide) in paragraph at lines 171--173
+Overfull \hbox (9.55913pt too wide) in paragraph at lines 172--174
 \OT1/cmr/m/n/10 Para mos-trar as da-tas dos TPCs, o pre-di-cado \OT1/cmr/m/it/1
 0 dis-playTPCs(+Class, +Day, +Days)\OT1/cmr/m/n/10 ,
  []
 
 
-Overfull \hbox (2.48813pt too wide) in paragraph at lines 175--175
+Overfull \hbox (2.48813pt too wide) in paragraph at lines 176--176
 \OT1/cmr/m/n/10 Nesta sec^^Xc~ao ser~ao mos-tra-dos os re-sul-ta-dos da execu^^
 Xc~ao do pro-grama. As vari^^Saveis
  []
@@ -705,10 +705,10 @@ Xc~ao do pro-grama. As vari^^Saveis
 <images/chart1.jpg, id=31, 499.80411pt x 270.82231pt>
 File: images/chart1.jpg Graphic file (type jpg)
  <use images/chart1.jpg>
-Package pdftex.def Info: images/chart1.jpg used on input line 178.
+Package pdftex.def Info: images/chart1.jpg used on input line 179.
 (pdftex.def)             Requested size: 424.83548pt x 230.20004pt.
 
-Overfull \hbox (92.71194pt too wide) in paragraph at lines 178--179
+Overfull \hbox (92.71194pt too wide) in paragraph at lines 179--180
 [][] 
  []
 
@@ -716,20 +716,20 @@ Overfull \hbox (92.71194pt too wide) in paragraph at lines 178--179
 <images/chart2.jpg, id=36, 499.80411pt x 270.82231pt>
 File: images/chart2.jpg Graphic file (type jpg)
  <use images/chart2.jpg>
-Package pdftex.def Info: images/chart2.jpg used on input line 183.
+Package pdftex.def Info: images/chart2.jpg used on input line 184.
 (pdftex.def)             Requested size: 424.83548pt x 230.20004pt.
 
-Overfull \hbox (92.71194pt too wide) in paragraph at lines 183--184
+Overfull \hbox (92.71194pt too wide) in paragraph at lines 184--185
 [][] 
  []
 
 <images/chart3.jpg, id=37, 499.80411pt x 270.82231pt>
 File: images/chart3.jpg Graphic file (type jpg)
  <use images/chart3.jpg>
-Package pdftex.def Info: images/chart3.jpg used on input line 189.
+Package pdftex.def Info: images/chart3.jpg used on input line 190.
 (pdftex.def)             Requested size: 424.83548pt x 230.20004pt.
 
-Overfull \hbox (92.71194pt too wide) in paragraph at lines 189--190
+Overfull \hbox (92.71194pt too wide) in paragraph at lines 190--191
 [][] 
  []
 
@@ -737,7 +737,7 @@ Overfull \hbox (92.71194pt too wide) in paragraph at lines 189--190
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./images/chart2.jpg>]
-Overfull \hbox (7.9088pt too wide) in paragraph at lines 196--196
+Overfull \hbox (7.9088pt too wide) in paragraph at lines 197--197
 \OT1/cmr/m/n/10 A cons-tru^^Xc~ao deste pro-jeto per-mi-tiu apro-fun-dar os co-
 nhe-ci-men-tos em \OT1/cmr/m/it/10 Pro-grama^^Xc~ao
  []
@@ -756,7 +756,7 @@ Here is how much of TeX's memory you used:
  7244 multiletter control sequences out of 15000+600000
  6470 words of font info for 23 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 38i,6n,32p,556b,242s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,6n,32p,491b,242s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -764,7 +764,7 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmti10.pfb>
-Output written on relatorio.pdf (11 pages, 208658 bytes).
+Output written on relatorio.pdf (11 pages, 208689 bytes).
 PDF statistics:
  74 PDF objects out of 1000 (max. 8388607)
  48 compressed objects within 1 object stream

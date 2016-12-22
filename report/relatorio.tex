@@ -49,16 +49,16 @@ Foi implementado um conjunto de predicados de modo a aplicar todas as restriçõ
 %
 \section{Introdução}
 %
-Este projeto esta a ser realizado no âmbito da unidade curricular Programação em Lógica do Mestrado Integrado em Engenharia Informática e Computação, da Faculdade de Engenharia da Universidade do Porto (FEUP).
-O objetivo do projeto prende-se com a resolução de um problema de otimização, utilizando programação em lógica com restrições.
-O problema consiste na calendarização de testes e trabalhos de casa de um periodo letivo, com vários parametros váriaveis como o número de turmas, disciplinas, trabalhos de casa (por dia e por disciplina), assim como a existência de diferentes horários para cada turma. Existem também diversas restrições que devem ser respeitadas.
+Este projeto esta a ser realizado no âmbito da unidade curricular Programação em Lógica do Mestrado Integrado em Engenharia Informática e Computação, da Faculdade de Engenharia da Universidade do Porto (FEUP).\par
+O objetivo do projeto prende-se com a resolução de um problema de otimização, utilizando programação em lógica com restrições.\par
+O problema consiste na calendarização de testes e trabalhos de casa de um periodo letivo, com vários parametros váriaveis como o número de turmas, disciplinas, trabalhos de casa (por dia e por disciplina), assim como a existência de diferentes horários para cada turma. Existem também diversas restrições que devem ser respeitadas.\par
 Ao longo deste artigo será descrito o respetivo problema com um nivel de detalhe mais elevado, a abordagem levada a cabo pelo grupo para a implementação de uma possivel solução, e as conclusões retiradas acerca da solução implementada.
 
 \newpage
 \section{Descrição do Problema}
 %
 
-O Problema ''Ano Escolar'' é referente à maracação de testes e TPCs, ao longo do periodo, sendo que as seguintes restrições devem ser tidas em conta na resolução apresentada:
+O Problema ''Ano Escolar'' é referente à marcação de testes e TPCs, ao longo do período, sendo que as seguintes restrições devem ser tidas em conta na resolução apresentada:
 
 	\begin{itemize}
 	\item Cada disciplina tem 2 testes por período de aulas, que decorrem num conjunto de semanas específico (mais ou menos a meio e no fim do período). 	
@@ -91,15 +91,16 @@ A estrutura adoptada pelo grupo para resolver o problema consiste numa lista par
 \begin{enumerate}
 
 	\item \textbf{Garantir dois testes por período para cada disciplina, mais ou menos a meio e no fim do período.}\\\\
-		Para garantir o que o numero de testes por periodo para cada disciplina fosse igual a 2 e que cada teste estivesse numa época diferente (meio do periodo ou fim do periodo), foi utilizado o predicado 	               
-		\textit{twoTestsPerPeriod(+Class)}, que recebe uma turma com a estrutura especificada no ponto  \textbf{3.1} e, para cada disciplina dessa turma utiliza, a lista de variáveis de decisão que contém a informação dos testes. Foi arbitrado que o período seria divido em 4 partes: o primeiro \textit{1/6} corresponde a um intervalo sem testes, e os seguintes \textit{2/6} à época dos primeiros testes. O mesmo método foi aplicado para a onda de segundos testes (começando onde acaba o período para os primeiros).\par
+		Para garantir o que o numero de testes por periodo para cada disciplina fosse igual a 2, e que cada teste estivesse numa época diferente (meio do período ou fim do período), foi utilizado o predicado 	               
+		\textit{twoTestsPerPeriod(+Class)}, que recebe uma turma com a estrutura especificada no ponto  \textbf{3.1} e, para cada disciplina dessa turma, utiliza a lista de variáveis de decisão que contém a informação dos testes.\par 
+Foi arbitrado que o período seria divido em 4 partes: o primeiro \textit{1/6} corresponde a um intervalo sem testes, e os seguintes \textit{2/6} à época dos primeiros testes. O mesmo método foi aplicado para a onda de segundos testes (começando onde acaba o período para os primeiros).\par
 		Os dois testes são garantidos, por só existirem duas variáveis em questão, para cada disciplina.
 		\\
 	
 \newpage
 			
 	\item \textbf{Máximo de 2 testes na mesma semana de aulas, e não permitir testes em dias consecutivos.} \\\\
-		Para solucionar esta restrição foi utilizado o predicado \textit{testPlacementRestrictions(+Days,+Class)}, que uma turma, e o número de dias do período.\par
+		Para solucionar esta restrição foi utilizado o predicado \textit{testPlacementRestrictions(+Days,+Class)}, que usa uma turma, e o número de dias do período.\par
 		Este predicado, auxiliando-se do predicado global \textit{global\_cardinality}, obtém uma lista de tamanho igual ao número de dias, e garante que:
 		\begin{itemize}
 			\item De 5 em 5 dias, a soma de valores não pode ser maior que 2.
@@ -109,25 +110,25 @@ A estrutura adoptada pelo grupo para resolver o problema consiste numa lista par
 		\\
 
 	\item \textbf{Os testes realizados pelas diferentes turmas a uma mesma disciplina devem ser o mais próximos possível.} \\\\
-		De modo a permitir que os testes da mesma disciplina fossem o mais próximos possível em turmas diferentes foi utilizado o predicado  \textit{testsCloseBetweenClasses(+Classes, +DisciplineIds, -Sum1, -Sum2)} , 
+		De modo a permitir que os testes da mesma disciplina fossem o mais próximos possível em turmas diferentes, foi utilizado o predicado  \textit{testsCloseBetweenClasses(+Classes, +DisciplineIds, -Sum1, -Sum2)}, 
 		que recebe todas as turmas e os identificadores de todas as disciplinas leccionadas nas turmas em questão, retornando o somatório da diferença entre os testes da mesma disciplina em turmas diferentes para a 
 		primeira época de testes (\textit{Sum1}) e para a segunda 
 		(\textit{Sum2}). Depois, estes valores, no processo de etiquetagem, serão minimzados, assegurando, desta forma, a condição apresentada.
 		\\
 
 	\item \textbf{Em cada dia, não pode haver TPC em mais do que N disciplinas.} \\\\
-		A fim de permitir ao utilizador especificar o número máximo de trabalhos de casa por dia, foi implementado o predicado \textit{maxNumberTpcPerDay(+Class,+Days,+N)}, que obtém uma lista com o número total de TPCs em cada dia do periodo, para a turma em questão (tendo em consideração todas as disciplinas), sucedendo-se, de seguida, para cada elemento desta lista, uma comparação, 
+		A fim de permitir ao utilizador especificar o número máximo de trabalhos de casa por dia, foi implementado o predicado \textit{maxNumberTpcPerDay(+Class,+Days,+N)}, que obtém uma lista com o número total de TPCs em cada dia do período, para a turma em questão (tendo em consideração todas as disciplinas), sucedendo-se, de seguida, para cada elemento desta lista, uma comparação, 
 		de modo a garantir que o número de TPCs será inferior a N, uma vez instanciadas as variaveis de decisão.
 		\\
 
 	\item \textbf{Em pelo menos um dia por semana (que deve ser sempre o mesmo ao longo do período), não pode haver TPC.} \\\\
-		No sentido da implementação desta restrição foi criado o predicado \textit{clearTpcDay(Class,NoTpcDay)} que recebe o dia em que não existem trabalhos de casa e depois percorre a lista de disciplinas da turma, de forma a que, na lista com as variáveis de decisão que dizem respeito aos TPCs, sejam instanciadas (com o valor 0) e, assim, indicar a não existencia de TPCs para todas as variaveis de decisão que dizem respeito ao dia da 
+		No sentido da implementação desta restrição foi criado o predicado \textit{clearTpcDay(+Class, +NoTpcDay)} que recebe o dia em que não existem trabalhos de casa e depois percorre a lista de disciplinas da turma, de forma a que, na lista com as variáveis de decisão que dizem respeito aos TPCs, sejam instanciadas (com o valor 0) e, assim, indicar a não existencia de TPCs para todas as variaveis de decisão que dizem respeito ao dia da 
 semana especificado nos parâmetros do predicado. Este valor deve variar entre 1 e 5 (em que cada número corresponde ao dia da semana).
 		\\
 
 	\item \textbf{Em cada disciplina, só pode haver TPC numa percentagem das aulas.} \\\\
-		Em relação a esta restrição foi concebido o predicado  \textit{limitNumberOfTpcPerPeriod(+Class,+Ratio,+Schedule,+Days)} que recebe a razão especificada pelo utilizador (ex: 2 - metade, 3 - um terço, 4 - um 
-		quarto), e numa primeira fase é obtido o numero total de aulas de uma disciplina ao longo do período, sendo que depois a soma das variaveis de decisão referentes aos trabalhos de casa é limitada de modo a ser 
+		Em relação a esta restrição foi concebido o predicado  \textit{limitNumberOfTpcPerPeriod(+Class, +Ratio, +Schedule, +Days)} que recebe a razão especificada pelo utilizador (ex: 2 - metade, 3 - um terço, 4 - um 
+		quarto), e, numa primeira fase, é obtido o número total de aulas de uma disciplina ao longo do período, sendo que depois a soma das variaveis de decisão referentes aos trabalhos de casa é limitada de modo a ser 
 		inferior ou igual a  \textit{1/Ratio}. Este processo é de seguida repetido para todas as disciplinas da turma.
 	 	\\
 
@@ -195,7 +196,7 @@ Os resultados não são mostrados para 4 e 6 turmas, pois, tal como aconteceu pa
 \section{Conclusões e Trabalho Futuro}
 A construção deste projeto permitiu aprofundar os conhecimentos em \textit{Programação em Lógica com Restrições}, assim como pensar de forma lógica (e não funcional). Foi possível, também, conhecer o poder do \textbf{Prolog} e, em específico, do predicado \textit{labeling}, verificando como tornam possível a resolução de problemas complexos em poucas linhas de código.\par
 Tendo em conta os resultados obtidos, é possível afirmar que, de uma forma geral, o programa tem tempos de execução rápidos. É, no entanto, importante notar que o aumento do número de disciplinas/turmas provoca uma diminuição na rapidez do programa mais acentuada, relativamente ao aumento do número de dias - estes últimos, apesar de dilatarem o tempo de execução, nunca foram a causa do programa não conseguir executar no tempo estabelecido.\newline
-Assim sendo, pode-se afirmar que o número de dias não se tratam do \textit{bottleneck} do programa, podendo este estar no número de disciplinas ou o número de turmas.\par
+Assim sendo, pode-se afirmar que o número de dias não se trata do \textit{bottleneck} do programa, podendo este estar no número de disciplinas ou o número de turmas.\par
 A principal vantagem do programa, de uma forma geral, passa pela eficiência e baixo tempo de execução. Além disso, é totalmente flexível quanto ao número de disciplinas (que devem estar na base de dados), número de turmas e número de dias, e também quanto aos horários, o número máximo de TPCs por dia, percentagem de TPCs por período e ao dia que não deve haver TPCs.\newline
 No entanto, a flexibilidade nestes \textit{inputs} torna o programa pouco previsível, podendo, por vezes, haver discrepâncias nos tempos de execução. Além disso, apesar de não ter sido pedido, a aplicação poderia ser ainda mais flexibilizada - podendo receber, por exemplo, o número de testes por período.\par
 A melhoria do projeto passaria, então, por flexibilizar ainda mais os \textit{inputs}, assim como identificar e melhorar a eficiência do \textit{bottleneck} da aplicação.
