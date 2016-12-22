@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  22 DEC 2016 23:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.11.12)  22 DEC 2016 23:33
 entering extended mode
 **./relatorio.tex
 (relatorio.tex
@@ -737,13 +737,13 @@ Overfull \hbox (92.71194pt too wide) in paragraph at lines 196--197
 [][] 
  []
 
-
+[10 <./images/chart3.jpg>]
 Overfull \hbox (7.9088pt too wide) in paragraph at lines 220--220
 \OT1/cmr/m/n/10 A cons-truc~ao deste pro-jeto per-mi-tiu apro-fun-dar os co-nh
 e-ci-men-tos em \OT1/cmr/m/it/10 Pro-gramac~ao
  []
 
-[10 <./images/chart3.jpg>] [11] [12
+[11] [12
 
 ] (relatorio.aux)
 
@@ -765,7 +765,7 @@ X 2.9/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
 amsfonts/cm/cmti10.pfb>
-Output written on relatorio.pdf (12 pages, 221771 bytes).
+Output written on relatorio.pdf (12 pages, 221909 bytes).
 PDF statistics:
  75 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

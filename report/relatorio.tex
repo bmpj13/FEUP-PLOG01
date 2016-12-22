@@ -201,17 +201,17 @@ Os resultados não são mostrados para 4 e 6 turmas, pois, tal como aconteceu pa
 
 \section{Instruções de Utilização}
 
-Para utilizar o software desenvolvido deve ser chamado o predicado  \textit{run(+Days, +MaxTpcNumber, +NoTpcDay, +Ratio, +Schedules, -Classes)} definido no ficheiro \textit{AnoEscolar.pl}, este predicado tem como argumentos:
+Para utilizar o software desenvolvido deve ser chamado o predicado  \textit{run(+Days, +MaxTpcNumber, +NoTpcDay, +Ratio, +Schedules, -Classes)} definido no ficheiro \textit{AnoEscolar.pl}. Este predicado tem como argumentos:
 	\begin{itemize}
 			\item \textbf{Days} - Número de dias do periodo;
 			\item \textbf{MaxTpcNumber} - Número máximo de trabalhos de casa por dia;
 			\item \textbf{NoTpcDay} - Dia da semana no qual nunca existe trabalho de casa (de 1 a 5 correspondendo aos dias uteis da semana por ordem crescente);
 			\item \textbf{Ratio} - Rácio de trabalhos de casa por periodo, por exemplo 2- até metade das aulas de cada disciplina podem ter trabalho de casa, 3 - até um terço das aulas de cada disciplina podem ter trabalhos de casa ;
-			\item \textbf{Schedules} - hórarios de todas as turmas, consiste numa lista em que cada elemento representa um horario de uma turma, esta lista tem 5 elementos que são novamente listas com os id's das disciplinas a que tem aulas naquele dia (ex:  \textit{[
-            [[1,2], [2,3], [3,1], [1,2,3], [1]], [[1,3], [2,1], [3], [2], [1,2]]])} esta lista representa duas turmas cada uma com 3 disciplinas com id's 1 ,2 e 3); 
+			\item \textbf{Schedules} - hórarios de todas as turmas, consiste numa lista em que cada elemento representa um horario de uma turma, esta lista tem 5 elementos que são novamente listas com os id's das disciplinas a que tem aulas naquele dia (ex:  \textit{[ [[1,2], [2,3], [3,1], [1,2,3], [1]],  [[1,3], [2,1], [3], [2], [1,2]] ]} esta lista representa duas turmas cada uma com 3 disciplinas com id's 1 ,2 e 3); 
 			\item \textbf{Classes} - Lista com todas as turmas no formato já definido anteriormente.
 	\end{itemize}
-Existem ainda alguns exemplos da utilização deste predicado no ficheiro \textit{Tests.pl}.
+Existem alguns exemplos da utilização deste predicado no ficheiro \textit{Tests.pl}, de referir ainda, que tambem pode ser utilizado o predicado  \textit{solve(+Days, +MaxTpcNumber, +NoTpcDay, +Ratio, +Schedules, -Classes)}, exatamente com os mesmos argumentos.
+A vantagem de utilizar o predicado  \textit{run} é o facto de este tambem imprimir o tempo de execução do programa quando termina.
 
 
 
@@ -222,7 +222,7 @@ Tendo em conta os resultados obtidos, é possível afirmar que, de uma forma ger
 Assim sendo, pode-se afirmar que o número de dias não se trata do \textit{bottleneck} do programa, podendo este estar no número de disciplinas ou o número de turmas.\par
 A principal vantagem do programa, de uma forma geral, passa pela eficiência e baixo tempo de execução. Além disso, é totalmente flexível quanto ao número de disciplinas (que devem estar na base de dados), número de turmas e número de dias, e também quanto aos horários, o número máximo de TPCs por dia, percentagem de TPCs por período e ao dia que não deve haver TPCs.\newline
 No entanto, a flexibilidade nestes \textit{inputs} torna o programa pouco previsível, podendo, por vezes, haver discrepâncias nos tempos de execução. Além disso, apesar de não ter sido pedido, a aplicação poderia ser ainda mais flexibilizada - podendo receber, por exemplo, o número de testes por período.\par
-A melhoria do projeto passaria, então, por flexibilizar ainda mais os \textit{inputs}, assim como identificar e melhorar a eficiência do \textit{bottleneck} da aplicação.
+A melhoria do projeto passaria, então, por flexibilizar ainda mais os \textit{inputs}, assim como identificar e melhorar a eficiência do \textit{bottleneck} da aplicação. 
 
 
 
@@ -244,6 +244,6 @@ SICStus-Prolog,
 
 \section*{Anexo}
 \subsection*{Código fonte}
-O código fonte encontra-se no ficheiro \textit{\textbf{code.zip}}.
+O código fonte encontra-se no diretório \textit{\textbf{code}}.
 
 \end{document}
