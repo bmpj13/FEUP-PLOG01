@@ -199,6 +199,23 @@ Os resultados não são mostrados para 4 e 6 turmas, pois, tal como aconteceu pa
 
 É importante referir que os tempos de execução dependem em grande escala dos \textit{inputs} dados ao programa. Os valores apresentados podem variar bastante, tendo em conta os horários das turmas.
 
+\section{Instruções de Utilização}
+
+Para utilizar o software desenvolvido deve ser chamado o predicado  \textit{run(+Days, +MaxTpcNumber, +NoTpcDay, +Ratio, +Schedules, -Classes)} definido no ficheiro \textit{AnoEscolar.pl}, este predicado tem como argumentos:
+	\begin{itemize}
+			\item \textbf{Days} - Número de dias do periodo;
+			\item \textbf{MaxTpcNumber} - Número máximo de trabalhos de casa por dia;
+			\item \textbf{NoTpcDay} - Dia da semana no qual nunca existe trabalho de casa (de 1 a 5 correspondendo aos dias uteis da semana por ordem crescente);
+			\item \textbf{Ratio} - Rácio de trabalhos de casa por periodo, por exemplo 2- até metade das aulas de cada disciplina podem ter trabalho de casa, 3 - até um terço das aulas de cada disciplina podem ter trabalhos de casa ;
+			\item \textbf{Schedules} - hórarios de todas as turmas, consiste numa lista em que cada elemento representa um horario de uma turma, esta lista tem 5 elementos que são novamente listas com os id's das disciplinas a que tem aulas naquele dia (ex:  \textit{[
+            [[1,2], [2,3], [3,1], [1,2,3], [1]], [[1,3], [2,1], [3], [2], [1,2]]])} esta lista representa duas turmas cada uma com 3 disciplinas com id's 1 ,2 e 3); 
+			\item \textbf{Classes} - Lista com todas as turmas no formato já definido anteriormente.
+	\end{itemize}
+Existem ainda alguns exemplos da utilização deste predicado no ficheiro \textit{Tests.pl}.
+
+
+
+
 \section{Conclusões e Trabalho Futuro}
 A construção deste projeto permitiu aprofundar os conhecimentos em \textit{Programação em Lógica com Restrições}, assim como pensar de forma lógica (e não funcional). Foi possível, também, conhecer o poder do \textbf{Prolog} e, em específico, do predicado \textit{labeling}, verificando como tornam possível a resolução de problemas complexos em poucas linhas de código.\par
 Tendo em conta os resultados obtidos, é possível afirmar que, de uma forma geral, o programa tem tempos de execução rápidos. É, no entanto, importante notar que o aumento do número de disciplinas/turmas provoca uma diminuição na rapidez do programa mais acentuada, relativamente ao aumento do número de dias - estes últimos, apesar de dilatarem o tempo de execução, nunca foram a causa do programa não conseguir executar no tempo estabelecido.\newline
