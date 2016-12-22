@@ -84,7 +84,7 @@ A estrutura adoptada pelo grupo para resolver o problema consiste numa lista par
 \begin{itemize}
 	\item Identificador da disciplina - Variável já instanciada (conhecida pelo problema);
 	\item Lista de testes - Esta lista contém dois valores, sendo que cada um deles se refere à data do primeiro e segundo teste, respetivamente. Os domínios destas variáveis dependem do número de dias do período.
-	\item Lista de trabalhos de casa - Lista com o tamanho igual ao numero de dias úteis do período. Cada elemento da lista se trata de uma variavel de decisão com dominio de 0 a 1, simbolizando a existencia (1) ou inexistência (0) de tabalhos de casa para a disciplina em questão.
+	\item Lista de trabalhos de casa - Lista com o tamanho igual ao número de dias úteis do período. Cada elemento da lista trata-se de uma variavel de decisão com dominio de 0 a 1, simbolizando a existencia (1) ou inexistência (0) de tabalhos de casa para a disciplina em questão.
 \end{itemize}
 
 \subsection{Restrições} 
@@ -101,7 +101,7 @@ Foi arbitrado que o período seria divido em 4 partes: o primeiro \textit{1/6} c
 			
 	\item \textbf{Máximo de 2 testes na mesma semana de aulas, e não permitir testes em dias consecutivos.} \\\\
 		Para solucionar esta restrição foi utilizado o predicado \textit{testPlacementRestrictions(+Days,+Class)}, que usa uma turma, e o número de dias do período.\par
-		Este predicado, auxiliando-se do predicado global \textit{global\_cardinality}, obtém uma lista de tamanho igual ao número de dias, e garante que:
+		Este predicado, auxiliando-se do predicado global \textit{global\_cardinality}, obtém uma lista de tamanho igual ao número de dias, com a cardinalidade de testes associada a cada dia, e garante que:
 		\begin{itemize}
 			\item De 5 em 5 dias, a soma de valores não pode ser maior que 2.
 			\item De 2 em 2 dias, a soma de valores não pode ser maior que 1.
@@ -113,7 +113,7 @@ Foi arbitrado que o período seria divido em 4 partes: o primeiro \textit{1/6} c
 		De modo a permitir que os testes da mesma disciplina fossem o mais próximos possível em turmas diferentes, foi utilizado o predicado  \textit{testsCloseBetweenClasses(+Classes, +DisciplineIds, -Sum1, -Sum2)}, 
 		que recebe todas as turmas e os identificadores de todas as disciplinas leccionadas nas turmas em questão, retornando o somatório da diferença entre os testes da mesma disciplina em turmas diferentes para a 
 		primeira época de testes (\textit{Sum1}) e para a segunda 
-		(\textit{Sum2}). Depois, estes valores, no processo de etiquetagem, serão minimzados, assegurando, desta forma, a condição apresentada.
+		(\textit{Sum2}). Depois, estes valores, no processo de etiquetagem, serão minimizados, assegurando, desta forma, a condição apresentada.
 		\\
 
 	\item \textbf{Em cada dia, não pode haver TPC em mais do que N disciplinas.} \\\\
@@ -121,14 +121,16 @@ Foi arbitrado que o período seria divido em 4 partes: o primeiro \textit{1/6} c
 		de modo a garantir que o número de TPCs será inferior a N, uma vez instanciadas as variaveis de decisão.
 		\\
 
+\newpage
+
 	\item \textbf{Em pelo menos um dia por semana (que deve ser sempre o mesmo ao longo do período), não pode haver TPC.} \\\\
 		No sentido da implementação desta restrição foi criado o predicado \textit{clearTpcDay(+Class, +NoTpcDay)} que recebe o dia em que não existem trabalhos de casa e depois percorre a lista de disciplinas da turma, de forma a que, na lista com as variáveis de decisão que dizem respeito aos TPCs, sejam instanciadas (com o valor 0) e, assim, indicar a não existencia de TPCs para todas as variaveis de decisão que dizem respeito ao dia da 
 semana especificado nos parâmetros do predicado. Este valor deve variar entre 1 e 5 (em que cada número corresponde ao dia da semana).
 		\\
 
-	\item \textbf{Em cada disciplina, só pode haver TPC numa percentagem das aulas.} \\\\
+	\item \textbf{Em cada disciplina, só pode haver TPC numa percentagem de aulas.} \\\\
 		Em relação a esta restrição foi concebido o predicado  \textit{limitNumberOfTpcPerPeriod(+Class, +Ratio, +Schedule, +Days)} que recebe a razão especificada pelo utilizador (ex: 2 - metade, 3 - um terço, 4 - um 
-		quarto), e, numa primeira fase, é obtido o número total de aulas de uma disciplina ao longo do período, sendo que depois a soma das variaveis de decisão referentes aos trabalhos de casa é limitada de modo a ser 
+		quarto, ...), e, numa primeira fase, é obtido o número total de aulas de uma disciplina ao longo do período, sendo que depois a soma das variaveis de decisão referentes aos trabalhos de casa é limitada de modo a ser 
 		inferior ou igual a  \textit{1/Ratio}. Este processo é de seguida repetido para todas as disciplinas da turma.
 	 	\\
 
@@ -140,10 +142,11 @@ semana especificado nos parâmetros do predicado. Este valor deve variar entre 1
  
 
 \subsection{Função de Avaliação}
-Na solução encontrada para o problema, um dos factores a ter em conta é ser necessário que os testes entre turmas, para uma dada disciplina, sejam o mais próximos entre si o quanto possível. \par
+Na solução encontrada para o problema, um dos factores a ter em conta é ser necessário que os testes entre turmas, para uma dada disciplina, sejam o mais próximos possível entre si. \par
 Para garantir esta condição, são calculadas as diferenças das datas de teste entre cada par de turmas, sendo estes valores também somados no final. Como há varios testes por disciplina, estas somas também terão de ser somadas - estamos, portanto, perante uma soma de somas de somas. Este valor deve ser minimizado, quando a solução está a ser procurada.\par
 Para testar a eficiência e os resultados do programa, foi criado um predicado \textit{run(+Days, +Schedules, -Classes)}, que calcula o tempo de execução do programa.
 
+\newpage
 \subsection{Estratégia de Pesquisa}
 A estratégia de etiquetagem passa por utilizar o predicado de \textit{labeling} com a seguinte estrutura:\newline\newline
 \centerline{\textit{labeling([ffc, down, minimize(Sum), time\_out([90000, \_])], R)}}\newline
@@ -157,12 +160,12 @@ Em que
 A opção \textit{\textbf{ffc}} melhora a eficiência global do programa, utilizando a estratégia \textit{First-Fail}, e, adicionalmente, instancia em primeiro lugar as variáveis com maior influência nos domínios restantes. Nos testes corridos, houve um grande aumento de eficiência utilizando esta opção, relativamente ao uso de \textit{\textbf{ff}} ou nenhuma opção.\par
 Utilizando \textit{\textbf{down}}, a instanciação das variáveis ocorre por ordem descendente do seu intervalo de domínio. Esta opção permite, de forma simples e eficiente, garantir que são colocados o número máximo possível de TPCs para as turmas, que obedeçam às restrições dadas. Note-se que outra solução passaria por maximizar a soma de todos os TPCs, mas essa estratégia seria mais lenta, oferecendo os mesmos resultados.\par
 O \textit{\textbf{minimize}}, para a variável \textit{Sum}, garante que os testes, entre turmas, estão o mais próximos entre si, o quanto possível.\par
-Finalmente, o \textit{\textbf{time\_out}} funciona como uma salvaguarda, no sentido em que para o programa, quando 1 minuto e 30 segundos estiverem decorridos, desde o início da execução. Caso decorra o tempo estipulado, então será retornada a melhor solução encontrada até então.
+Finalmente, o \textit{\textbf{time\_out}} funciona como uma salvaguarda, no sentido em que termina o programa, quando 1 minuto e 30 segundos estiverem decorridos, desde o início da execução. Caso decorra o tempo estipulado, então será retornada a melhor solução encontrada até então.
 
 
-
+\newpage
 \section{Visualização da Solução}
-Quando o programa acaba de executar, e uma solução é encontrada, os resultados são apresentados com a seguinte estrutura:\\
+Quando o programa acaba de executar, e uma solução é encontrada, os resultados são apresentados com a seguinte estrutura (repetindo-se para cada turma):\\
 
 \centerline{\fbox{\includegraphics[scale=0.4]{images/results.png}}}
 
@@ -174,17 +177,20 @@ Para mostrar as datas dos TPCs, o predicado \textit{displayTPCs(+Class, +Day, +D
 
 \section{Resultados}
 Nesta secção serão mostrados os resultados da execução do programa. As variáveis a considerar são: o número de disciplinas, o número de turmas, e o número de dias.\par
-No primeiro gráfico são visíveis os resultados para 3 discplinas, variando o número de dias (entre 30 e 365) e o número de turmas (entre duas e seis):
+No primeiro gráfico são visíveis os resultados para 3 disciplinas, variando o número de dias (entre 30 e 365) e o número de turmas (entre duas e seis):
 
 \includegraphics[scale=0.85]{images/chart1.jpg}
 
 Os resultados mostram-se bons, sendo o tempo máximo de execução obtido \textit{0.3 segundos}.\par
+\newpage
 Seguidamente, o programa foi corrido num cenário de 4 disciplinas:
 
 \includegraphics[scale=0.85]{images/chart2.jpg}
 
 Note-se que não são mostrados os valores para seis turmas, pois o programa não conseguiu encontrar uma solução dentro do tempo estabelecido de 1 minuto e 30 segundos.\newline 
-Os tempos de execução continuam a ser rápidos, excetuando para 4 turmas e 365 dias - que correu em \textit{1.32 segundos}, mostrando-se irregular, comparativamente aos outros resultados.\par
+Os tempos de execução continuam a ser rápidos, excetuando para 4 turmas e 365 dias - que correu em \textit{1.32 segundos}, mostrando-se irregular, comparativamente aos outros resultados.
+
+\newpage
 Finalmente, as seguintes amostras foram obtidas com 6 disciplinas:
 
 \includegraphics[scale=0.85]{images/chart3.jpg}
