@@ -161,7 +161,15 @@ Finalmente, o \textit{\textbf{time\_out}} funciona como uma salvaguarda, no sent
 
 
 \section{Visualização da Solução}
-Explicar os predicados que permitem visualizar a solução em modo de texto
+Quando o programa acaba de executar, e uma solução é encontrada, os resultados são apresentados com a seguinte estrutura:\\
+
+\centerline{\fbox{\includegraphics[scale=0.4]{images/results.png}}}
+
+Na secção de testes, são apresentados o nome da disciplina e a data dos testes. \par
+Na secção dos TPCs, são mostrados, no dia em que há TPCs, as datas em que os mesmos devem ser marcados, e para quais disciplinas.\par
+O processamento da informação para \textit{output} começa no predicado \textit{display(+Classes, +Days)}, que, por sua vez, invoca o predicado \textit{displayClasses(+Classes, +Days)}, responsável por apresentar a informação de cada turma.\par
+Para mostrar a informação relativamente a cada turma, é utilizado o predicado \textit{displayClass(+Class, +Days)}, e tem como função apresentar as informações relativamente às datas dos testes e dos TPCs.\newline Para mostrar os testes, é utilizado o predicado \textit{displayTests(+Class)}, que percorre todas as disciplinas de uma turma, apresentando as datas dos testes.\newline 
+Para mostrar as datas dos TPCs, o predicado \textit{displayTPCs(+Class, +Day, +Days)}, percorre todos os dias, e verifica, para cada dia, quais as disciplinas que devem ter TPC, retornando uma lista com essa informação. Essa lista é depois percorrida, para formatar o \textit{output} que deverá ser mostrado ao utilizador. Desta forma, é possível mostrar somente os dias em que há TPCs marcados (ignorando as datas sem nenhum compromisso).
 
 \section{Resultados}
 Nesta secção serão mostrados os resultados da execução do programa. As variáveis a considerar são: o número de disciplinas, o número de turmas, e o número de dias.\par

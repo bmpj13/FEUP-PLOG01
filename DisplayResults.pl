@@ -21,13 +21,6 @@ display(Classes, Days) :-
   format('~n---------------------------------- School Planning ----------------------------------~n',[]),
   displayClasses(Classes, Days).
 
-displayDisciplines([]).
-
-displayDisciplines([DisciplineH | DisciplineT]) :-
-  translateDiscipline(DisciplineH,DisciplineString),
-  format('Discipline Index(~w) - ~s ~n',[DisciplineH,DisciplineString]),
-  displayDisciplines(DisciplineT),!.
-
 displayClasses([Class | Classes], Days) :-
   format('~n--------------------------------------- Class ---------------------------------------~n',[]),
   displayClass(Class, Days),
@@ -96,3 +89,12 @@ printDisciplines([Discipline]) :-
 printDisciplines([Discipline | HomeworkDisciplines]) :-
   format(' ~s |', [Discipline]),
   printDisciplines(HomeworkDisciplines).
+
+
+
+  displayDisciplines([]).
+
+displayDisciplines([DisciplineH | DisciplineT]) :-
+  translateDiscipline(DisciplineH,DisciplineString),
+  format('Discipline Index(~w) - ~s ~n',[DisciplineH,DisciplineString]),
+  displayDisciplines(DisciplineT),!.
